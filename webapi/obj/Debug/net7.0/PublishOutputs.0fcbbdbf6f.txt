@@ -1,0 +1,12 @@
+C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\publish\webapi.exe
+C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\publish\appsettings.Development.json
+C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\publish\appsettings.json
+C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\publish\webapi.dll
+C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\publish\webapi.deps.json
+C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\publish\webapi.runtimeconfig.json
+C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\publish\webapi.pdb
+C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\publish\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\publish\Microsoft.OpenApi.dll
+C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\publish\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\publish\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\publish\Swashbuckle.AspNetCore.SwaggerUI.dll
