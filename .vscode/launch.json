@@ -21,10 +21,10 @@
             "args": [],
             "cwd": "${workspaceFolder}/webapi",
             "stopAtEntry": false,
-            "serverReadyAction": {
-                "action": "openExternally",
-                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-            },
+            // "serverReadyAction": {
+            //      "action": "openExternally",
+            //     "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            // },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
@@ -37,7 +37,7 @@
     "compounds": [
         {
           "name": "Server/Client",
-          "configurations": ["server", "client"],
+          "configurations": ["client", "server"],
           "stopAll": true
         }
     ]
