@@ -34,3 +34,15 @@
     flex: 1 0 0;
     align-self: stretch;
 }
+
+.site-status-container span {
+    color: #717171;
+
+    /* Body */ 
+    font-family: Space Grotesk;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    justify-;
+}
