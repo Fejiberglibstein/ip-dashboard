@@ -68,7 +68,7 @@ namespace IpAddressTracker {
         }
 
         public static void InitialCsvRead() {
-            string csvLocation = @"C:\Users\drewt\OneDrive\Desktop\IPAddresses.csv";
+            string csvLocation = @"../IPAddresses.csv";
             using (StreamReader reader = new StreamReader(csvLocation))
             using (CsvReader csv = new CsvReader(reader, CultureInfo.InvariantCulture)) {
                 csv.Read();

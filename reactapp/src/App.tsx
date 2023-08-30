@@ -7,7 +7,7 @@ function App() {
     // states here, when state changes it rerenders the component. state is like a variable
     // site is variable, setSites is function to set (get and setters here)
     // site is an array of strings (of sites)
-    const [sites, setSites] = React.useState<{ [id: string] : Array<IP>; } | null>(null);
+    const [sites, setSites] = React.useState</*{ [id: string] : Array<IP>; }*/ | any | null>(null);
 
     // how you make API calls. useEffect is like step out of the normal flow of rendering
     // when this function is finished it rerenders the page (APi gets request it rerenders)
