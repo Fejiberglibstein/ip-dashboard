@@ -1,24 +1,62 @@
-import React from "react"
-import "./styles.css"
+import React from "react";
 
-// this connects with the siteList list in Program.cs
-export interface IP {
-    IpAddress: string,
-    Site : string,
-    AssetNumber?: string,
-    MachineName : string,
-    IsOnline? : boolean,
-    LastPingTime? : Date,
-    CurrentTime? : Date,
-    TimeSinceLastPing? : number,
-    CheckThis?: string
-}
+import "./styles.css";
+import { SiteProps, SiteStatusProps, IPdata } from "./types";
+
+
+const siteColors = {onlineColor: "#0fa958", offlineColor: "#FFC737", criticalColor: "#E55050"};
 
 // this is a component, so it needs to return jsx (component is like a node (godot))
-export const Site = ({IPs}: {IPs: Array<IP>}) => {      // the variable sites needs to be an array of IPs (sites is parameter)
+export const Site = ({siteName, IPs}: SiteProps): React.JSX.Element => {      // the variable sites needs to be an array of IPs (sites is parameter)
+    
+    const criticalIPs = IPs.filter((IP) => IP.checkThis);                   //List of all IPs that need to be checked
+    const offlineIPs = IPs.filter((IP) => IP.isOnline);                     //List of all offline IPs
+    const onlineIPs = IPs.filter((IP) => !IP.isOnline && !IP.checkThis);    //List of all Online IPs
+
+    const IPdata = {criticalIPs: criticalIPs, offlineIPs: offlineIPs, onlineIPs: onlineIPs};
+
+    const siteStatus = getSiteStatus(IPdata);
+
+    siteName = siteName.replace(/_/g, " ");
     return (
-        <div className="site-card">
-            <span>Hi</span>
+        <div className="site-card" style={{borderLeft: "5.70px solid " + siteStatus.color}}>
+            <span>{siteName}</span>
+            <div className="site-card-content">
+                <SiteStatus site={siteStatus}/>
+            </div>
         </div>
-    )
+    );
+}
+
+const SiteStatus = ({site: {status,  color, machinesOnline, machinesOffline, machinesCritical}}: {site: SiteStatusProps}): React.JSX.Element => {
+    
+    return (
+        <>
+            { (machinesOnline !== (0 || undefined)) ? <span>{machinesOnline + " Machines Online"}</span> : <></> }
+            { (machinesOffline !== (0 || undefined)) ? <span>{machinesOffline + " Machines Offline"}</span> : <></> }
+            { (machinesCritical !== (0 || undefined)) ? <span>{machinesCritical + " Machines Offline for 5+ days"}</span> : <></> }
+        </>
+    );
+}
+
+
+
+function getSiteStatus({criticalIPs, offlineIPs, onlineIPs}: IPdata): SiteStatusProps {
+    let siteStatus: SiteStatusProps = { status: "online", color: ""};
+
+    siteStatus.machinesOnline = onlineIPs.length;
+
+    if (offlineIPs.length > 0) {
+        siteStatus.status = "offline";
+        siteStatus.machinesOffline = offlineIPs.length;
+    }
+
+    if (criticalIPs.length > 0) {
+        siteStatus.status = "critical";
+        siteStatus.machinesCritical = criticalIPs.length;
+    }
+
+    siteStatus.color = siteColors[`${siteStatus.status}Color`];
+    return siteStatus;
+
 }

@@ -16,7 +16,7 @@ namespace IpAddressTracker {
 
         public static Dictionary<string, List<IP>> siteList = new Dictionary<string, List<IP>>() {
             {"east_aurora", new List<IP>()},
-            {"torrance", new List<IP>()}
+            // {"torrance", new List<IP>()}
         };
 
         public static void MainMethod() {

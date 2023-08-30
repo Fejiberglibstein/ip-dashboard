@@ -1,5 +1,7 @@
 import React from "react";
-import {IP, Site} from "./components/components";
+
+import { Site } from "./components/components";
+import { IP } from "./components/types";
 import "./App.css";
 
 // called from main.jsx
@@ -21,7 +23,7 @@ function App() {
     return ( (sites !== null) ?
         <div className="app">
             {
-                Object.keys(sites).map((site) => <Site IPs={sites[site]}></Site>)       // mapping the siteList from IpTracker to components IPs object
+                Object.keys(sites).map((siteName) => <Site siteName={siteName} IPs={sites[siteName]}></Site>)       // mapping the siteList from IpTracker to components IPs object
             }
         </div>
         :
