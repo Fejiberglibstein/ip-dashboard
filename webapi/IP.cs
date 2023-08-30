@@ -1,4 +1,6 @@
- public class IP {
+namespace IPClass;
+
+public class IP {
     public required string IpAddress { get; set; }
     public required string Site { get; set; }
     public string? AssetNumber { get; set; }
