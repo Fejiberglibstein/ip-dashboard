@@ -1,0 +1,14 @@
+.site-card {
+    display: flex;
+    width: 430px;
+    height: 238px;
+    padding: 11.403px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+        
+    border-radius: 5.701px;
+    border-left: 5.701px solid #FFC737;
+    background: #1C1C21;
+    box-shadow: 11.40288257598877px 11.40288257598877px 22.80576515197754px 0px rgba(0, 0, 0, 0.25);
+}

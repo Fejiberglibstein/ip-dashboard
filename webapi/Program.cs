@@ -7,7 +7,7 @@ var app = builder.Build();
 IPAddressTracker.MainMethod();
 
 app.MapGet("/api/get_sites", () => {
-    return IPAddressTracker.siteList.Keys;
+    return IPAddressTracker.siteList;
 });
 
 app.MapGet("/api/get_site/{site}", (string site) => {
