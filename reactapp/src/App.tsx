@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Site } from "./components/components";
+import { Site } from "./components/site-card";
 import { IP } from "./components/types";
 import "./App.css";
 
@@ -24,7 +24,7 @@ function App() {
     return ( (sites !== null) ?
         <div className="app">
             {                   // maps each site (EA, TOR) to a new site card that contains its site name and all the IPs it has listed
-                Object.keys(sites).map((siteName) => <Site siteName={siteName} IPs={sites[siteName]}></Site>)       // mapping the siteList from IpTracker to components IPs object
+                Object.keys(sites).map((siteName, i) => <Site siteName={siteName} key={i} IPs={sites[siteName]}></Site>)       // mapping the siteList from IpTracker to components IPs object
             }
         </div>
         :
