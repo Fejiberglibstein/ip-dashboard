@@ -16,7 +16,7 @@
             "name": "server",
             "type": "coreclr",
             "request": "launch",
-            //"preLaunchTask": "build",
+            "preLaunchTask": "build",
             "program": "${workspaceFolder}/webapi/bin/Debug/net7.0/webapi.dll",
             "args": [],
             "cwd": "${workspaceFolder}/webapi",

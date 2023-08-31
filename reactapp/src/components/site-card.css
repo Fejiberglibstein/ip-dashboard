@@ -59,10 +59,11 @@
 
 .machine-list {
     position: absolute;
-    display: block;
+    display: flex;
     right: 0;
     top: 0;
-    width: fit-content;
+    flex-direction: column;
+    align-items: center;
 }
 
 .machine-list-title {
@@ -95,7 +96,7 @@
     padding: 2px 5px;
     justify-content: space-between;
     align-items: center;
-
+    position: relative;
     border-radius: 2px 2px 2px 2px;
 }
 
@@ -107,8 +108,6 @@
     font-weight: 400;
     line-height: normal;
 }
-
-
 
 
  

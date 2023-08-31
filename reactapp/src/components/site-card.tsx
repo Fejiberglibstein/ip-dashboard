@@ -57,6 +57,7 @@ const SiteStatus = ({site: {status, color, machinesOnline, machinesOffline, mach
 const MachineList = ({machineList}: MachineListProps): React.JSX.Element => {
     return (
         <div className="machine-list">
+            {/* <span style={{fontSize: "14px", padding: "2px"}}>Machines Offline</span> */}
             <div className="machine-list-title">
                 <span>Machine Name</span>
                 <span>Last Online</span>
@@ -72,15 +73,15 @@ const MachineList = ({machineList}: MachineListProps): React.JSX.Element => {
 const MachineListItem = ({machine, id, totalMachines}: {machine: IP, id: number, totalMachines: number}): React.JSX.Element => {
     return (
         <li 
-            className="machine-list-item"
+            className={"machine-list-item" + (machine.checkThis ? " critical" : "")}
             style={{
                 background: (id % 2 == 0) ? "#363A42" : "#27292E",
                 borderRadius: ((id == 0) ? "8px 8px " : "2px 2px ") +           // If it's the first component round the top corners
                               ((id == totalMachines-1) ? "8px 8px" : "2px 2px")   // If it's the last component round the bottom corners
             }}
         >
+            {machine.checkThis ? <CriticalIcon style={{position: "absolute", left: "-20px"}}/> : <></>}
             <span> {machine.ipAddress} </span>
-            {machine.checkThis ? <CriticalIcon/> : <></>}
             <TimeStamp time={machine.lastPingTime}/> 
         </li>
     );
