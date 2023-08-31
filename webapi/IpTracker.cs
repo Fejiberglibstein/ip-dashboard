@@ -13,24 +13,26 @@ namespace IpAddressTracker {
     public class IPAddressTracker {
 
         public static string timeFormat = @"MM/dd hh:mm";
+        public static string csvLocation = @"../site_csvs/";
 
         public static Dictionary<string, List<IP>> siteList = new Dictionary<string, List<IP>>() {
             {"east_aurora", new List<IP>()},
-            // {"torrance", new List<IP>()}
+            {"baguio", new List<IP>()}
         };
 
         public static void MainMethod() {
-            InitialCsvRead();
-
             foreach(var site in siteList) {
+                InitialCsvRead(site.Key);
                 UpdateSite(site.Key);
             }
+        }
 
-            // using (var writer = new StreamWriter(@"C:\Users\drewt\OneDrive\Desktop\IPAddresses (copy).csv"))
-            // using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-            // {
-            //     csv.WriteRecords(siteList["east_aurora"]);
-            // }
+        public static void CsvWrite(string site) {
+            using (var writer = new StreamWriter(@"C:\Users\drewt\OneDrive\Desktop\IPAddresses (copy).csv"))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteRecords(siteList[site]);
+            }
         }
 
         public static List<IP> UpdateSite(string site) {
@@ -67,9 +69,8 @@ namespace IpAddressTracker {
             return machine;
         }
 
-        public static void InitialCsvRead() {
-            string csvLocation = @"../IPAddresses.csv";
-            using (StreamReader reader = new StreamReader(csvLocation))
+        public static void InitialCsvRead(string site) {
+            using (StreamReader reader = new StreamReader(csvLocation + site + ".csv"))
             using (CsvReader csv = new CsvReader(reader, CultureInfo.InvariantCulture)) {
                 csv.Read();
                 csv.ReadHeader();
