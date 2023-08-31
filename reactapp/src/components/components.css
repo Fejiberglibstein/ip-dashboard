@@ -18,7 +18,9 @@
     left: 50%;
     margin-left: -100px;
 
+    opacity: 0;
     font-size: 12px;
+    transition: 300ms opacity;
 
   }
   
@@ -34,6 +36,7 @@
   }
   
   .tooltip:hover .tooltiptext {
+    opacity: 1;
     visibility: visible;
   }
 
