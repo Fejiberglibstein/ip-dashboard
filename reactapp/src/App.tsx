@@ -23,7 +23,7 @@ function App() {
     // returns the html that is required for react 
     return ( (sites !== null) ?
         <div className="app">
-            {
+            {                   // maps each site (EA, TOR) to a new site card that contains its site name and all the IPs it has listed
                 Object.keys(sites).map((siteName) => <Site siteName={siteName} IPs={sites[siteName]}></Site>)       // mapping the siteList from IpTracker to components IPs object
             }
         </div>
