@@ -29,9 +29,9 @@ export const Site = ({siteName, IPs, setSite, popupSite}: SiteProps): React.JSX.
    
 
     return (
-        <div className="site-card" onClick={() => popupSite(siteName)} style={{borderLeft: "5.70px solid " + siteStatus.color}}>
+        <div className="site-card" style={{borderLeft: "5.70px solid " + siteStatus.color}}>
             <span>{siteName.replace(/_/g, " ")}</span>
-            <div className="site-card-content">
+            <div className="site-card-content" onClick={() => popupSite(siteName)}>
                 <SiteStatus site={siteStatus}/>
                 <MachineList machineList={machineList}/>
                 <PingSitesButton setSite={setSite} siteName={siteName}/>
@@ -104,7 +104,6 @@ const MachineListItem = ({machine, id, totalMachines}: {machine: IP, id: number,
         <li 
             className={"machine-list-item"}
             style={{
-                background: (id % 2 == 0) ? "#363A42" : "#27292E",
                 borderRadius: ((id == 0) ? "8px 8px " : "2px 2px ") +           // If it's the first component round the top corners
                               ((id == totalMachines-1) ? "8px 8px" : "2px 2px")   // If it's the last component round the bottom corners
             }}

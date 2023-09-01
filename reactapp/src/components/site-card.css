@@ -34,6 +34,8 @@
     flex: 1 0 0;
     align-self: stretch;
     position: relative;
+    cursor: pointer;
+
 }
 
 .site-status-container span {
@@ -101,6 +103,15 @@
     background: #363A42;
 }
 
+.machine-list-item:nth-child(odd) {
+    background: #363A42;
+}
+
+.machine-list-item:nth-child(even) {
+    background: #27292E;
+}
+
+
 .machine-list-item span {
     color: #787878;
     font-family: Space Grotesk;
@@ -143,5 +154,6 @@
 
 .ping-button.loading {
     background: #30353A;
+    cursor: default;
 }
  
