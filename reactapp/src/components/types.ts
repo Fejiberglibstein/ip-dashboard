@@ -17,7 +17,8 @@ export interface IP {
 // it is this way because the siteList in IpTracker.cs is a Dictionary<string, List<IP>>
 export interface SiteProps {
     siteName: string,
-    IPs: Array<IP>
+    IPs: Array<IP>,
+    setSite: Function
 }
 
 // dictionary that stores a list of IPs that are in the states outlined below

@@ -9,3 +9,9 @@ export const TimeStamp = ({time}: {time: Date}) => {
         </div>
     );
 }
+
+export const BufferingIcon = () => {
+    return (
+        <div className="buffering-icon"></div>
+    );
+}
