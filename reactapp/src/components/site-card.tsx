@@ -113,7 +113,9 @@ const MachineListItem = ({machine, id, totalMachines}: {machine: IP, id: number,
 function getSiteStatus({criticalIPs, offlineIPs, onlineIPs}: IPdata): SiteStatusProps {
     let siteStatus: SiteStatusProps = { status: "online", color: ""};
 
-    siteStatus.machinesOnline = onlineIPs.length;
+    if (onlineIPs.length > 0) {
+        siteStatus.machinesOnline = onlineIPs.length;
+    }
 
     if (offlineIPs.length > 0) {
         siteStatus.status = "offline";
