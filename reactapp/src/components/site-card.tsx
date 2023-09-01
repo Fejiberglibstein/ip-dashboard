@@ -3,12 +3,12 @@ import React from "react";
 import "./site-card.css";
 import { SiteProps, SiteStatusProps, IPdata, MachineListProps, IP } from "./types";
 import { CriticalIcon, StatusCriticalIcon, StatusOfflineIcon, StatusOnlineIcon, PingIcon } from "../assets/icons";
-import { TimeStamp, BufferingIcon } from "./components";
+import { Timestamp, BufferingIcon } from "./components";
 
 const siteColors = {onlineColor: "#0fa958", offlineColor: "#FFC737", criticalColor: "#E55050"};
 
 // this is a component, so it needs to return jsx (component is like a node (godot))
-export const Site = ({siteName, IPs, setSite}: SiteProps): React.JSX.Element => {   // the variable IPs needs to be an array of IPs (IPs is parameter)
+export const Site = ({siteName, IPs, setSite, popupSite}: SiteProps): React.JSX.Element => {   // the variable IPs needs to be an array of IPs (IPs is parameter)
     
     const criticalIPs = IPs.filter((IP) => IP.checkThis && !IP.isOnline);                   //List of all IPs that need to be checked
     const offlineIPs = IPs.filter((IP) => !IP.isOnline && !IP.checkThis);                     //List of all Offline IPs
@@ -20,10 +20,16 @@ export const Site = ({siteName, IPs, setSite}: SiteProps): React.JSX.Element => 
 
     // now for the list
     const machineList = criticalIPs.concat(offlineIPs).slice(0,5)
-    machineList.sort((a,b) => b.timeSinceLastPing - a.timeSinceLastPing)
+    machineList.sort((a,b) => {
+        if ( a.timeSinceLastPing !== undefined &&  b.timeSinceLastPing !== undefined) 
+            return b.timeSinceLastPing - a.timeSinceLastPing 
+        else
+            return 0
+    });
+   
 
     return (
-        <div className="site-card" style={{borderLeft: "5.70px solid " + siteStatus.color}}>
+        <div className="site-card" onClick={() => popupSite(siteName)} style={{borderLeft: "5.70px solid " + siteStatus.color}}>
             <span>{siteName.replace(/_/g, " ")}</span>
             <div className="site-card-content">
                 <SiteStatus site={siteStatus}/>
@@ -37,7 +43,8 @@ export const Site = ({siteName, IPs, setSite}: SiteProps): React.JSX.Element => 
 const PingSitesButton = ({setSite, siteName}: {setSite: Function, siteName: string}) => {
     // clicked is going to equal one of the states that is defined in setClicked (it is a getter and setter in the [])
     const [clicked, setClicked] = React.useState<boolean>(false)
-    const pingSite = async () => {
+    const pingSite = async (e) => {
+        e.stopPropagation()
         setClicked(true)
         try {
             const response = await fetch(`/api/ping_site/${siteName}`)
@@ -49,7 +56,7 @@ const PingSitesButton = ({setSite, siteName}: {setSite: Function, siteName: stri
         }
     }
     return (
-        <button className={"ping-button" + (clicked ? " loading" : "")} onClick={pingSite}>{(!clicked) ? <PingIcon/> : <div style={{position: "relative", width: "10px", marginRight: "4px"}}> <BufferingIcon/> </div>} {(!clicked) ? "Ping Site" : "Pinging"}</button>
+        <button className={"ping-button" + (clicked ? " loading" : "")} onClick={(e) => pingSite(e)}>{(!clicked) ? <PingIcon/> : <div style={{position: "relative", width: "10px", marginRight: "4px"}}> <BufferingIcon/> </div>} {(!clicked) ? "Ping Site" : "Pinging"}</button>
     );
 }
 
@@ -104,7 +111,7 @@ const MachineListItem = ({machine, id, totalMachines}: {machine: IP, id: number,
         >
             {machine.checkThis ? <CriticalIcon style={{position: "absolute", left: "-20px"}}/> : <></>}
             <span> {machine.ipAddress} </span>
-            <TimeStamp time={machine.lastPingTime}/> 
+            <Timestamp time={machine.lastPingTime != undefined ? machine.lastPingTime : new Date(0)}/> 
         </li>
     );
 }

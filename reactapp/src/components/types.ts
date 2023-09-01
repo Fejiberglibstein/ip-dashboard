@@ -6,11 +6,11 @@ export interface IP {
     site: string,
     assetNumber: string,
     machineName: string,
-    isOnline: boolean,
-    lastPingTime: Date,
-    currentTime: Date,
-    timeSinceLastPing: number,
-    checkThis: string
+    isOnline?: boolean,
+    lastPingTime?: Date,
+    currentTime?: Date,
+    timeSinceLastPing?: number,
+    checkThis?: string
 }
 
 // React "needs" the props at the end, this is for component parameters
@@ -18,8 +18,11 @@ export interface IP {
 export interface SiteProps {
     siteName: string,
     IPs: Array<IP>,
-    setSite: Function
-}
+    setSite: Function,
+    popupSite: Function 
+}    
+
+// could do this if a function ever needs to return a string () => string
 
 // dictionary that stores a list of IPs that are in the states outlined below
 export interface IPdata {
@@ -39,4 +42,10 @@ export interface SiteStatusProps {
 
 export interface MachineListProps {
     machineList: Array<IP>
+}
+
+export interface PopupModalProps {
+    siteName: string, 
+    IPs: Array<IP>,
+    setPopupSiteName: React.Dispatch<React.SetStateAction<string | null>>
 }

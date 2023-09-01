@@ -1,0 +1,74 @@
+/* Modal Content */
+.popup-modal-content {
+  background-color: #3c3c47;
+  margin: auto;
+  padding: 20px 100px;
+  border: 2px solid #888;
+  height: 80%;
+  width: auto;
+  border-radius: 12px;
+  position: relative;
+  overflow: auto;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: sticky;
+    right: 0px;
+    top: 0px;
+    transform: translateX(80px);
+}
+  
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */ 
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    backdrop-filter: blur(10px);
+
+    color: #A4A4A4;
+    font-family: Space Grotesk;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+table {
+    font-family: IBM Plex Mono, Space Grotesk;
+    border-collapse: collapse;
+    width: 100%;
+}
+  
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+  
+tr:nth-child(even) {
+    background-color: #27292e;
+}
+
+tr:nth-child(odd) {
+    background-color: #363a42;
+}
