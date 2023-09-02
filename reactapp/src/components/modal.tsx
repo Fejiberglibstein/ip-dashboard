@@ -4,7 +4,14 @@ import "./modal.css";
 import { IP, PopupModalProps } from "./types";
 import moment from "moment";
 
-export const PopupModal = ({siteName, IPs, setPopupSiteName}: PopupModalProps): React.JSX.Element => {
+export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName}: PopupModalProps): React.JSX.Element => {
+    if (!enabled) {
+        return (
+            <div className={`modal-background disabled`}>
+                <div className={`popup-modal-content disabled`}></div>
+            </div>
+        )
+    }
 
     function compareIPAddresses(a, b) {
         const numA = Number(
@@ -21,42 +28,12 @@ export const PopupModal = ({siteName, IPs, setPopupSiteName}: PopupModalProps): 
     }
 
 
-    // What the he will is this Sir
-
-    // function customComparator(a: string, b: string){
-     
-    //     // Breaking into the octets   
-    //     let octetsA = a.split(".");
-    //     let octetsB = b.split(".");
-         
-    //     // Condition if the IP Address
-    //     // is same then return 0
-    //     if(octetsA == octetsB)
-    //         return 0
-    //     else if(octetsA[0] > octetsB[0])
-    //         return 1
-    //     else if(octetsA[0] < octetsB[0])
-    //         return -1
-    //     else if(octetsA[1] > octetsB[1])
-    //         return 1
-    //     else if(octetsA[1] < octetsB[1])
-    //         return -1
-    //     else if(octetsA[2] > octetsB[2])
-    //         return 1
-    //     else if(octetsA[2] < octetsB[2])
-    //         return -1
-    //     else if(octetsA[3] > octetsB[3])
-    //         return 1
-    //     else if(octetsA[3] < octetsB[3])
-    //         return -1
-     
-    // }
-
-    IPs.sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress));
+   
+    IPs?.sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress));
 
     return (
-        <div className="modal-background" onClick={() => setPopupSiteName(null)}>
-            <div className="popup-modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className={`modal-background`} onClick={() => setPopupSiteName(null)}>
+            <div className={`popup-modal-content`} onClick={(e) => e.stopPropagation()}>
                 <span className="close" onClick={() => setPopupSiteName(null)}>&times;</span>
                 <table>
                     <tr>
@@ -66,8 +43,8 @@ export const PopupModal = ({siteName, IPs, setPopupSiteName}: PopupModalProps): 
                         <th>Last Ping Time</th>
                         <th>Time Since Last Ping</th>
                     </tr>
-                    {IPs.map(IP => 
-                        <tr>
+                    {IPs.map((IP, i) => 
+                        <tr key={i}>
                             <td>{IP.ipAddress}</td>
                             <td>{IP.assetNumber}</td>
                             <td>{IP.machineName}</td>

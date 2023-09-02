@@ -1,5 +1,3 @@
-
-
 .site-card {
     display: flex;
     width: 430px;
@@ -140,7 +138,7 @@
     bottom: 0px;
     border-width: 0px;
     opacity: 1;
-    transition: 111ms;
+    transition: 200ms;
     width: 88px;
 }
 

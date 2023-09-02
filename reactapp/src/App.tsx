@@ -48,8 +48,8 @@ function App() {
             }
         </div>
         {(popupSiteName !== null)
-            ? <PopupModal siteName={popupSiteName} IPs={sites[popupSiteName]} setPopupSiteName={setPopupSiteName}/>
-            : <></>
+            ? <PopupModal enabled={true} siteName={popupSiteName} IPs={sites[popupSiteName]} setPopupSiteName={setPopupSiteName}/>
+            : <PopupModal enabled={false}/>
         }
         </>
         :

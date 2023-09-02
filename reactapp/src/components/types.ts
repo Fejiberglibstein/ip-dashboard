@@ -44,8 +44,18 @@ export interface MachineListProps {
     machineList: Array<IP>
 }
 
-export interface PopupModalProps {
-    siteName: string, 
-    IPs: Array<IP>,
-    setPopupSiteName: React.Dispatch<React.SetStateAction<string | null>>
-}
+
+// This is a discriminated union type; when enabled is true we require all 
+// the other params but when it's false we don't care about the other values
+export type PopupModalProps =
+    {
+        enabled: true;
+        siteName: string, 
+        IPs: Array<IP>,
+        setPopupSiteName: React.Dispatch<React.SetStateAction<string | null>> 
+    } | {
+        enabled: false
+        siteName?: null,
+        IPs?: null,
+        setPopupSiteName?: null
+    }
