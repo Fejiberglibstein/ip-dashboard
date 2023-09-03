@@ -42,7 +42,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
                             <th>Asset Number</th>
                             <th>Machine Name</th>
                             <th>Time Since Last Ping</th>
-                            <th>Ping</th>
+                            <th>Ping IP</th>
                         </tr>
                     </thead>
                     <tbody> 

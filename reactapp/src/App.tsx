@@ -29,6 +29,7 @@ function App() {
             [siteName]: IPs
         })
     }
+    
     const setIP = (siteName: string, IP: IP) => {
         if (sites !== null) {
             const IPs = sites[siteName]

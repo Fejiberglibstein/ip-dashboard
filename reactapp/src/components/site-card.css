@@ -119,39 +119,4 @@
     line-height: normal;
 }
 
-.ping-button {
-    display: inline-flex;
-    padding: 2px 8px;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    border-radius: 6px;
-    background: #184268;
-    color: #A4A4A4;
-    font-family: Space Grotesk;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
-    border-width: 0px;
-    opacity: 1;
-    transition: 200ms;
-    width: 88px;
-}
-
-.ping-button:focus {
-    outline: 0px;
-}
-
-.ping-button:hover {
-    opacity: 0.9;
-}
-
-.ping-button.loading {
-    background: #30353A;
-    cursor: default;
-}
  

@@ -37,6 +37,7 @@ export const Site = ({siteName, IPs, setSite, popupSite}: SiteProps): React.JSX.
                 <PingButton
                     update={(response) => setSite(siteName, response)}
                     apiPath={`ping_site/${siteName}`}
+                    style={{ position: "absolute", right: "0px", bottom: "0px" }}
                 >Ping Site</PingButton>
             </div>
         </div>
