@@ -31,10 +31,9 @@
 
 /* Modal Content */
 .popup-modal-content {
-  background-color: #3c3c47;
+  background-color: #41454d;
   margin: auto;
   padding: 20px 100px;
-  border: 2px solid #888;
   height: 80%;
   width: 60%;
   border-radius: 12px;
@@ -42,7 +41,8 @@
   overflow: auto;
   transform: scale(100%);
   transition: 200ms;
-  clip-path: view-box;
+  
+
 }
 .popup-modal-content.disabled {
     transform: scale(0%); 
@@ -72,15 +72,43 @@ table {
     font-family: IBM Plex Mono, Space Grotesk;
     border-collapse: collapse;
     width: 100%;
+    box-shadow: 0px 0px 22px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
 }
   
-td, th {
-    text-align: left;
+th, td {
+    text-align: center;
     padding: 8px;
 }
-  
+
+/* th {
+    position: sticky;
+} */
+
+tr {
+    position: relative;
+    --status-color: #0fa355;
+}
+
+tbody tr::before {
+    position: absolute;
+    content: "";
+    width: 4px;
+    border-radius: 5px 0px 0px 5px;
+    background-color: var(--status-color);
+    height: 90%;
+    left: -4px;
+    top: 5%;
+}
+
+thead tr::before {
+    content: "";
+    position: absolute;
+}
+
+
 tr:nth-child(even) {
-    background-color: #27292e;
+    background-color: #2e3139;
 }
 
 tr:nth-child(odd) {
@@ -89,10 +117,14 @@ tr:nth-child(odd) {
 
 .popup-modal-content::-webkit-scrollbar {
     width: 6px;
-  }
+}
+
+
+
   .popup-modal-content::-webkit-scrollbar-track {
     /* background: #27292e; */
   }
+
   .popup-modal-content::-webkit-scrollbar-thumb {
     background-color: #aaaaaa;
     border-radius: 6px;

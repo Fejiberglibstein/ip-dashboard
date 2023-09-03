@@ -42,12 +42,12 @@
 
   .timestamp {
     border-radius: 2.867px;
-    background: rgba(255, 255, 255, 0.15);
-    display: flex;
+    background: rgba(255, 255, 255, 0.08);
     padding: 0px 2.867px;
-    align-items: flex-end;
     gap: 7.168px;
     color: #A6A6A6;
+    width: fit-content;
+    border: none;
 
     /* Machine Text */
     font-family: Space Grotesk;

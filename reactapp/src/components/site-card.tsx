@@ -1,18 +1,18 @@
 import React from "react";
 
 import "./site-card.css";
-import { SiteProps, SiteStatusProps, IPdata, MachineListProps, IP } from "./types";
-import { CriticalIcon, StatusCriticalIcon, StatusOfflineIcon, StatusOnlineIcon, PingIcon } from "../assets/icons";
-import { Timestamp, BufferingIcon } from "./components";
+import { SiteProps, SiteStatusProps, MachineListProps, IP } from "../types";
+import { CriticalIcon, StatusCriticalIcon, StatusOfflineIcon, StatusOnlineIcon } from "../assets/icons";
+import { Timestamp, PingButton } from "./components";
+import { getSiteStatus } from "../status-colors";
 
-const siteColors = {onlineColor: "#0fa958", offlineColor: "#FFC737", criticalColor: "#E55050"};
 
 // this is a component, so it needs to return jsx (component is like a node (godot))
 export const Site = ({siteName, IPs, setSite, popupSite}: SiteProps): React.JSX.Element => {   // the variable IPs needs to be an array of IPs (IPs is parameter)
     
     const criticalIPs = IPs.filter((IP) => IP.checkThis && !IP.isOnline);                   //List of all IPs that need to be checked
-    const offlineIPs = IPs.filter((IP) => !IP.isOnline && !IP.checkThis);                     //List of all Offline IPs
-    const onlineIPs = IPs.filter((IP) => IP.isOnline && !IP.checkThis);    //List of all Online IPs
+    const offlineIPs = IPs.filter((IP) => !IP.isOnline && !IP.checkThis);                   //List of all Offline IPs
+    const onlineIPs = IPs.filter((IP) => IP.isOnline && !IP.checkThis);                     //List of all Online IPs
 
     const IPdata = {criticalIPs: criticalIPs, offlineIPs: offlineIPs, onlineIPs: onlineIPs};
 
@@ -34,33 +34,17 @@ export const Site = ({siteName, IPs, setSite, popupSite}: SiteProps): React.JSX.
             <div className="site-card-content" onClick={() => popupSite(siteName)}>
                 <SiteStatus site={siteStatus}/>
                 <MachineList machineList={machineList}/>
-                <PingSitesButton setSite={setSite} siteName={siteName}/>
+                <PingButton
+                    update={(response) => setSite(siteName, response)}
+                    apiPath={`ping_site/${siteName}`}
+                >Ping Site</PingButton>
             </div>
         </div>
     );
 }
 
-const PingSitesButton = ({setSite, siteName}: {setSite: Function, siteName: string}) => {
-    // clicked is going to equal one of the states that is defined in setClicked (it is a getter and setter in the [])
-    const [clicked, setClicked] = React.useState<boolean>(false)
-    const pingSite = async (e) => {
-        e.stopPropagation()
-        setClicked(true)
-        try {
-            const response = await fetch(`/api/ping_site/${siteName}`)
-            const result = await response.json()
-            setSite(siteName, result)
-        }
-        finally {
-            setClicked(false)
-        }
-    }
-    return (
-        <button className={"ping-button" + (clicked ? " loading" : "")} onClick={(e) => pingSite(e)}>{(!clicked) ? <PingIcon/> : <div style={{position: "relative", width: "10px", marginRight: "4px"}}> <BufferingIcon/> </div>} {(!clicked) ? "Ping Site" : "Pinging"}</button>
-    );
-}
 
-const SiteStatus = ({site: {status, color, machinesOnline, machinesOffline, machinesCritical}}: {site: SiteStatusProps}): React.JSX.Element => {
+const SiteStatus = ({site: {machinesOnline, machinesOffline, machinesCritical}}: {site: SiteStatusProps}): React.JSX.Element => {
     
     return (
         <div className="site-status-container">
@@ -116,24 +100,3 @@ const MachineListItem = ({machine, id, totalMachines}: {machine: IP, id: number,
 }
 
 
-function getSiteStatus({criticalIPs, offlineIPs, onlineIPs}: IPdata): SiteStatusProps {
-    let siteStatus: SiteStatusProps = { status: "online", color: ""};
-
-    if (onlineIPs.length > 0) {
-        siteStatus.machinesOnline = onlineIPs.length;
-    }
-
-    if (offlineIPs.length > 0) {
-        siteStatus.status = "offline";
-        siteStatus.machinesOffline = offlineIPs.length;
-    }
-
-    if (criticalIPs.length > 0) {
-        siteStatus.status = "critical";
-        siteStatus.machinesCritical = criticalIPs.length;
-    }
-
-    siteStatus.color = siteColors[`${siteStatus.status}Color`];
-    return siteStatus;
-
-}

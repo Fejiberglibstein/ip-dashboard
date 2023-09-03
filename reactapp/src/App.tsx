@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Site } from "./components/site-card";
-import { IP } from "./components/types";
+import { IP } from "./types";
 import { PopupModal } from "./components/modal";
 import "./App.css";
 
@@ -29,6 +29,17 @@ function App() {
             [siteName]: IPs
         })
     }
+    const setIP = (siteName: string, IP: IP) => {
+        if (sites !== null) {
+            const IPs = sites[siteName]
+            setSites({
+                ...sites,
+                [siteName]: IPs.map((oldIP) => 
+                    oldIP.ipAddress == IP.ipAddress ? IP : oldIP
+                )
+            })
+        }
+    }
 
     // how you make API calls. useEffect is like step out of the normal flow of rendering
     // useEffect is called after the page finishes rendering the first time and then rerenders the page
@@ -48,7 +59,7 @@ function App() {
             }
         </div>
         {(popupSiteName !== null)
-            ? <PopupModal enabled={true} siteName={popupSiteName} IPs={sites[popupSiteName]} setPopupSiteName={setPopupSiteName}/>
+            ? <PopupModal setIP={setIP} enabled={true} siteName={popupSiteName} IPs={sites[popupSiteName]} setPopupSiteName={setPopupSiteName}/>
             : <PopupModal enabled={false}/>
         }
         </>

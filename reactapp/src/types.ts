@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { HTMLAttributes } from "react"
 
 //Same class as the one in IP.cs
 export interface IP {
@@ -34,10 +34,16 @@ export interface IPdata {
 // 
 export interface SiteStatusProps {
     status: "online" | "offline" | "critical",
-    color: string
+    color: string,
     machinesOnline?: number,
     machinesOffline?: number,
     machinesCritical?: number
+}
+
+export interface IPStatus {
+    status: "online" | "offline" | "critical",
+    color: string
+
 }
 
 export interface MachineListProps {
@@ -52,10 +58,22 @@ export type PopupModalProps =
         enabled: true;
         siteName: string, 
         IPs: Array<IP>,
-        setPopupSiteName: React.Dispatch<React.SetStateAction<string | null>> 
+        setPopupSiteName: React.Dispatch<React.SetStateAction<string | null>>,
+        setIP: (siteName: string, IP: IP) => void
     } | {
         enabled: false
         siteName?: null,
         IPs?: null,
         setPopupSiteName?: null
+        setIP?: null
     }
+
+export interface TimestampProps extends HTMLAttributes<HTMLElement> {
+    time: Date
+}
+
+
+export interface PingButtonProps<T extends IP | String> extends HTMLAttributes<HTMLElement> {
+    update: (arg1: T) => void,
+    apiPath: string
+}

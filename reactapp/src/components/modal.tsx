@@ -1,10 +1,10 @@
 import React from "react";
 
 import "./modal.css";
-import { IP, PopupModalProps } from "./types";
-import moment from "moment";
-
-export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName}: PopupModalProps): React.JSX.Element => {
+import { IP, PopupModalProps } from "../types";
+import { PingButton, Timestamp } from "./components"
+import { getIPStatus } from "../status-colors";
+export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: PopupModalProps): React.JSX.Element => {
     if (!enabled) {
         return (
             <div className={`modal-background disabled`}>
@@ -36,23 +36,29 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName}: PopupMod
             <div className={`popup-modal-content`} onClick={(e) => e.stopPropagation()}>
                 <span className="close" onClick={() => setPopupSiteName(null)}>&times;</span>
                 <table>
-                    <tr>
-                        <th>IP Address</th>
-                        <th>Asset Number</th>
-                        <th>Machine Name</th>
-                        <th>Last Ping Time</th>
-                        <th>Time Since Last Ping</th>
-                    </tr>
-                    {IPs.map((IP, i) => 
-                        <tr key={i}>
-                            <td>{IP.ipAddress}</td>
-                            <td>{IP.assetNumber}</td>
-                            <td>{IP.machineName}</td>
-                            <td>{moment(IP.lastPingTime).format("dddd, MMMM D, h:mm A")}</td>
-                            {/* <td><Timestamp time={IP.lastPingTime}/></td> */}
-                            <td>{moment(IP.lastPingTime).fromNow()}</td>
+                    <thead>
+                        <tr>
+                            <th>IP Address</th>
+                            <th>Asset Number</th>
+                            <th>Machine Name</th>
+                            <th>Time Since Last Ping</th>
+                            <th>Ping</th>
                         </tr>
-                    )}
+                    </thead>
+                    <tbody> 
+                        {IPs.map((IP, i) => 
+                            <tr key={i} style={{"--status-color": getIPStatus(IP).color} as React.CSSProperties}>
+                                <td>{IP.ipAddress}</td>
+                                <td>{IP.assetNumber}</td>
+                                <td>{IP.machineName}</td>
+                                <td><Timestamp style={{fontSize: "14px"}} time={IP.lastPingTime !== undefined ? IP.lastPingTime : new Date(0)}/></td>
+                                <td><PingButton
+                                    update={(response) => setIP(IP.site, response as IP)}
+                                    apiPath={`ping_machine/${siteName}/${IP.ipAddress}`}
+                                >Ping IP</PingButton></td>
+                            </tr>
+                        )}
+                    </tbody>
                 </table>
             </div>
         </div>
