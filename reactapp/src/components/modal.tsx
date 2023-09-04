@@ -8,16 +8,14 @@ import { CriticalStickyIcon } from "../assets/icons";
 export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: PopupModalProps): React.JSX.Element => {
 	
 	// List of the critical machines
-    let criticalMachineLookup = IPs?.filter((IP) => IP.checkThis)
-	// List of all table elements that are critical    
-    const criticalIconRefs = useRef<Array<HTMLDivElement>>(Array(0))
-    const criticalRowRefs =  useRef<Array<HTMLTableRowElement>>(Array(0))
-	const modalContentRef =  useRef<HTMLDivElement | null>(null)
+    let criticalMachineLookup = IPs?.filter((IP) => IP.checkThis) 
+    const criticalIconRefs = useRef<Array<HTMLDivElement>>(Array(0))        // List of all the icons on the side
+    const criticalRowRefs =  useRef<Array<HTMLTableRowElement>>(Array(0))   // List of all table rows that are critical
+	const modalContentRef =  useRef<HTMLDivElement | null>(null)            // The modal
 	criticalIconRefs.current = []
 	criticalRowRefs.current = []
 
     if (!enabled) {
-		
         return (
             <div className={`modal-background disabled`}>
                 <div className={`popup-modal-content disabled`}></div>
@@ -27,10 +25,13 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
 
 	function handleScroll() {
 		if (modalContentRef.current) {
-			const iconHeight = 35;
-			const scrollMargin = 10;
+			const iconHeight = 35;    // Height of the icon
+			const scrollMargin = 10;  // Margin from the top/bottom of the screen
+
+			// Top and bottom of the viewport/modal. The 65 subtracted on scrollBottom is 
+			// an arbitrary number I got from guess and check to match the margin on the top
 			const scrollTop = modalContentRef.current.scrollTop + scrollMargin;
-			const scrollBottom = modalContentRef.current.scrollTop + modalContentRef.current.clientHeight - scrollMargin - 65;
+			const scrollBottom = modalContentRef.current.scrollTop + modalContentRef.current.clientHeight - scrollMargin - 80;
 			
 			// Cache the amount of icons that are offscreen
 			let iconsAbove = 0;
@@ -38,53 +39,70 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
 			const iconsTotal = criticalRowRefs.current.length;
 			for(const ref of criticalRowRefs.current) {
 				const refYPosition = ref.offsetTop - (iconHeight / 2);
-				if (!(refYPosition >= scrollTop)) { // Icon is above Viewport
+				if (!(refYPosition >= scrollTop)) { // Icon is above Viewport (vp)
 					iconsAbove ++;
 
-				} else if (!(refYPosition <= scrollBottom)) { // Icon is underneath Viewport
+				} else if (!(refYPosition <= scrollBottom)) { // Icon is underneath Viewport (vp)
 					iconsBelow ++;
 
 				}
 			}
 
 			for(let i in criticalRowRefs.current) {
-				const icon = criticalIconRefs.current[i];
-				let iconData : {top: number, opacity: number, left: number} = {top: 0, opacity: 0, left: 0}
-				const ref = criticalRowRefs.current[i]
-				const refPosition = ref.offsetTop - (iconHeight / 2 )
+				const icon = criticalIconRefs.current[i];  // Get the alert icon at index i
+				let iconData = {top: 0, left: 0};          // Create the top and left margin
+				const row = criticalRowRefs.current[i];    // Get the row that's critical at index i
+				const rowPosition = row.offsetTop - (iconHeight / 2 ); // The center of the row
 				
-				let shift = 0;
-				if (!(refPosition > scrollTop)) { // Icon is above Viewport
+				let leftShift = 0; // The slight offset to smoothly transition 
+				if (!(rowPosition > scrollTop)) { // Icon is above Viewport (vp)
+					
+					// Set the alert icon to be at top of screen
 					iconData.top = scrollTop
+					// Offset the current icon based on the amount of alert icons above vp
 					iconData.left = (iconsAbove - 1 - Number(i)) * -8;
 
-					// Check the distance from the next alert icon to scrollTop
-					if (iconsAbove < iconsTotal) {
+
+					if (iconsAbove < iconsTotal) {  // Add a slight animation only when there is >1 alert icon above vp
+
+						// The animation only takes place when 1 icon is almost at scrollTop, meaning
+						// it's about to be inside the viewport. This icon is `criticalRowRefs.current[iconsAbove]`
+
+						// Since criticalRowrefs is sorted in descending order of y Position, we can get the 
+						// difference between the icon closest to vp and scrollTop. If diff < 8 we animate, otherwise
+						// we discard the difference (don't shift the icon)
 						const closestRowPosition = criticalRowRefs.current[iconsAbove].offsetTop - (iconHeight / 2);
-						shift = Math.abs(scrollTop - closestRowPosition)
-						shift = (shift/4 < 8) ? 8-shift/4 : 0			
+						leftShift = Math.abs(scrollTop - closestRowPosition)
+						leftShift = (leftShift/4 < 8) ? 8-leftShift/4 : 0			
 
 					}
 					
 
-				} else if (!(refPosition < scrollBottom)) { // Icon is underneath Viewport
+				} else if (!(rowPosition < scrollBottom)) { // Icon is underneath Viewport (vp)
+					// Set the alert icon to be at bottom of screen
 					iconData.top = scrollBottom
+					// Offset the current icon based on the amount of alert icons below vp
 					iconData.left = (Number(i) - (iconsTotal - iconsBelow)) * -8;
 
-					// Check the distance from the next alert icon to scrollBottom
 					if (iconsTotal - iconsBelow > 0) {
+						
+						// The animation only takes place when 1 icon is almost at scrollBottom, meaning
+						// it's about to be inside the viewport. This icon is `criticalRowRefs.current[iconsTotal - iconsBelow - 1]`
+
+						// Since criticalRowrefs is sorted in descending order of y Position, we can get the 
+						// difference between the icon closest to vp and scrollBottom. If diff < 8 we animate, otherwise
+						// we discard the difference (don't shift the icon)
 						const closestRowPosition = criticalRowRefs.current[iconsTotal - iconsBelow - 1].offsetTop - (iconHeight / 2);
-						shift = Math.abs(scrollBottom - closestRowPosition)
-						console.log(shift)
-						shift = (shift/4 < 8) ? (8-shift/4) : 0			
+						leftShift = Math.abs(scrollBottom - closestRowPosition)
+						leftShift = (leftShift/4 < 8) ? (8-leftShift/4) : 0			
 
 					}
-
 				} else { // Icon is inside viewport
-					iconData.top = refPosition
+					iconData.top = rowPosition // Position the icon's y at the y of the row
 				}
+				// Unhide element and position it
 				icon.hidden = false
-				icon.setAttribute('style', `top: ${iconData.top}px; left: ${-50 + iconData.left - shift}px`)	
+				icon.setAttribute('style', `top: ${iconData.top}px; left: ${-50 + iconData.left - leftShift}px`)	
 			}
 		}
 	}
