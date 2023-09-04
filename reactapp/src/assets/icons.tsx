@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from "react"
+import React, { ForwardedRef, HTMLAttributes, PropsWithRef, forwardRef } from "react"
 
 export const StatusCriticalIcon = (props: HTMLAttributes<HTMLOrSVGElement>): React.JSX.Element =>
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="23" height="25" viewBox="0 0 23 25" fill="none">
@@ -11,6 +11,7 @@ export const StatusCriticalIcon = (props: HTMLAttributes<HTMLOrSVGElement>): Rea
       </clipPath>
     </defs>
   </svg>
+
 
 export const StatusOnlineIcon = (props: HTMLAttributes<HTMLOrSVGElement>): React.JSX.Element => 
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="23" height="25" viewBox="0 0 23 25" fill="none">
@@ -44,3 +45,7 @@ export const PingIcon = (props: HTMLAttributes<HTMLOrSVGElement>): React.JSX.Ele
 <svg {...props} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
   <path d="M5.40744 10.9359C6.09507 10.2483 7.02768 9.86204 8.00011 9.86204C8.97254 9.86204 9.90515 10.2483 10.5928 10.9359M8.00011 13.3333H8.00678M3.28678 8.61926C5.88944 6.01592 10.1108 6.01592 12.7141 8.61926M0.929443 6.26192C4.83411 2.35726 11.1661 2.35726 15.0714 6.26192" stroke="#A4A4A4" strokeWidth="1.43351" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
+
+
+export const CriticalStickyIcon = (props: HTMLAttributes<HTMLOrSVGElement>) => 
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><path fill="none" stroke="#e55050" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01"/></svg>

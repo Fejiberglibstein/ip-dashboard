@@ -131,8 +131,35 @@ tr:nth-child(odd) {
     /* border: 3px solid var(--scrollbarBG); */
   }
 
-  .sticky-offline {
+
+
+  /* ==========[ CSS for the moving icons ]========== */
+
+#icon-container {
+    height: 0px;
+    width: 0px;
     position: relative;
-    left: -40px;
-    transform: translateY(50%);
-  }
+}
+
+.sticky-offline {
+    position: absolute;
+    stroke-width: 10px;
+    height: 40px;
+}
+
+.sticky-offline::before {
+    position: absolute;
+    content: "";
+    background-color: #27282e;
+    width: 20px;
+    height: 30px;
+    z-index: -1;
+    border-radius: 8px;
+    top: 5px;
+    left: 10px;
+
+}
+
+.sticky-offline path {
+}
+

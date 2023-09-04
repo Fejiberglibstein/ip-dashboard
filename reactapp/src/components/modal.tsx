@@ -4,31 +4,72 @@ import "./modal.css";
 import { IP, PopupModalProps } from "../types";
 import { PingButton, Timestamp } from "./components"
 import { getIPStatus } from "../status-colors";
-import { CriticalIcon, StatusCriticalIcon } from "../assets/icons";
+import { CriticalStickyIcon } from "../assets/icons";
 export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: PopupModalProps): React.JSX.Element => {
-    let criticalMachineLookup = IPs?.filter((IP) => IP.checkThis)    // List of the critical machines
-    const criticalMachinesRef = useRef<Map<number, HTMLTableRowElement> | null>(null)    // List of all table elements that are critical    
 
-    function getCriticalMachines() {
-        if (!criticalMachinesRef.current) {
-            // Initialize the Map on first usage.
-            criticalMachinesRef.current = new Map();
-        }
-          return criticalMachinesRef.current;
-    }
-
-    useEffect(() => {
-        console.log("dkdk", criticalMachinesRef)
-    }, [IPs])
+	// List of the critical machines
+    let criticalMachineLookup = IPs?.filter((IP) => IP.checkThis)
+	// List of all table elements that are critical    
+    const criticalIconRefs = useRef<Array<HTMLDivElement>>(Array(0))
+    const criticalRowRefs =  useRef<Array<HTMLTableRowElement>>(Array(0))
+	const modalContentRef =  useRef<HTMLDivElement | null>(null)
 
     if (!enabled) {
+		criticalIconRefs.current = []
+		criticalRowRefs.current = []
         return (
             <div className={`modal-background disabled`}>
                 <div className={`popup-modal-content disabled`}></div>
             </div>
         )
     }
-    // console.log(criticalMachineElements)
+
+	function handleScroll() {
+		if (modalContentRef.current) {
+			const iconHeight = 35;
+			const scrollMargin = 10;
+			const scrollTop = modalContentRef.current.scrollTop + scrollMargin;
+			const scrollBottom = modalContentRef.current.scrollTop + modalContentRef.current.clientHeight - scrollMargin - 65;
+			
+			// Cache the amount of icons that are offscreen
+			let iconsAbove = 0;
+			let iconsBelow = 0;
+			const iconsTotal = criticalRowRefs.current.length;
+			for(const ref of criticalRowRefs.current) {
+				const refYPosition = ref.offsetTop - (iconHeight / 3);
+				if (!(refYPosition >= scrollTop)) { // Icon is above Viewport
+					iconsAbove ++;
+
+				} else if (!(refYPosition <= scrollBottom)) { // Icon is underneath Viewport
+					iconsBelow ++;
+
+				}
+			}
+
+			for(let i in criticalRowRefs.current) {
+				const icon = criticalIconRefs.current[i];
+				let iconData : {top: number, opacity: number, left: number} = {top: 0, opacity: 0, left: 0}
+				const ref = criticalRowRefs.current[i]
+				const refPosition = ref.offsetTop - (iconHeight / 3 )
+				
+				let shift = 0;
+				if (!(refPosition >= scrollTop)) { // Icon is above Viewport
+					iconData.top = scrollTop
+					iconData.left = (iconsAbove - 1 - Number(i)) * -8;		
+					
+
+				} else if (!(refPosition <= scrollBottom)) { // Icon is underneath Viewport
+					iconData.top = scrollBottom
+					iconData.left = (Number(i) - (iconsTotal - iconsBelow)) * -8;
+
+				} else { // Icon is inside viewport
+					iconData.top = refPosition
+				}
+
+				icon.setAttribute('style', `top: ${iconData.top}px; left: ${-50 + iconData.left - shift}px`)	
+			}
+		}
+	}
 
     function compareIPAddresses(a, b) {
         const numA = Number(
@@ -43,17 +84,24 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
         );
         return numA - numB;
     }
-
-
-   
     IPs?.sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress));
 
     return (
         <div className={`modal-background`} onClick={() => setPopupSiteName(null)}>
-            <div className={`popup-modal-content`} onClick={(e) => e.stopPropagation()}>
-				{new Array(getCriticalMachines()?.keys()).map((node) =>
-					<StatusCriticalIcon className="sticky-offline"/>
-				)}
+            <div
+				className={`popup-modal-content`}
+				onClick={(e) => e.stopPropagation()}
+				onScroll={handleScroll}
+				onTransitionEnd={handleScroll}
+				ref={modalContentRef}
+			>
+				<div id="icon-container">
+					{criticalMachineLookup?.map((_, i) => // Create elements for each critical machine
+						<div ref={(el) => (el) && criticalIconRefs.current.push(el)} className="sticky-offline">
+							<CriticalStickyIcon/>
+						</div>
+					)}
+				</div>
                 <span className="close" onClick={() => setPopupSiteName(null)}>&times;</span>
                 <table>
                     <thead>
@@ -67,18 +115,11 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
                     </thead>
                     <tbody> 
                         {IPs.map((IP, i) => 
-                            <tr 
-                                ref={(node) => {
-									const map = getCriticalMachines();
-									if (!criticalMachineLookup) return null
-                                    if (getIPStatus(IP).status == "critical" && node) {
-                                        map.set(criticalMachineLookup.indexOf(IP), node)
-                                    }
-									else {
-										map.delete(criticalMachineLookup.indexOf(IP))
-									}
-                                    return null
-                                }}
+                            <tr    // Create Reference for all the machines that are critical
+                                ref={(el) => (criticalMachineLookup && el && getIPStatus(IP).status == "critical")
+									? criticalRowRefs.current.push(el)
+									: null
+								}
                                 key={i} style={{"--status-color": getIPStatus(IP).color} as React.CSSProperties}
                             >
                                 <td>{IP.ipAddress}</td>
