@@ -140,7 +140,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
 								}
                                 key={i} style={{"--status-color": getIPStatus(IP).color} as React.CSSProperties}
                             >
-                                <td>IP Address</td>
+                                <td>{IP.ipAddress}</td>
                                 <td>{IP.assetNumber}</td>
                                 <td>{IP.machineName}</td>
                                 <td><Timestamp style={{fontSize: "14px"}} time={IP.lastPingTime !== undefined ? IP.lastPingTime : new Date(0)}/></td>
