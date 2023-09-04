@@ -6,17 +6,18 @@ import { PingButton, Timestamp } from "./components"
 import { getIPStatus } from "../status-colors";
 import { CriticalStickyIcon } from "../assets/icons";
 export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: PopupModalProps): React.JSX.Element => {
-
+	
 	// List of the critical machines
     let criticalMachineLookup = IPs?.filter((IP) => IP.checkThis)
 	// List of all table elements that are critical    
     const criticalIconRefs = useRef<Array<HTMLDivElement>>(Array(0))
     const criticalRowRefs =  useRef<Array<HTMLTableRowElement>>(Array(0))
 	const modalContentRef =  useRef<HTMLDivElement | null>(null)
+	criticalIconRefs.current = []
+	criticalRowRefs.current = []
 
     if (!enabled) {
-		criticalIconRefs.current = []
-		criticalRowRefs.current = []
+		
         return (
             <div className={`modal-background disabled`}>
                 <div className={`popup-modal-content disabled`}></div>
@@ -36,7 +37,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
 			let iconsBelow = 0;
 			const iconsTotal = criticalRowRefs.current.length;
 			for(const ref of criticalRowRefs.current) {
-				const refYPosition = ref.offsetTop - (iconHeight / 3);
+				const refYPosition = ref.offsetTop - (iconHeight / 2);
 				if (!(refYPosition >= scrollTop)) { // Icon is above Viewport
 					iconsAbove ++;
 
@@ -50,22 +51,39 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
 				const icon = criticalIconRefs.current[i];
 				let iconData : {top: number, opacity: number, left: number} = {top: 0, opacity: 0, left: 0}
 				const ref = criticalRowRefs.current[i]
-				const refPosition = ref.offsetTop - (iconHeight / 3 )
+				const refPosition = ref.offsetTop - (iconHeight / 2 )
 				
 				let shift = 0;
-				if (!(refPosition >= scrollTop)) { // Icon is above Viewport
+				if (!(refPosition > scrollTop)) { // Icon is above Viewport
 					iconData.top = scrollTop
-					iconData.left = (iconsAbove - 1 - Number(i)) * -8;		
+					iconData.left = (iconsAbove - 1 - Number(i)) * -8;
+
+					// Check the distance from the next alert icon to scrollTop
+					if (iconsAbove < iconsTotal) {
+						const closestRowPosition = criticalRowRefs.current[iconsAbove].offsetTop - (iconHeight / 2);
+						shift = Math.abs(scrollTop - closestRowPosition)
+						shift = (shift/4 < 8) ? 8-shift/4 : 0			
+
+					}
 					
 
-				} else if (!(refPosition <= scrollBottom)) { // Icon is underneath Viewport
+				} else if (!(refPosition < scrollBottom)) { // Icon is underneath Viewport
 					iconData.top = scrollBottom
 					iconData.left = (Number(i) - (iconsTotal - iconsBelow)) * -8;
+
+					// Check the distance from the next alert icon to scrollBottom
+					if (iconsTotal - iconsBelow > 0) {
+						const closestRowPosition = criticalRowRefs.current[iconsTotal - iconsBelow - 1].offsetTop - (iconHeight / 2);
+						shift = Math.abs(scrollBottom - closestRowPosition)
+						console.log(shift)
+						shift = (shift/4 < 8) ? (8-shift/4) : 0			
+
+					}
 
 				} else { // Icon is inside viewport
 					iconData.top = refPosition
 				}
-
+				icon.hidden = false
 				icon.setAttribute('style', `top: ${iconData.top}px; left: ${-50 + iconData.left - shift}px`)	
 			}
 		}
@@ -97,7 +115,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
 			>
 				<div id="icon-container">
 					{criticalMachineLookup?.map((_, i) => // Create elements for each critical machine
-						<div ref={(el) => (el) && criticalIconRefs.current.push(el)} className="sticky-offline">
+						<div hidden={true} ref={(el) => (el) && criticalIconRefs.current.push(el)} className="sticky-offline">
 							<CriticalStickyIcon/>
 						</div>
 					)}
@@ -122,7 +140,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
 								}
                                 key={i} style={{"--status-color": getIPStatus(IP).color} as React.CSSProperties}
                             >
-                                <td>{IP.ipAddress}</td>
+                                <td>IP Address</td>
                                 <td>{IP.assetNumber}</td>
                                 <td>{IP.machineName}</td>
                                 <td><Timestamp style={{fontSize: "14px"}} time={IP.lastPingTime !== undefined ? IP.lastPingTime : new Date(0)}/></td>
