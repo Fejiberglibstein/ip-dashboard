@@ -11,27 +11,18 @@ using IPClass;
 namespace IpAddressTracker {
 
     public class IPAddressTracker {
-
-        public static string timeFormat = @"MM/dd hh:mm";
         public static string csvLocation = @"../site_csvs/";
 
-        public static Dictionary<string, List<IP>> siteList = new Dictionary<string, List<IP>>() {
-            {"east_aurora", new List<IP>()},
-            {"baguio", new List<IP>()}
-        };
+        public static Dictionary<string, List<IP>> siteList = new Dictionary<string, List<IP>>();
 
         public static void MainMethod() {
-            foreach(var site in siteList) {
-                InitialCsvRead(site.Key);
-                UpdateSite(site.Key);
-            }
-        }
+            string[] files = Directory.GetFiles(csvLocation, ".csv", SearchOption.TopDirectoryOnly);
 
-        public static void CsvWrite(string site) {
-            using (var writer = new StreamWriter(@"C:\Users\drewt\OneDrive\Desktop\IPAddresses (copy).csv"))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-            {
-                csv.WriteRecords(siteList[site]);
+            foreach(string file in files) {
+                string path = Path.GetFileNameWithoutExtension(file);
+                InitialCsvRead(path);
+                UpdateSite(path);
+                WriteToCsv(path);
             }
         }
 
@@ -69,6 +60,14 @@ namespace IpAddressTracker {
             return machine;
         }
 
+        public static void WriteToCsv(string site) {
+            using (var writer = new StreamWriter(@"C:\Users\drewt\OneDrive\Desktop\IPAddresses (copy).csv"))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteRecords(siteList[site]);
+            }
+        }
+
         public static void InitialCsvRead(string site) {
             using (StreamReader reader = new StreamReader(csvLocation + site + ".csv"))
             using (CsvReader csv = new CsvReader(reader, CultureInfo.InvariantCulture)) {
@@ -77,7 +76,6 @@ namespace IpAddressTracker {
                 while(csv.Read()) {
                     IPClass.IP address = new IPClass.IP { 
                         IpAddress = csv.GetField<string>("IpAddress")!,
-                        Site = csv.GetField<string>("Site")!,
                         MachineName = csv.GetField<string>("MachineName")!
                     };
                     if (csv.GetField<string>("AssetNumber") != "") { address.AssetNumber = csv.GetField<string>("AssetNumber"); }
@@ -86,7 +84,7 @@ namespace IpAddressTracker {
                     if (csv.GetField<string>("CurrentTime") != "") { address.CurrentTime = csv.GetField<DateTime>("CurrentTime"); }
                     if (csv.GetField<string>("TimeSinceLastPing") != "") { address.TimeSinceLastPing = csv.GetField<double>("TimeSinceLastPing"); }
                     if (csv.GetField<string>("CheckThis") != "") { address.CheckThis = csv.GetField<bool>("CheckThis"); }
-                    siteList[csv.GetField<string>("Site")!].Add(address);
+                    siteList[site].Add(address);
                 }
             }
         }

@@ -3,7 +3,6 @@ import { HTMLAttributes } from "react"
 //Same class as the one in IP.cs
 export interface IP {
     ipAddress: string,
-    site: string,
     assetNumber: string,
     machineName: string,
     isOnline?: boolean,
