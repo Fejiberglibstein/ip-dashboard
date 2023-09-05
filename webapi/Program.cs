@@ -22,7 +22,9 @@ app.UseStaticFiles();
 
 app.UseCors(MyAllowSpecificOrigins);
 
-IPAddressTracker.MainMethod();
+app.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStarted.Register(IPAddressTracker.MainMethod);
+app.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStopping.Register(IPAddressTracker.OnShutdown);
+app.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStopped.Register(IPAddressTracker.OnShutdown);
 
 app.MapGet("/api/get_sites", () => {
     return IPAddressTracker.siteList;

@@ -66,3 +66,22 @@ c:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debu
 c:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\ref\webapi.dll
 C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\CsvHelper.dll
 C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\CsvHelper.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\Hangfire.AspNetCore.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\Hangfire.Core.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\Hangfire.NetCore.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\Hangfire.SqlServer.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\ca\Hangfire.Core.resources.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\de\Hangfire.Core.resources.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\es\Hangfire.Core.resources.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\fa\Hangfire.Core.resources.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\fr\Hangfire.Core.resources.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\nb\Hangfire.Core.resources.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\nl\Hangfire.Core.resources.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\pt-BR\Hangfire.Core.resources.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\pt-PT\Hangfire.Core.resources.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\pt\Hangfire.Core.resources.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\sv\Hangfire.Core.resources.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\tr-TR\Hangfire.Core.resources.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\zh-TW\Hangfire.Core.resources.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\zh\Hangfire.Core.resources.dll

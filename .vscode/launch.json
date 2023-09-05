@@ -45,7 +45,7 @@
     "compounds": [
         {
           "name": "Server/Client",
-          "configurations": ["build server", "server", "client"],
+          "configurations": ["build server", "client", "server"],
           "stopAll": true
         }
     ]

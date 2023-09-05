@@ -53,7 +53,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
                                 <td>{IP.machineName}</td>
                                 <td><Timestamp style={{fontSize: "14px"}} time={IP.lastPingTime !== undefined ? IP.lastPingTime : new Date(0)}/></td>
                                 <td><PingButton
-                                    update={(response) => setIP(IP.site, response as IP)}
+                                    update={(response) => setIP(siteName, response as IP)}
                                     apiPath={`ping_machine/${siteName}/${IP.ipAddress}`}
                                 >Ping IP</PingButton></td>
                             </tr>

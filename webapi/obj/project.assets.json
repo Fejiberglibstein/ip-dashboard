@@ -512,11 +512,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj",
+      "projectUniqueName": "c:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj",
       "projectName": "webapi",
-      "projectPath": "C:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj",
+      "projectPath": "c:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj",
       "packagesPath": "C:\\Users\\drewt\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\obj\\",
+      "outputPath": "c:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\drewt\\AppData\\Roaming\\NuGet\\NuGet.Config"

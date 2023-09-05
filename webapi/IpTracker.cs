@@ -16,10 +16,11 @@ namespace IpAddressTracker {
         public static Dictionary<string, List<IP>> siteList = new Dictionary<string, List<IP>>();
 
         public static void MainMethod() {
-            string[] files = Directory.GetFiles(csvLocation, ".csv", SearchOption.TopDirectoryOnly);
+            string[] files = Directory.GetFiles(csvLocation, "*.csv", SearchOption.TopDirectoryOnly);
 
             foreach(string file in files) {
                 string path = Path.GetFileNameWithoutExtension(file);
+                siteList[path] = new List<IP>();
                 InitialCsvRead(path);
                 UpdateSite(path);
                 WriteToCsv(path);
@@ -61,10 +62,16 @@ namespace IpAddressTracker {
         }
 
         public static void WriteToCsv(string site) {
-            using (var writer = new StreamWriter(@"C:\Users\drewt\OneDrive\Desktop\IPAddresses (copy).csv"))
+            using (var writer = new StreamWriter(csvLocation + site + ".csv"))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 csv.WriteRecords(siteList[site]);
+            }
+        }
+
+        public static void OnShutdown() {
+            foreach(string site in siteList.Keys) {
+                WriteToCsv(site);
             }
         }
 
