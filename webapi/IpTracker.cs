@@ -37,7 +37,13 @@ namespace IpAddressTracker {
         public static IP UpdateMachine(string site, string ip) {
             Ping ping = new Ping();
             DateTime currentTime = DateTime.Now;
-            PingReply reply = ping.Send(ip, 2000);
+            PingReply reply;
+            try {
+                reply = ping.Send(ip, 2000);
+            }
+            catch (System.Net.NetworkInformation.PingException) {
+                return new IP {IpAddress = "null", MachineName = "null"};
+            }
             IP machine = siteList[site].Find(c => c.IpAddress == ip)!; // ?? throw new ArgumentException();
             machine.CurrentTime = currentTime;
             machine.IsOnline = reply.Status == IPStatus.Success;
@@ -73,6 +79,12 @@ namespace IpAddressTracker {
             foreach(string site in siteList.Keys) {
                 WriteToCsv(site);
             }
+        }
+
+        public static List<IP> AddMachine(string site, IP retval) {
+            siteList[site].Add(retval);
+            UpdateMachine(site, retval.IpAddress);
+            return siteList[site];
         }
 
         public static void InitialCsvRead(string site) {

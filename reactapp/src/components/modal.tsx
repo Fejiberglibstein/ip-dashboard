@@ -4,7 +4,9 @@ import "./modal.css";
 import { IP, PopupModalProps } from "../types";
 import { PingButton, Timestamp } from "./components"
 import { getIPStatus } from "../status-colors";
-export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: PopupModalProps): React.JSX.Element => {
+export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, setSite}: PopupModalProps): React.JSX.Element => {
+    const [form, setForm] = React.useState<IP | null>(null);
+    
     if (!enabled) {
         return (
             <div className={`modal-background disabled`}>
@@ -27,7 +29,25 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
         return numA - numB;
     }
 
+    const insertMachine = async (event) => {
+        event.preventDefault()
+        try {
+            const response = await fetch(`api/add_machine/${siteName}`, {
+                body: JSON.stringify(form),
+                method: "POST",
+                headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+            })
+            const result = await response.json()
+            setSite(siteName, result)
+        }
+        catch {
+            alert("Insert has failed")
+        }
+    }
 
+    const updateForm = (event) => {
+        setForm({...form, [event.target.name]: event.target.value} as IP)
+    }
    
     IPs?.sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress));
 
@@ -35,6 +55,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
         <div className={`modal-background`} onClick={() => setPopupSiteName(null)}>
             <div className={`popup-modal-content`} onClick={(e) => e.stopPropagation()}>
                 <span className="close" onClick={() => setPopupSiteName(null)}>&times;</span>
+                <form method="GET" id="my_form" onSubmit={insertMachine}/>
                 <table>
                     <thead>
                         <tr>
@@ -45,7 +66,13 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
                             <th>Ping IP</th>
                         </tr>
                     </thead>
-                    <tbody> 
+                    <tbody>
+                        <tr>
+                            <td> <input type="text" name="ipAddress" form="my_form" onChange={e => updateForm(e)} required/> </td>
+                            <td> <input type="text" name="assetNumber" form="my_form" onChange={e => updateForm(e)} required/> </td>
+                            <td> <input type="text" name="machineName" form="my_form" onChange={e => updateForm(e)} required/> </td>
+                            <td colSpan={2}> <input type="submit" form="my_form" value={"Insert New Machine"}/> </td>
+                        </tr>
                         {IPs.map((IP, i) => 
                             <tr key={i} style={{"--status-color": getIPStatus(IP).color} as React.CSSProperties}>
                                 <td>{IP.ipAddress}</td>

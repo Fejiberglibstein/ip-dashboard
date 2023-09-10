@@ -1,5 +1,6 @@
 using IPClass;
 using IpAddressTracker;
+using Microsoft.AspNetCore.Mvc;
 
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -49,6 +50,11 @@ app.MapGet("/api/ping_site/{site}", (string site) => {
 app.MapGet("/api/ping_machine/{site}/{ip}", (string site, string ip) => {
     IP machine = IPAddressTracker.UpdateMachine(site, ip);
     return machine;
+});
+
+app.MapPost("/api/add_machine/{site}", (string site, [FromBody] IP request) => {
+    List<IP> response = IPAddressTracker.AddMachine(site, request);
+    return response;
 });
 
 app.Run();

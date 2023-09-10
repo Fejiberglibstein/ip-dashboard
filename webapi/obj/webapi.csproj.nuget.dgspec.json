@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj": {}
+    "C:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj": {}
   },
   "projects": {
-    "c:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj": {
+    "C:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj",
+        "projectUniqueName": "C:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj",
         "projectName": "webapi",
-        "projectPath": "c:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj",
+        "projectPath": "C:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj",
         "packagesPath": "C:\\Users\\drewt\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\obj\\",
+        "outputPath": "C:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\drewt\\AppData\\Roaming\\NuGet\\NuGet.Config"

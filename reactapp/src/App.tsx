@@ -24,6 +24,7 @@ function App() {
     // returning an object because of the braces and ..sites copies the entire array and [siteName] is setting the key to be IPs
     // setSites(sites[siteName] = IP) but cant do this in react because it will think the value is the same even though we are changing the IP content
     const setSite = (siteName: string, IPs: Array<IP>) => {
+        console.log(IPs)
         setSites({
             ...sites,
             [siteName]: IPs
@@ -60,7 +61,7 @@ function App() {
             }
         </div>
         {(popupSiteName !== null)
-            ? <PopupModal setIP={setIP} enabled={true} siteName={popupSiteName} IPs={sites[popupSiteName]} setPopupSiteName={setPopupSiteName}/>
+            ? <PopupModal setIP={setIP} enabled={true} siteName={popupSiteName} IPs={sites[popupSiteName]} setPopupSiteName={setPopupSiteName} setSite={setSite} />
             : <PopupModal enabled={false}/>
         }
         </>

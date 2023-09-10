@@ -58,13 +58,15 @@ export type PopupModalProps =
         siteName: string, 
         IPs: Array<IP>,
         setPopupSiteName: React.Dispatch<React.SetStateAction<string | null>>,
-        setIP: (siteName: string, IP: IP) => void
+        setIP: (siteName: string, IP: IP) => void,
+        setSite: Function
     } | {
         enabled: false
         siteName?: null,
         IPs?: null,
         setPopupSiteName?: null
         setIP?: null
+        setSite?: Function
     }
 
 export interface TimestampProps extends HTMLAttributes<HTMLElement> {
