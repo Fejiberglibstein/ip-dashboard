@@ -31,11 +31,11 @@
 
 /* Modal Content */
 .popup-modal-content {
-  background-color: #41454daa;
+  background-color: #4f535aaa;
   margin: auto;
-  padding: 20px 100px;
+  padding: 20px 120px;
   height: 80%;
-  width: 60%;
+  width: 50%;
   border-radius: 12px;
   position: relative;
   overflow: auto;
@@ -70,7 +70,8 @@ table {
     font-family: IBM Plex Mono, Space Grotesk;
     border-collapse: collapse;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 20px;
+    padding-left: 10px;
 }
   
 th, td {
@@ -103,6 +104,7 @@ tbody tr::before {
 thead tr::before {
     content: "";
     position: absolute;
+    overflow: hidden;
 }
 
 tr:nth-child(even) {
@@ -149,12 +151,42 @@ tr:nth-child(odd) {
     width: 6px;
 }
 
-.popup-modal-content::-webkit-scrollbar-track {
-    /* background: #27292e; */
-}
 
-.popup-modal-content::-webkit-scrollbar-thumb {
+
+  .popup-modal-content::-webkit-scrollbar-thumb {
     background-color: #aaaaaa;
     border-radius: 6px;
     /* border: 3px solid var(--scrollbarBG); */
+  }
+
+
+
+  /* ==========[ CSS for the moving icons ]========== */
+
+#icon-container {
+    height: 0px;
+    width: 0px;
+    position: relative;
 }
+
+.sticky-offline {
+    position: absolute;
+    stroke-width: 10px;
+    height: 40px;
+    transition: 0s;
+}
+
+.sticky-offline::before {
+    position: absolute;
+    content: "";
+    background-color: #31333a;
+    width: 20px;
+    height: 30px;
+    z-index: -1;
+    border-radius: 8px;
+    top: 5px;
+    left: 10px;
+
+}
+
+

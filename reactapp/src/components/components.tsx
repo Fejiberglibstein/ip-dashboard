@@ -15,20 +15,22 @@ export const Timestamp = (props: TimestampProps ) => {
 
 export const BufferingIcon = () => {
     return (
-        <span className="buffering-icon"></span>
+        <div className="buffering-icon"></div>
     );
 }
 
 export function PingButton<T extends IP | string>(props: PingButtonProps<T>) {
     // clicked is going to equal one of the states that is defined in setClicked (it is a getter and setter in the [])
+    const { update, apiPath } = props
+
     const [clicked, setClicked] = React.useState<boolean>(false)
     const pingSite = async (e) => {
         e.stopPropagation()
         setClicked(true)
         try {
-            const response = await fetch(`api/${props.apiPath}`)
+            const response = await fetch(`api/${apiPath}`)
             const result = await response.json()
-            props.update(result)
+            update(result)
         }
         finally {
             setClicked(false)
