@@ -4,7 +4,7 @@ import "./modal.css";
 import { IP, PopupModalProps } from "../types";
 import { PingButton, Timestamp, Tooltip } from "./components"
 import { getIPStatus } from "../status-colors";
-import { CriticalStickyIcon } from "../assets/icons";
+import { CriticalStickyIcon, OptionsIcon } from "../assets/icons";
 export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, setSite}: PopupModalProps): React.JSX.Element => {
 	
 	// List of the critical machines
@@ -139,11 +139,25 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
         }
     }
 
+    const removeMachine = async (event, i: number) => {
+        try {
+            const response = await fetch(`api/remove_machine/${siteName}/${i}`, {
+                method: "DELETE",
+                headers: {'Accept': 'application/json', 'Content-Type': 'text/plain'}
+            })
+            const result = await response.json()
+            setSite(siteName, result)
+        }
+        catch {
+            alert("Remove has failed")
+        }
+    }
+
     const updateForm = (event) => {
         setForm({...form, [event.target.name]: event.target.value} as IP)
     }
    
-    IPs?.sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress));
+    
 
     return (
         <div className={`modal-background`} onClick={() => setPopupSiteName(null)}>
@@ -171,16 +185,17 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                             <th>Machine Name</th>
                             <th>Time Since Last Ping</th>
                             <th>Ping IP</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="machine-form">
+                        {/* <tr className="machine-form">
                             <td> <input type="text" name="ipAddress" form="my_form" onChange={e => updateForm(e)} required/> </td>
                             <td> <input type="text" name="assetNumber" form="my_form" onChange={e => updateForm(e)} required/> </td>
                             <td> <input type="text" name="machineName" form="my_form" onChange={e => updateForm(e)} required/> </td>
-                            <td colSpan={2}> <input type="submit" form="my_form" value={"Insert New Machine"}/> </td>
-                        </tr>
-                        {IPs.map((IP, i) => 
+                            <td colSpan={3}> <input type="submit" form="my_form" value={"Insert New Machine"}/> </td>
+                        </tr> */}
+                        {[...IPs].sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress)).map((IP, i) => 
                             <tr    // Create Reference for all the machines that are critical
                                 ref={(el) => (criticalMachineLookup && el && getIPStatus(IP).status == "critical")
 									? criticalRowRefs.current.push(el)
@@ -201,6 +216,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                                     update={(response) => setIP(siteName, response as IP)}
                                     apiPath={`ping_machine/${siteName}/${IP.ipAddress}`}
                                 >Ping IP</PingButton></td>
+                                <td><button className="options-button" onClick={(e) => removeMachine(e, IPs.indexOf(IP))}><OptionsIcon/></button></td>
                             </tr>
                         )}
                     </tbody>

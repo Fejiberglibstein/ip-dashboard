@@ -115,9 +115,6 @@
   position: relative;
 }
 
-.ping-button:focus {
-  outline: 0px;
-}
 
 .ping-button:hover {
   background-color: #235077;

@@ -57,4 +57,9 @@ app.MapPost("/api/add_machine/{site}", (string site, [FromBody] IP request) => {
     return response;
 });
 
+app.MapDelete("/api/remove_machine/{site}/{index}", (string site, int index) => {
+    List<IP> response = IPAddressTracker.RemoveMachine(site, index);
+    return response;
+});
+
 app.Run();

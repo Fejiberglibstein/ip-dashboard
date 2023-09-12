@@ -28,7 +28,6 @@
     visibility: hidden;
 }
 
-
 /* Modal Content */
 .popup-modal-content {
   background-color: #4f535aaa;
@@ -81,7 +80,6 @@ th, td {
     height: 30px;
     max-width: 180px;
     text-overflow: ellipsis;
-    overflow-x: clip;
 }
 
 tr {
@@ -186,7 +184,18 @@ tr:nth-child(odd) {
     border-radius: 8px;
     top: 5px;
     left: 10px;
-
 }
 
+.options-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #5f626670;
+}
 
+.options-button:hover {
+    background-color: #7a7d8170;
+}

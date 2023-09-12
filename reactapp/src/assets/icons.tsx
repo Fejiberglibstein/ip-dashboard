@@ -49,3 +49,12 @@ export const PingIcon = (props: HTMLAttributes<HTMLOrSVGElement>): React.JSX.Ele
 
 export const CriticalStickyIcon = (props: HTMLAttributes<HTMLOrSVGElement>) => 
 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><path fill="none" stroke="#e55050" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01"/></svg>
+
+export const OptionsIcon = (props: HTMLAttributes<HTMLOrSVGElement>) =>
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><g id="feElipsisV0" fill="none" fill-rule="evenodd" stroke="none" stroke-width="1"><g id="feElipsisV1" fill="currentColor"><path id="feElipsisV2" d="M12 20a2 2 0 1 1 0-4a2 2 0 0 1 0 4Zm0-6a2 2 0 1 1 0-4a2 2 0 0 1 0 4Zm0-6a2 2 0 1 1 0-4a2 2 0 0 1 0 4Z"/></g></g></svg>
+
+export const RemoveIcon = (props: HTMLAttributes<HTMLOrSVGElement>) =>
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></svg>
+
+export const ChangeIcon = (props: HTMLAttributes<HTMLOrSVGElement>) =>
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20h4L18.5 9.5a2.828 2.828 0 1 0-4-4L4 16v4m9.5-13.5l4 4"/></svg>

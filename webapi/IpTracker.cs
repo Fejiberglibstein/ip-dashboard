@@ -93,6 +93,11 @@ namespace IpAddressTracker {
             return siteList[site];
         }
 
+        public static List<IP> RemoveMachine(string site, int i) {
+            siteList[site].RemoveAt(i);
+            return siteList[site];
+        }
+
         public static void InitialCsvRead(string site) {
             using (StreamReader reader = new StreamReader(csvLocation + site + ".csv"))
             using (CsvReader csv = new CsvReader(reader, CultureInfo.InvariantCulture)) {
