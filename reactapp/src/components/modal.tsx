@@ -2,7 +2,7 @@ import React from "react";
 
 import "./modal.css";
 import { IP, PopupModalProps } from "../types";
-import { PingButton, Timestamp } from "./components"
+import { PingButton, Timestamp, Tooltip } from "./components"
 import { getIPStatus } from "../status-colors";
 export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, setSite}: PopupModalProps): React.JSX.Element => {
     const [form, setForm] = React.useState<IP | null>(null);
@@ -55,7 +55,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
         <div className={`modal-background`} onClick={() => setPopupSiteName(null)}>
             <div className={`popup-modal-content`} onClick={(e) => e.stopPropagation()}>
                 <span className="close" onClick={() => setPopupSiteName(null)}>&times;</span>
-                <form method="GET" id="my_form" onSubmit={insertMachine}/>
+                <form method="GET" id="my_form" onSubmit={insertMachine} autoComplete="off"/>
                 <table>
                     <thead>
                         <tr>
@@ -67,7 +67,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr className="machine-form">
                             <td> <input type="text" name="ipAddress" form="my_form" onChange={e => updateForm(e)} required/> </td>
                             <td> <input type="text" name="assetNumber" form="my_form" onChange={e => updateForm(e)} required/> </td>
                             <td> <input type="text" name="machineName" form="my_form" onChange={e => updateForm(e)} required/> </td>
@@ -77,7 +77,12 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                             <tr key={i} style={{"--status-color": getIPStatus(IP).color} as React.CSSProperties}>
                                 <td>{IP.ipAddress}</td>
                                 <td>{IP.assetNumber}</td>
-                                <td>{IP.machineName}</td>
+                                <td>
+                                    <div style={{ maxWidth: "180px"}}>
+                                        <div style={{textOverflow: "ellipsis", overflowX: "clip"}}>{IP.machineName}</div>
+                                        <Tooltip>{IP.machineName}</Tooltip>
+                                    </div>
+                                </td>
                                 <td><Timestamp style={{fontSize: "14px"}} time={IP.lastPingTime !== undefined ? IP.lastPingTime : new Date(0)}/></td>
                                 <td><PingButton
                                     update={(response) => setIP(siteName, response as IP)}

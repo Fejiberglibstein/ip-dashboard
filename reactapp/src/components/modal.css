@@ -47,7 +47,6 @@
     transform: scale(0%); 
 }
 
-
 /* The Close Button */
 .close {
     color: #aaaaaa;
@@ -77,15 +76,17 @@ table {
 th, td {
     text-align: center;
     padding: 8px;
-    width: max-content;
+    width: min-content;
     height: 30px;
-
+    max-width: 180px;
+    text-overflow: ellipsis;
+    overflow-x: clip;
 }
-
 
 tr {
     position: relative;
     --status-color: #0fa355;
+    align-items: center;
 }
 
 tbody tr::before {
@@ -104,7 +105,6 @@ thead tr::before {
     position: absolute;
 }
 
-
 tr:nth-child(even) {
     background-color: #2e3139;
 }
@@ -113,18 +113,48 @@ tr:nth-child(odd) {
     background-color: #363a42;
 }
 
+.machine-form {
+  font-family: Space Grotesk;
+}
+
+.machine-form input {
+    font-family: inherit;
+}
+
+.machine-form input[type=text] {
+    width: min-content;
+}
+
+.machine-form input[type=submit] {
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #184268;
+    color: #A4A4A4;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border-width: 0px;
+    opacity: 1;
+    transition: 200ms;
+    width: fit-content;
+}
+
+.machine-form input[type=submit]:hover {
+    cursor: pointer;
+    background-color: #235077;
+}
+
 .popup-modal-content::-webkit-scrollbar {
     width: 6px;
 }
 
-
-
-  .popup-modal-content::-webkit-scrollbar-track {
+.popup-modal-content::-webkit-scrollbar-track {
     /* background: #27292e; */
-  }
+}
 
-  .popup-modal-content::-webkit-scrollbar-thumb {
+.popup-modal-content::-webkit-scrollbar-thumb {
     background-color: #aaaaaa;
     border-radius: 6px;
     /* border: 3px solid var(--scrollbarBG); */
-  }
+}

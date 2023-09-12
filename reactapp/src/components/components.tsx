@@ -7,8 +7,8 @@ import "./components.css"
 
 export const Timestamp = (props: TimestampProps ) => {
     return (
-        <div {...props} className="tooltip timestamp">{moment(props.time).fromNow()}
-            <span className="tooltiptext">{moment(props.time).format("dddd, MMMM D YYYY, h:mm A")}</span>
+        <div {...props} className="timestamp">{moment(props.time).fromNow()}
+            <Tooltip>{moment(props.time).format("dddd, MMMM D YYYY, h:mm A")}</Tooltip>
         </div>
     );
 }
@@ -43,4 +43,8 @@ export function PingButton<T extends IP | string>(props: PingButtonProps<T>) {
             {(!clicked) ? props.children : "Pinging"}
         </button>
     );
+}
+
+export const Tooltip = (props: React.BaseHTMLAttributes<HTMLSpanElement>) => {
+    return <div className="tooltiptext" {...props} >{props.children}</div>
 }

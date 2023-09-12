@@ -38,12 +38,14 @@ namespace IpAddressTracker {
             Ping ping = new Ping();
             DateTime currentTime = DateTime.Now;
             PingReply reply;
-            try {
-                reply = ping.Send(ip, 2000);
-            }
-            catch (System.Net.NetworkInformation.PingException) {
-                return new IP {IpAddress = "null", MachineName = "null"};
-            }
+            reply = ping.Send(ip, 2000);
+            // Don't think that I need the try catch anymore since I am checking if the IP is valid in AddMachine
+            // try {
+            //     reply = ping.Send(ip, 2000);
+            // }
+            // catch (PingException) {
+            //     return new IP {IpAddress = "null", MachineName = "null"};
+            // }
             IP machine = siteList[site].Find(c => c.IpAddress == ip)!; // ?? throw new ArgumentException();
             machine.CurrentTime = currentTime;
             machine.IsOnline = reply.Status == IPStatus.Success;
@@ -81,9 +83,13 @@ namespace IpAddressTracker {
             }
         }
 
+        // This function is called when adding a new machine from the site card table
+        // It checks to make sure that the IP address is valid to make sure there was not an error when entering the form on the table
         public static List<IP> AddMachine(string site, IP retval) {
-            siteList[site].Add(retval);
-            UpdateMachine(site, retval.IpAddress);
+            if (IPAddress.TryParse(retval.IpAddress, out _)) {
+                siteList[site].Add(retval);
+                UpdateMachine(site, retval.IpAddress);
+            }
             return siteList[site];
         }
 
