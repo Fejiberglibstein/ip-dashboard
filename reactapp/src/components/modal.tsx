@@ -4,13 +4,8 @@ import "./modal.css";
 import { IP, PopupModalProps } from "../types";
 import { PingButton, Timestamp, Tooltip } from "./components"
 import { getIPStatus } from "../status-colors";
-<<<<<<< HEAD
-export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, setSite}: PopupModalProps): React.JSX.Element => {
-    const [form, setForm] = React.useState<IP | null>(null);
-    
-=======
 import { CriticalStickyIcon } from "../assets/icons";
-export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: PopupModalProps): React.JSX.Element => {
+export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, setSite}: PopupModalProps): React.JSX.Element => {
 	
 	// List of the critical machines
     let criticalMachineLookup = IPs?.filter((IP) => IP.checkThis) 
@@ -20,7 +15,8 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
 	criticalIconRefs.current = []
 	criticalRowRefs.current = []
 
->>>>>>> scrolling-icons
+    const [form, setForm] = React.useState<IP | null>(null);
+    
     if (!enabled) {
         return (
             <div className={`modal-background disabled`}>
@@ -126,7 +122,6 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
         );
         return numA - numB;
     }
-<<<<<<< HEAD
 
     const insertMachine = async (event) => {
         event.preventDefault()
@@ -148,8 +143,6 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
         setForm({...form, [event.target.name]: event.target.value} as IP)
     }
    
-=======
->>>>>>> scrolling-icons
     IPs?.sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress));
 
     return (
@@ -216,4 +209,3 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP}: P
         </div>
     );
 }
-
