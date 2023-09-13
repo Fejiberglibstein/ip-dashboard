@@ -86,7 +86,17 @@ namespace IpAddressTracker {
         // This function is called when adding a new machine from the site card table
         // It checks to make sure that the IP address is valid to make sure there was not an error when entering the form on the table
         public static List<IP> AddMachine(string site, IP retval) {
-            if (IPAddress.TryParse(retval.IpAddress, out _)) {
+            // taken from online, way better than I could've done
+            var octets = retval.IpAddress.Split('.');
+            bool isValid = octets.Length == 4
+               && !octets.Any(
+                   x =>
+                   {
+                       int y;
+                       return Int32.TryParse(x, out y) && y > 255 || y < 1;
+                   });
+            
+            if (isValid && siteList[site].Find(c => retval.IpAddress == c.IpAddress) == null) {
                 siteList[site].Add(retval);
                 UpdateMachine(site, retval.IpAddress);
             }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import "./modal.css";
 import { IP, PopupModalProps } from "../types";
@@ -8,6 +8,7 @@ import { CriticalStickyIcon, OptionsIcon } from "../assets/icons";
 export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, setSite}: PopupModalProps): React.JSX.Element => {
 	
 	// List of the critical machines
+    const [menuIndex, setMenuIndex] = useState<number | null>(null)
     let criticalMachineLookup = IPs?.filter((IP) => IP.checkThis) 
     const criticalIconRefs = useRef<Array<HTMLDivElement>>(Array(0))        // List of all the icons on the side
     const criticalRowRefs =  useRef<Array<HTMLTableRowElement>>(Array(0))   // List of all table rows that are critical
@@ -139,20 +140,6 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
         }
     }
 
-    const removeMachine = async (event, i: number) => {
-        try {
-            const response = await fetch(`api/remove_machine/${siteName}/${i}`, {
-                method: "DELETE",
-                headers: {'Accept': 'application/json', 'Content-Type': 'text/plain'}
-            })
-            const result = await response.json()
-            setSite(siteName, result)
-        }
-        catch {
-            alert("Remove has failed")
-        }
-    }
-
     const updateForm = (event) => {
         setForm({...form, [event.target.name]: event.target.value} as IP)
     }
@@ -160,10 +147,10 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
     
 
     return (
-        <div className={`modal-background`} onClick={() => setPopupSiteName(null)}>
+        <div className={`modal-background`} onClick={() => { setPopupSiteName(null); setMenuIndex(null) }}>
             <div
 				className={`popup-modal-content`}
-				onClick={(e) => e.stopPropagation()}
+				onClick={(e) => {e.stopPropagation(); setMenuIndex(null)}}
 				onScroll={handleScroll}
 				onTransitionEnd={handleScroll}
 				ref={modalContentRef}
@@ -189,12 +176,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                         </tr>
                     </thead>
                     <tbody>
-                        {/* <tr className="machine-form">
-                            <td> <input type="text" name="ipAddress" form="my_form" onChange={e => updateForm(e)} required/> </td>
-                            <td> <input type="text" name="assetNumber" form="my_form" onChange={e => updateForm(e)} required/> </td>
-                            <td> <input type="text" name="machineName" form="my_form" onChange={e => updateForm(e)} required/> </td>
-                            <td colSpan={3}> <input type="submit" form="my_form" value={"Insert New Machine"}/> </td>
-                        </tr> */}
+                        <Form updateForm={updateForm}/>
                         {[...IPs].sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress)).map((IP, i) => 
                             <tr    // Create Reference for all the machines that are critical
                                 ref={(el) => (criticalMachineLookup && el && getIPStatus(IP).status == "critical")
@@ -216,7 +198,14 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                                     update={(response) => setIP(siteName, response as IP)}
                                     apiPath={`ping_machine/${siteName}/${IP.ipAddress}`}
                                 >Ping IP</PingButton></td>
-                                <td><button className="options-button" onClick={(e) => removeMachine(e, IPs.indexOf(IP))}><OptionsIcon/></button></td>
+                                <td>
+                                    <button className="options-button" onClick={e => { e.stopPropagation(); setMenuIndex(i)}}><OptionsIcon/></button>
+                                    {
+                                        (menuIndex == i)
+                                        ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite}></ContextMenu>
+                                        : <></>
+                                    }
+                                </td>
                             </tr>
                         )}
                     </tbody>
@@ -224,4 +213,39 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
             </div>
         </div>
     );
+}
+
+const Form = ({ updateForm }): React.JSX.Element => {
+    return (
+        <tr className="machine-form">
+            <td> <input type="text" name="ipAddress" form="my_form" onChange={e => updateForm(e)} required/> </td>
+            <td> <input type="text" name="assetNumber" form="my_form" onChange={e => updateForm(e)} required/> </td>
+            <td> <input type="text" name="machineName" form="my_form" onChange={e => updateForm(e)} required/> </td>
+            <td colSpan={3}> <input type="submit" form="my_form" value={"Insert New Machine"}/> </td>
+        </tr>
+    )
+}
+
+const ContextMenu = ({ siteName, setSite, indexIP }): React.JSX.Element => {
+    
+    const removeMachine = async (event, i: number) => {
+        try {
+            const response = await fetch(`api/remove_machine/${siteName}/${i}`, {
+                method: "DELETE",
+                headers: {'Accept': 'application/json', 'Content-Type': 'text/plain'}
+            })
+            const result = await response.json()
+            setSite(siteName, result)
+        }
+        catch {
+            alert("Remove has failed")
+        }
+    }
+
+    return (
+        <ul className="context-menu">
+            <li> <button onClick={(e) => removeMachine(e, indexIP)}>Remove</button> </li>
+            <li> <button>Change</button> </li>
+        </ul>
+    )
 }

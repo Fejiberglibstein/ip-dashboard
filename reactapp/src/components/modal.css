@@ -194,8 +194,30 @@ tr:nth-child(odd) {
     height: 26px;
     border-radius: 50%;
     background-color: #5f626670;
+    /* position: relative; */
 }
 
 .options-button:hover {
     background-color: #7a7d8170;
+}
+
+.context-menu {
+    background-color: #0fa355;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+}
+
+.context-menu li {
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none
+}
+
+.context-menu li button {
+    font-size: 16px;
+    border-radius: 0;
+    width: 100%;
+    color: #ccc;
 }
