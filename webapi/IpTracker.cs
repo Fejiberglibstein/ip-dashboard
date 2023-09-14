@@ -7,6 +7,8 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 using CsvHelper;
 using IPClass;
+using System.Timers;
+using IpAddressTracker;
 
 namespace IpAddressTracker {
 
@@ -25,6 +27,8 @@ namespace IpAddressTracker {
                 UpdateSite(path);
                 WriteToCsv(path);
             }
+
+            AutoTimer.AutoTimer timer = new AutoTimer.AutoTimer();
         }
 
         /*  Called when a user clicks on the ping button on a specific site with a fetch to "/api/ping_site/{site}"
@@ -172,3 +176,37 @@ namespace IpAddressTracker {
     }
 }
 
+namespace AutoTimer {
+    public class AutoTimer {
+        private static System.Timers.Timer aTimer;
+
+        public static int intervals;
+
+        public static void Main() {
+            System.Diagnostics.Debug.WriteLine("This will be displayed in output window 2");
+            // Create a timer and set a two second interval.
+            aTimer = new System.Timers.Timer();
+            aTimer.Interval = 15000;
+
+            // Hook up the Elapsed event for the timer. 
+            aTimer.Elapsed += OnTimedEvent;
+
+            // Have the timer fire repeated events (true is the default)
+            aTimer.AutoReset = true;
+
+            // Start the timer
+            aTimer.Enabled = true;
+        }
+
+        private static void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("This will be displayed in output window");
+            IPAddressTracker.UpdateSite("baguio");
+            intervals++;
+
+            if (intervals % 3 == 0) {
+                IPAddressTracker.WriteToCsv("baguio");
+            }
+        }
+    }
+}
