@@ -67,6 +67,8 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 					iconData.top = containerTop
 					// Offset the current icon based on the amount of alert icons above vp
 					iconData.left = (iconsAbove - 1 - Number(i)) * -8;
+                    icon.onclick = () => onStickyClick(iconsAbove-1)
+                    iconData.cursor = "pointer"
 
 
 					if (iconsAbove < iconsTotal) {  // Add a slight animation only when there is >1 alert icon above vp
@@ -89,6 +91,9 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 					iconData.top = containerBottom
 					// Offset the current icon based on the amount of alert icons below vp
 					iconData.left = (Number(i) - (iconsTotal - iconsBelow)) * -8;
+                    icon.onclick = () => onStickyClick(iconsTotal - iconsBelow)
+                    iconData.cursor = "pointer"
+
 
 					if (iconsTotal - iconsBelow > 0) {
 						
@@ -108,10 +113,16 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 				}
 				// Unhide element and position it
 				icon.hidden = false
-				icon.setAttribute('style', `top: ${iconData.top}px; left: ${80 + iconData.left - leftShift}px`)	
+				icon.setAttribute('style', `top: ${iconData.top}px; left: ${80 + iconData.left - leftShift}px; cursor: ${iconData.cursor}`)	
 			}
 		}
 	}
+
+    function onStickyClick(index: number) {
+        console.log("KYSSS")
+        criticalRowRefs.current[index].scrollIntoView({behavior: "smooth", block:"nearest"})
+    }
+
 
     function compareIPAddresses(a, b) {
         const numA = Number(
