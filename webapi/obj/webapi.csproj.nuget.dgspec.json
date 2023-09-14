@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\amthe\\OneDrive\\Documents\\GitHub\\ip-dashboard\\webapi\\webapi.csproj": {}
+    "C:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\amthe\\OneDrive\\Documents\\GitHub\\ip-dashboard\\webapi\\webapi.csproj": {
+    "C:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\amthe\\OneDrive\\Documents\\GitHub\\ip-dashboard\\webapi\\webapi.csproj",
+        "projectUniqueName": "C:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj",
         "projectName": "webapi",
-        "projectPath": "C:\\Users\\amthe\\OneDrive\\Documents\\GitHub\\ip-dashboard\\webapi\\webapi.csproj",
-        "packagesPath": "C:\\Users\\amthe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\amthe\\OneDrive\\Documents\\GitHub\\ip-dashboard\\webapi\\obj\\",
+        "projectPath": "C:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\webapi.csproj",
+        "packagesPath": "C:\\Users\\drewt\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\drewt\\OneDrive\\Documents\\Visual Studio\\ip-dashboard-git\\webapi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\amthe\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\drewt\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
