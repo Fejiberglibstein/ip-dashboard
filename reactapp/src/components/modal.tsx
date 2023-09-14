@@ -56,7 +56,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 
 			for(let i in criticalRowRefs.current) {
 				const icon = criticalIconRefs.current[i];  // Get the alert icon at index i
-				let iconData = {top: 0, left: 0};          // Create the top and left margin
+				let iconData = {top: 0, left: 0, cursor: ""};          // Create the top and left margin
 				const row = criticalRowRefs.current[i];    // Get the row that's critical at index i
 				const rowPosition = row.offsetTop - (iconHeight / 2 ); // The center of the row
 				
