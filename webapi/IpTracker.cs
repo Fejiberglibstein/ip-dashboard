@@ -108,6 +108,13 @@ namespace IpAddressTracker {
             return siteList[site];
         }
 
+        public static List<IP> ChangeMachine(string site, int i, IP retval) {
+            siteList[site][i].IpAddress = retval.IpAddress;
+            siteList[site][i].AssetNumber = retval.AssetNumber;
+            siteList[site][i].MachineName = retval.MachineName;
+            return siteList[site];
+        }
+
         public static void InitialCsvRead(string site) {
             using (StreamReader reader = new StreamReader(csvLocation + site + ".csv"))
             using (CsvReader csv = new CsvReader(reader, CultureInfo.InvariantCulture)) {

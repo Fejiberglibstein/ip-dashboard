@@ -62,4 +62,9 @@ app.MapDelete("/api/remove_machine/{site}/{index}", (string site, int index) => 
     return response;
 });
 
+app.MapPut("/api/change_machine/{site}/{index}", (string site, int index, [FromBody] IP request) => {
+    List<IP> response = IPAddressTracker.ChangeMachine(site, index, request);
+    return response;
+});
+
 app.Run();

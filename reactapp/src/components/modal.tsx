@@ -9,14 +9,15 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 	
 	// List of the critical machines
     const [menuIndex, setMenuIndex] = useState<number | null>(null)
+    const [formIndex, setFormIndex] = useState<number | null>(null)
+    const [form, setForm] = React.useState<IP | null>(null);
+    
     let criticalMachineLookup = IPs?.filter((IP) => IP.checkThis) 
     const criticalIconRefs = useRef<Array<HTMLDivElement>>(Array(0))        // List of all the icons on the side
     const criticalRowRefs =  useRef<Array<HTMLTableRowElement>>(Array(0))   // List of all table rows that are critical
 	const modalContentRef =  useRef<HTMLDivElement | null>(null)            // The modal
 	criticalIconRefs.current = []
 	criticalRowRefs.current = []
-
-    const [form, setForm] = React.useState<IP | null>(null);
     
     if (!enabled) {
         return (
@@ -70,7 +71,6 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                     icon.onclick = () => onStickyClick(iconsAbove-1)
                     iconData.cursor = "pointer"
 
-
 					if (iconsAbove < iconsTotal) {  // Add a slight animation only when there is >1 alert icon above vp
 
 						// The animation only takes place when 1 icon is almost at scrollTop, meaning
@@ -93,7 +93,6 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 					iconData.left = (Number(i) - (iconsTotal - iconsBelow)) * -8;
                     icon.onclick = () => onStickyClick(iconsTotal - iconsBelow)
                     iconData.cursor = "pointer"
-
 
 					if (iconsTotal - iconsBelow > 0) {
 						
@@ -119,10 +118,8 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 	}
 
     function onStickyClick(index: number) {
-        console.log("KYSSS")
         criticalRowRefs.current[index].scrollIntoView({behavior: "smooth", block:"nearest"})
     }
-
 
     function compareIPAddresses(a, b) {
         const numA = Number(
@@ -161,10 +158,10 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
     
 
     return (
-        <div className={`modal-background`} onClick={() => { setPopupSiteName(null); setMenuIndex(null) }}>
+        <div className={`modal-background`} onClick={() => { setPopupSiteName(null); setMenuIndex(null); setFormIndex(null) }}>
             <div
 				className={`popup-modal-content`}
-				onClick={(e) => {e.stopPropagation(); setMenuIndex(null)}}
+				onClick={(e) => {e.stopPropagation(); setMenuIndex(null) }}
 				onTransitionEnd={handleScroll}
 			>
 				<div id="icon-container">
@@ -189,15 +186,17 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                             </tr>
                         </thead>
                         <tbody>
-                            <Form updateForm={updateForm}/>
+                            {/* <Form updateForm={updateForm}/> */}
                             {[...IPs].sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress)).map((IP, i) => 
-                                <tr    // Create Reference for all the machines that are critical
+                                 (formIndex == i)
+                                    ? <Form updateForm={updateForm}/>
+                                    : <tr    // Create Reference for all the machines that are critical
                                     ref={(el) => (criticalMachineLookup && el && getIPStatus(IP).status == "critical")
                                         ? criticalRowRefs.current.push(el)
                                         : null
                                     }
                                     key={i} style={{"--status-color": getIPStatus(IP).color} as React.CSSProperties}
-                                >
+                                    >
                                     <td>{IP.ipAddress}</td>
                                     <td>{IP.assetNumber}</td>
                                     <td>
@@ -212,10 +211,10 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                                         apiPath={`ping_machine/${siteName}/${IP.ipAddress}`}
                                     >Ping IP</PingButton></td>
                                     <td style={{position: "relative"}}>
-                                        <button title="options" className="options-button" onClick={e => { e.stopPropagation(); setMenuIndex(i)}}><OptionsIcon/></button>
+                                        <button title="options" className="options-button" onClick={e => { e.stopPropagation(); setMenuIndex(i) }}><OptionsIcon/></button>
                                         {
                                             (menuIndex == i)
-                                            ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite}></ContextMenu>
+                                            ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite} form={form} setFormIndex={setFormIndex} rowIndex={i} ></ContextMenu>
                                             : <></>
                                         }
                                     </td>
@@ -240,7 +239,7 @@ const Form = ({ updateForm }): React.JSX.Element => {
     )
 }
 
-const ContextMenu = ({ siteName, setSite, indexIP }): React.JSX.Element => {
+const ContextMenu = ({ siteName, setSite, indexIP, form, setFormIndex, rowIndex }): React.JSX.Element => {
     
     const removeMachine = async (event, i: number) => {
         try {
@@ -256,12 +255,27 @@ const ContextMenu = ({ siteName, setSite, indexIP }): React.JSX.Element => {
         }
     }
 
+    const changeMachine = async (event, i: number) => {
+        try {
+            const response = await fetch(`api/change_machine/${siteName}/${i}`, {
+                body: JSON.stringify(form),
+                method: "POST",
+                headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+            })
+            const result = await response.json()
+            setSite(siteName, result)
+        }
+        catch {
+            alert("Change has failed")
+        }
+    }
+    
     return (
         <ul className="context-menu">
             <li> <button onClick={(e) => removeMachine(e, indexIP)}>
                 <RemoveIcon/> Remove
             </button> </li>
-            <li> <button>
+            <li> <button onClick={(e) => {e.stopPropagation(); setFormIndex(rowIndex)}}>
                 <ChangeIcon/> Change
             </button> </li>
         </ul>
