@@ -57,7 +57,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 
 			for(let i in criticalRowRefs.current) {
 				const icon = criticalIconRefs.current[i];  // Get the alert icon at index i
-				let iconData = {top: 0, left: 0};          // Create the top and left margin
+				let iconData = {top: 0, left: 0, cursor: ""};          // Create the top and left margin
 				const row = criticalRowRefs.current[i];    // Get the row that's critical at index i
 				const rowPosition = row.offsetTop - (iconHeight / 2 ); // The center of the row
 				
@@ -68,7 +68,8 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 					iconData.top = containerTop
 					// Offset the current icon based on the amount of alert icons above vp
 					iconData.left = (iconsAbove - 1 - Number(i)) * -8;
-
+                    icon.onclick = () => onStickyClick(iconsAbove-1)
+                    iconData.cursor = "pointer"
 
 					if (iconsAbove < iconsTotal) {  // Add a slight animation only when there is >1 alert icon above vp
 
@@ -90,6 +91,8 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 					iconData.top = containerBottom
 					// Offset the current icon based on the amount of alert icons below vp
 					iconData.left = (Number(i) - (iconsTotal - iconsBelow)) * -8;
+                    icon.onclick = () => onStickyClick(iconsTotal - iconsBelow)
+                    iconData.cursor = "pointer"
 
 					if (iconsTotal - iconsBelow > 0) {
 						
@@ -109,10 +112,15 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 				}
 				// Unhide element and position it
 				icon.hidden = false
-				icon.setAttribute('style', `top: ${iconData.top}px; left: ${80 + iconData.left - leftShift}px`)	
+				icon.setAttribute('style', `top: ${iconData.top}px; left: ${80 + iconData.left - leftShift}px; cursor: ${iconData.cursor}`)	
+
 			}
 		}
 	}
+
+    function onStickyClick(index: number) {
+        criticalRowRefs.current[index].scrollIntoView({behavior: "smooth", block:"nearest"})
+    }
 
     function compareIPAddresses(a, b) {
         const numA = Number(
