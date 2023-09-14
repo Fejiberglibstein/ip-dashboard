@@ -5,6 +5,7 @@ import { IP, PopupModalProps } from "../types";
 import { PingButton, Timestamp, Tooltip } from "./components"
 import { getIPStatus } from "../status-colors";
 import { ChangeIcon, CriticalStickyIcon, OptionsIcon, RemoveIcon } from "../assets/icons";
+
 export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, setSite}: PopupModalProps): React.JSX.Element => {
 	
 	// List of the critical machines
@@ -173,7 +174,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 					)}
 				</div>
                 <span className="close" onClick={() => setPopupSiteName(null)}>&times;</span>
-                <form method="GET" id="my_form" onSubmit={insertMachine} autoComplete="off"/>
+                <form method="GET" id="my_form" onSubmit={(e) => { e.stopPropagation(); if(formIndex == null) insertMachine; setFormIndex(null);}} autoComplete="off"/>
                 <div className="table-container" ref={modalContentRef} onScroll={handleScroll}>
                     <table>
                         <thead>
