@@ -4,7 +4,7 @@ import "./modal.css";
 import { IP, PopupModalProps } from "../types";
 import { PingButton, Timestamp, Tooltip } from "./components"
 import { getIPStatus } from "../status-colors";
-import { CriticalStickyIcon, OptionsIcon } from "../assets/icons";
+import { ChangeIcon, CriticalStickyIcon, OptionsIcon, RemoveIcon } from "../assets/icons";
 export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, setSite}: PopupModalProps): React.JSX.Element => {
 	
 	// List of the critical machines
@@ -29,12 +29,15 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 	function handleScroll() {
 		if (modalContentRef.current) {
 			const iconHeight = 35;    // Height of the icon
-			const scrollMargin = 10;  // Margin from the top/bottom of the screen
+			const scrollMargin = 0;  // Margin from the top/bottom of the screen
 
 			// Top and bottom of the viewport/modal. The 65 subtracted on scrollBottom is 
 			// an arbitrary number I got from guess and check to match the margin on the top
 			const scrollTop = modalContentRef.current.scrollTop + scrollMargin;
-			const scrollBottom = modalContentRef.current.scrollTop + modalContentRef.current.clientHeight - scrollMargin - 80;
+			const scrollBottom = modalContentRef.current.scrollTop + modalContentRef.current.clientHeight - scrollMargin - 40;
+
+            const containerTop = scrollMargin + 18
+            const containerBottom = modalContentRef.current.clientHeight - scrollMargin - 22
 			
 			// Cache the amount of icons that are offscreen
 			let iconsAbove = 0;
@@ -61,7 +64,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 				if (!(rowPosition > scrollTop)) { // Icon is above Viewport (vp)
 					
 					// Set the alert icon to be at top of screen
-					iconData.top = scrollTop
+					iconData.top = containerTop
 					// Offset the current icon based on the amount of alert icons above vp
 					iconData.left = (iconsAbove - 1 - Number(i)) * -8;
 
@@ -83,7 +86,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 
 				} else if (!(rowPosition < scrollBottom)) { // Icon is underneath Viewport (vp)
 					// Set the alert icon to be at bottom of screen
-					iconData.top = scrollBottom
+					iconData.top = containerBottom
 					// Offset the current icon based on the amount of alert icons below vp
 					iconData.left = (Number(i) - (iconsTotal - iconsBelow)) * -8;
 
@@ -101,11 +104,11 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 
 					}
 				} else { // Icon is inside viewport
-					iconData.top = rowPosition // Position the icon's y at the y of the row
+					iconData.top = rowPosition - modalContentRef.current.scrollTop + (iconHeight / 2 )  // Position the icon's y at the y of the row
 				}
 				// Unhide element and position it
 				icon.hidden = false
-				icon.setAttribute('style', `top: ${iconData.top}px; left: ${-50 + iconData.left - leftShift}px`)	
+				icon.setAttribute('style', `top: ${iconData.top}px; left: ${80 + iconData.left - leftShift}px`)	
 			}
 		}
 	}
@@ -151,9 +154,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
             <div
 				className={`popup-modal-content`}
 				onClick={(e) => {e.stopPropagation(); setMenuIndex(null)}}
-				onScroll={handleScroll}
 				onTransitionEnd={handleScroll}
-				ref={modalContentRef}
 			>
 				<div id="icon-container">
 					{criticalMachineLookup?.map((_, i) => // Create elements for each critical machine
@@ -164,52 +165,54 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 				</div>
                 <span className="close" onClick={() => setPopupSiteName(null)}>&times;</span>
                 <form method="GET" id="my_form" onSubmit={insertMachine} autoComplete="off"/>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>IP Address</th>
-                            <th>Asset Number</th>
-                            <th>Machine Name</th>
-                            <th>Time Since Last Ping</th>
-                            <th>Ping IP</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <Form updateForm={updateForm}/>
-                        {[...IPs].sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress)).map((IP, i) => 
-                            <tr    // Create Reference for all the machines that are critical
-                                ref={(el) => (criticalMachineLookup && el && getIPStatus(IP).status == "critical")
-									? criticalRowRefs.current.push(el)
-									: null
-								}
-                                key={i} style={{"--status-color": getIPStatus(IP).color} as React.CSSProperties}
-                            >
-                                <td>{IP.ipAddress}</td>
-                                <td>{IP.assetNumber}</td>
-                                <td>
-                                    <div style={{ maxWidth: "180px"}}>
-                                        <div style={{textOverflow: "ellipsis", overflowX: "clip"}}>{IP.machineName}</div>
-                                        <Tooltip>{IP.machineName}</Tooltip>
-                                    </div>
-                                </td>
-                                <td><Timestamp style={{fontSize: "14px"}} time={IP.lastPingTime !== undefined ? IP.lastPingTime : new Date(0)}/></td>
-                                <td><PingButton
-                                    update={(response) => setIP(siteName, response as IP)}
-                                    apiPath={`ping_machine/${siteName}/${IP.ipAddress}`}
-                                >Ping IP</PingButton></td>
-                                <td>
-                                    <button className="options-button" onClick={e => { e.stopPropagation(); setMenuIndex(i)}}><OptionsIcon/></button>
-                                    {
-                                        (menuIndex == i)
-                                        ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite}></ContextMenu>
-                                        : <></>
-                                    }
-                                </td>
+                <div className="table-container" ref={modalContentRef} onScroll={handleScroll}>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>IP Address</th>
+                                <th>Asset Number</th>
+                                <th>Machine Name</th>
+                                <th>Time Since Last Ping</th>
+                                <th>Ping IP</th>
+                                <th></th>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <Form updateForm={updateForm}/>
+                            {[...IPs].sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress)).map((IP, i) => 
+                                <tr    // Create Reference for all the machines that are critical
+                                    ref={(el) => (criticalMachineLookup && el && getIPStatus(IP).status == "critical")
+                                        ? criticalRowRefs.current.push(el)
+                                        : null
+                                    }
+                                    key={i} style={{"--status-color": getIPStatus(IP).color} as React.CSSProperties}
+                                >
+                                    <td>{IP.ipAddress}</td>
+                                    <td>{IP.assetNumber}</td>
+                                    <td>
+                                        <div style={{ maxWidth: "180px"}}>
+                                            <div style={{textOverflow: "ellipsis", overflowX: "clip"}}>{IP.machineName}</div>
+                                            <Tooltip>{IP.machineName}</Tooltip>
+                                        </div>
+                                    </td>
+                                    <td><Timestamp style={{fontSize: "14px"}} time={IP.lastPingTime !== undefined ? IP.lastPingTime : new Date(0)}/></td>
+                                    <td><PingButton
+                                        update={(response) => setIP(siteName, response as IP)}
+                                        apiPath={`ping_machine/${siteName}/${IP.ipAddress}`}
+                                    >Ping IP</PingButton></td>
+                                    <td style={{position: "relative"}}>
+                                        <button title="options" className="options-button" onClick={e => { e.stopPropagation(); setMenuIndex(i)}}><OptionsIcon/></button>
+                                        {
+                                            (menuIndex == i)
+                                            ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite}></ContextMenu>
+                                            : <></>
+                                        }
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
@@ -218,9 +221,9 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 const Form = ({ updateForm }): React.JSX.Element => {
     return (
         <tr className="machine-form">
-            <td> <input type="text" name="ipAddress" form="my_form" onChange={e => updateForm(e)} required/> </td>
-            <td> <input type="text" name="assetNumber" form="my_form" onChange={e => updateForm(e)} required/> </td>
-            <td> <input type="text" name="machineName" form="my_form" onChange={e => updateForm(e)} required/> </td>
+            <td> <input aria-label="IP Address" type="text" name="ipAddress" form="my_form" onChange={e => updateForm(e)} required/> </td>
+            <td> <input aria-label="Asset Number" type="text" name="assetNumber" form="my_form" onChange={e => updateForm(e)} required/> </td>
+            <td> <input aria-label="Machine Name"  type="text" name="machineName" form="my_form" onChange={e => updateForm(e)} required/> </td>
             <td colSpan={3}> <input type="submit" form="my_form" value={"Insert New Machine"}/> </td>
         </tr>
     )
@@ -244,8 +247,12 @@ const ContextMenu = ({ siteName, setSite, indexIP }): React.JSX.Element => {
 
     return (
         <ul className="context-menu">
-            <li> <button onClick={(e) => removeMachine(e, indexIP)}>Remove</button> </li>
-            <li> <button>Change</button> </li>
+            <li> <button onClick={(e) => removeMachine(e, indexIP)}>
+                <RemoveIcon/> Remove
+            </button> </li>
+            <li> <button>
+                <ChangeIcon/> Change
+            </button> </li>
         </ul>
     )
 }

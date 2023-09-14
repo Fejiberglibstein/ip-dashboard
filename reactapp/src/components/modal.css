@@ -32,16 +32,26 @@
 .popup-modal-content {
   background-color: #4f535aaa;
   margin: auto;
-  padding: 20px 120px;
   height: 80%;
   width: 50%;
+  min-width: fit-content;
   border-radius: 12px;
+  overflow: hidden;
   position: relative;
-  overflow: auto;
   transform: scale(100%);
   transition: 200ms;
   backdrop-filter: blur(10px);
 }
+
+.table-container {
+    width: 80%;
+    height: 95%;
+    margin: 20px 120px;
+    padding-left: 10px;
+    overflow-y: scroll;
+    overflow-x: visible;
+}
+
 .popup-modal-content.disabled {
     transform: scale(0%); 
 }
@@ -145,13 +155,13 @@ tr:nth-child(odd) {
     background-color: #235077;
 }
 
-.popup-modal-content::-webkit-scrollbar {
+.table-container::-webkit-scrollbar {
     width: 6px;
 }
 
 
 
-  .popup-modal-content::-webkit-scrollbar-thumb {
+.table-container::-webkit-scrollbar-thumb {
     background-color: #aaaaaa;
     border-radius: 6px;
     /* border: 3px solid var(--scrollbarBG); */
@@ -202,11 +212,23 @@ tr:nth-child(odd) {
 }
 
 .context-menu {
-    background-color: #0fa355;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: -50%;
+    left: -100px;
     z-index: 1;
+    padding: 0px;
+
+    background-color: #4e4f55c0;
+    backdrop-filter: blur(5px);
+    
+}
+
+
+.context-menu {
+    border-radius: 10px;
+    overflow: clip;
+    box-shadow: 11px 11px 22px 0px rgba(0, 0, 0, 0.1);
+    
 }
 
 .context-menu li {
@@ -216,8 +238,21 @@ tr:nth-child(odd) {
 }
 
 .context-menu li button {
+    background-color: unset;    
+    margin: 0px;
+    padding: 6px 10px;
     font-size: 16px;
     border-radius: 0;
     width: 100%;
-    color: #ccc;
+    color: #aaaaaa;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.context-menu li button:hover {
+    background-color: #0000002a;
+
 }
