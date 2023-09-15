@@ -4,7 +4,7 @@ import "./modal.css";
 import { FormProps, IP, PopupModalProps } from "../types";
 import { PingButton, Timestamp, Tooltip } from "./components"
 import { getIPStatus } from "../status-colors";
-import { ChangeIcon, CriticalStickyIcon, OptionsIcon, RemoveIcon, AddIcon } from "../assets/icons";
+import { ChangeIcon, CriticalStickyIcon, OptionsIcon, RemoveIcon, AddIcon, CloseIcon } from "../assets/icons";
 
 var hasPassword: boolean = false;
 const officialPasswords: string[] = ["cimcous2023", "cimcouk2023", "cimcoph2023"]
@@ -256,7 +256,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                                         apiPath={`ping_machine/${siteName}/${IP.ipAddress}`}
                                     >Ping IP</PingButton></td>
                                     <td style={{position: "relative"}}>
-                                        <button title="options" className="options-button" onClick={e => { e.stopPropagation(); setMenuIndex(i) }}><OptionsIcon/></button>
+                                        <button title="Options" className="options-button" onClick={e => { e.stopPropagation(); setMenuIndex(i) }}><OptionsIcon/></button>
                                         {
                                             (menuIndex == i)
                                             ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite} setFormIndex={setFormIndex} rowIndex={i} checkPassword={checkPassword} ></ContextMenu>
@@ -287,12 +287,13 @@ const Form = ({ IP, updateForm, setForm, formIndex, onAddMachine, setFormIndex}:
     if(formIndex == "add") onAddMachine();
 
     return (
-        <tr style={{"--status-color": "#906dd1"} as React.CSSProperties} className="machine-form">
+        <tr style={{"--status-color": "#7861d3"} as React.CSSProperties} className="machine-form">
             <td> <input aria-label="IP Address" type="text" name="ipAddress" form="my_form" defaultValue={IP.ipAddress} onChange={e => updateForm(e)} required/> </td>
             <td> <input aria-label="Asset Number" type="text" name="assetNumber" form="my_form" defaultValue={IP.assetNumber} onChange={e => updateForm(e)} required/> </td>
             <td> <input aria-label="Machine Name"  type="text" name="machineName" form="my_form" defaultValue={IP.machineName} onChange={e => updateForm(e)} required/> </td>
-            <td colSpan={2}> <input type="submit" form="my_form" value={ (formIndex == "add" ? "Add New Machine" : "Modify Machine") }/> </td>
-            <td> <span className="close" onClick={() => {setFormIndex(null); console.log(formIndex)}}>&times;</span> </td>
+            <td/>
+            <td> <input type="submit" form="my_form" value={ (formIndex == "add" ? "Add New Machine" : "Modify Machine") }/> </td>
+            <td> <span className="options-button" onClick={() => {setFormIndex(null); console.log(formIndex)}}><CloseIcon/></span> </td>
         </tr>
     )
 }

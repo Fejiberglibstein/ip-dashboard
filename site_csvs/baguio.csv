@@ -1,2 +1,2 @@
 IpAddress,AssetNumber,MachineName,IsOnline,LastPingTime,CurrentTime,TimeSinceLastPing,CheckThis
-192.168.1.169,100006,Mazak 6,True,09/15/2023 08:24:03,09/15/2023 08:24:03,0,False
+192.168.1.169,100006,Mazak 6,False,09/15/2023 08:24:03,09/15/2023 14:40:04,6.267152957305556,False
