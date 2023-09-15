@@ -63,7 +63,7 @@ button {
 }
 
 button:focus {
-  outline: 0px;
+  outline: 3px;
 }
 
 button:hover {

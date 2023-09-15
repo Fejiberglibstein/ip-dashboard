@@ -64,6 +64,7 @@
     position: sticky;
     right: 20px;
     top: 10px;
+    user-select: none;
 }
   
 .close:hover,
@@ -71,6 +72,22 @@
     color: #888;
     text-decoration: none;
     cursor: pointer;
+}
+
+.add-machine {
+    position: fixed;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 10px;
+    right: 10px;
+    padding: 3px;
+    background-color: #663FAD;
+}
+
+.add-machine:hover {
+    background-color: #7851c2;
 }
 
 table {
@@ -136,7 +153,7 @@ tr:nth-child(odd) {
 .machine-form input[type=submit] {
     padding: 2px 8px;
     border-radius: 6px;
-    background: #184268;
+    background: #663FAD;
     color: #A4A4A4;
     font-size: 12px;
     font-style: normal;
@@ -150,7 +167,7 @@ tr:nth-child(odd) {
 
 .machine-form input[type=submit]:hover {
     cursor: pointer;
-    background-color: #235077;
+    background-color: #7851c2;
 }
 
   /* ==========[ CSS for the moving icons ]========== */

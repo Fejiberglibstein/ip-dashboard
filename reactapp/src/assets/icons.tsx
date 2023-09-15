@@ -58,4 +58,7 @@ export const RemoveIcon = (props: HTMLAttributes<HTMLOrSVGElement>) =>
 
 
 export const ChangeIcon = (props: HTMLAttributes<HTMLOrSVGElement>) =>
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="#d3a134" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 20h4L18.5 9.5a2.828 2.828 0 1 0-4-4L4 16v4m9.5-13.5l4 4"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="#d3a134" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 20h4L18.5 9.5a2.828 2.828 0 1 0-4-4L4 16v4m9.5-13.5l4 4"/></svg>
+
+export const AddIcon = (props: HTMLAttributes<HTMLOrSVGElement>) =>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 8H5m0 4h9m-3 4H5m10 0h6m-3-3v6"/></svg>

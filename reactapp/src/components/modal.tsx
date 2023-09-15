@@ -4,9 +4,10 @@ import "./modal.css";
 import { FormProps, IP, PopupModalProps } from "../types";
 import { PingButton, Timestamp, Tooltip } from "./components"
 import { getIPStatus } from "../status-colors";
-import { ChangeIcon, CriticalStickyIcon, OptionsIcon, RemoveIcon } from "../assets/icons";
+import { ChangeIcon, CriticalStickyIcon, OptionsIcon, RemoveIcon, AddIcon } from "../assets/icons";
 
-const hasPassword: boolean = false;
+var hasPassword: boolean = false;
+const officialPasswords: string[] = ["cimcous2023", "cimcouk2023", "cimcoph2023"]
 
 export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, setSite}: PopupModalProps): React.JSX.Element => {
 	
@@ -111,7 +112,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 
 					}
 				} else { // Icon is inside viewport
-					iconData.top = rowPosition - modalContentRef.current.scrollTop + (iconHeight / 2 )  // Position the icon's y at the y of the row
+					iconData.top = rowPosition - modalContentRef.current.scrollTop + ((iconHeight + 6 )/ 2 )  // Position the icon's y at the y of the row
 				}
 				// Unhide element and position it
 				icon.hidden = false
@@ -122,7 +123,10 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 
     function onStickyClick(index: number) {
         criticalRowRefs.current[index].scrollIntoView({behavior: "smooth", block:"nearest"})
-        // modalContentRef.current.scro
+    }
+
+    function onAddMachine() {
+        modalContentRef.current?.scrollTo({top: 1000000, behavior: "smooth"})
     }
 
     function compareIPAddresses(a, b) {
@@ -139,8 +143,24 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
         return numA - numB;
     }
 
+    function checkPassword() {
+        if (hasPassword == true) return true;
+        for (var i = 0; i < 3; i++) {
+            let password = prompt("Enter password to modify machine.")
+            if(!password) return false;
+            else if (!officialPasswords.includes(password!)) {
+                alert("Incorrect password");
+                continue;
+            }
+            hasPassword = true;
+            return true;
+        }
+        return false;
+    }
+
     const insertMachine = async (event) => {
         event.preventDefault()
+        if(!checkPassword()) return;
         try {
             const response = await fetch(`api/add_machine/${siteName}`, {
                 body: JSON.stringify(form),
@@ -156,6 +176,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
     }
 
     const changeMachine = async (event, i: number) => {
+        if(!checkPassword()) return;
         try {
             const response = await fetch(`api/change_machine/${siteName}/${i}`, {
                 body: JSON.stringify(form),
@@ -189,9 +210,11 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 					)}
 				</div>
                 <span className="close" onClick={() => setPopupSiteName(null)}>&times;</span>
+                <button className="add-machine" onClick={() => setFormIndex("add") }><AddIcon/>Insert Machine</button>
                 <form method="GET" id="my_form" onSubmit={(e) => {
                     e.preventDefault();
                     if(formIndex == null) insertMachine(e);
+                    else if(formIndex == "add") insertMachine(e);
                     else changeMachine(e, formIndex as number);
                     setFormIndex(null)
                 }} autoComplete="off"/>
@@ -208,10 +231,10 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                             </tr>
                         </thead>
                         <tbody>
-                            {/* <Form updateForm={updateForm}/> */}
+                            {/* <Form updateForm={updateForm} setForm={setForm}/> */}
                             {[...IPs].sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress)).map((IP, i) => 
                                  (formIndex == i)
-                                    ? <Form key={i} updateForm={updateForm} IP={IP} setForm={setForm}/>
+                                    ? <Form key={i} updateForm={updateForm} IP={IP} setForm={setForm} formIndex={formIndex} onAddMachine={onAddMachine} setFormIndex={setFormIndex}/>
                                     : <tr    // Create Reference for all the machines that are critical
                                     ref={(el) => (criticalMachineLookup && el && getIPStatus(IP).status == "critical")
                                         ? criticalRowRefs.current.push(el)
@@ -236,12 +259,16 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                                         <button title="options" className="options-button" onClick={e => { e.stopPropagation(); setMenuIndex(i) }}><OptionsIcon/></button>
                                         {
                                             (menuIndex == i)
-                                            ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite} setFormIndex={setFormIndex} rowIndex={i} ></ContextMenu>
+                                            ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite} setFormIndex={setFormIndex} rowIndex={i} checkPassword={checkPassword} ></ContextMenu>
                                             : <></>
                                         }
                                     </td>
                                 </tr>
                             )}
+                            { (formIndex == "add") 
+                                ? <Form IP={{"ipAddress": "", "assetNumber": "", "machineName": ""}} updateForm={updateForm} setForm={setForm} formIndex={formIndex} onAddMachine={onAddMachine} setFormIndex={setFormIndex}></Form>
+                                : <></>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -250,22 +277,31 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
     );
 }
 
-const Form = ({ IP = {"ipAddress": "", "assetNumber": "", "machineName": ""}, updateForm, setForm}: FormProps): React.JSX.Element => {
-    setForm(IP)
+const Form = ({ IP, updateForm, setForm, formIndex, onAddMachine, setFormIndex}: FormProps): React.JSX.Element => {
+    // using useEffect because it renders the component, calls setForm, then rerenders the page after that
+    // without it we would get brick error because there 
+    useEffect(() => {
+        setForm(IP) 
+    }, [])
+
+    if(formIndex == "add") onAddMachine();
+
     return (
-        <tr style={{"--status-color": "#709fc9"} as React.CSSProperties} className="machine-form">
-            <td> <input aria-label="IP Address" type="text" name="ipAddress" form="my_form" defaultValue={IP?.ipAddress} onChange={e => updateForm(e)} required/> </td>
-            <td> <input aria-label="Asset Number" type="text" name="assetNumber" form="my_form" defaultValue={IP?.assetNumber} onChange={e => updateForm(e)} required/> </td>
-            <td> <input aria-label="Machine Name"  type="text" name="machineName" form="my_form" defaultValue={IP?.machineName} onChange={e => updateForm(e)} required/> </td>
-            <td colSpan={3}> <input type="submit" form="my_form" value={"Insert New Machine"}/> </td>
+        <tr style={{"--status-color": "#906dd1"} as React.CSSProperties} className="machine-form">
+            <td> <input aria-label="IP Address" type="text" name="ipAddress" form="my_form" defaultValue={IP.ipAddress} onChange={e => updateForm(e)} required/> </td>
+            <td> <input aria-label="Asset Number" type="text" name="assetNumber" form="my_form" defaultValue={IP.assetNumber} onChange={e => updateForm(e)} required/> </td>
+            <td> <input aria-label="Machine Name"  type="text" name="machineName" form="my_form" defaultValue={IP.machineName} onChange={e => updateForm(e)} required/> </td>
+            <td colSpan={2}> <input type="submit" form="my_form" value={ (formIndex == "add" ? "Add New Machine" : "Modify Machine") }/> </td>
+            <td> <span className="close" onClick={() => {setFormIndex(null); console.log(formIndex)}}>&times;</span> </td>
         </tr>
     )
 }
 
-const ContextMenu = ({ siteName, setSite, indexIP, setFormIndex, rowIndex }): React.JSX.Element => {
+const ContextMenu = ({ siteName, setSite, indexIP, setFormIndex, rowIndex, checkPassword }): React.JSX.Element => {
     
     const removeMachine = async (event, i: number) => {
         if (!confirm("Are you sure you want to delete this machine?")) return;
+        if (!checkPassword()) return;
         try {
             const response = await fetch(`api/remove_machine/${siteName}/${i}`, {
                 method: "DELETE",
@@ -292,8 +328,12 @@ const ContextMenu = ({ siteName, setSite, indexIP, setFormIndex, rowIndex }): Re
 }
 
 /* TODO:
-- Change and remove require a password one time preferrably
-- Insert new IP button on a site card
-- Complete company site card w/ stats of all sites and a ping any IP address textbox
-- 'X' in a row where there is a form
+- [x] Change and remove require a password one time preferrably
+- [x] Insert new IP button on a site card
+- [ ] Complete company site card w/ stats of all sites and a ping any IP address textbox
+- [x] 'X' in a row where there is a form 
+- [x] Remove machine has a confirmation box
+- [?] ! are not centered in the table
+- [ ] table header is sticky
+- [ ] backend writing to the CSVs and backing up every X hours
 */

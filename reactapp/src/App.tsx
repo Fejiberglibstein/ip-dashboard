@@ -44,7 +44,7 @@ function App() {
     }
 
     // how you make API calls. useEffect is like step out of the normal flow of rendering
-    // useEffect is called after the page finishes rendering the first time and then rerenders the page
+    // useEffect is called after the page finishes rendering the first time and then rerenders the page (as long as there is a dependency) (array of states as second parameter)
     // when this function is finished it rerenders the page (APi gets request it rerenders)
 	React.useEffect(() => {
 		fetch(`/api/get_sites`)

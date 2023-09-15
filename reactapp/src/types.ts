@@ -79,7 +79,10 @@ export interface PingButtonProps<T extends IP | String> extends HTMLAttributes<H
 }
 
 export type FormProps = {
-    IP?: IP
-    updateForm: (Event) => void
-    setForm: React.Dispatch<React.SetStateAction<IP | null>>
+    IP: IP,
+    updateForm: (Event) => void,
+    setForm: React.Dispatch<React.SetStateAction<IP | null>>,
+    setFormIndex: React.Dispatch<React.SetStateAction<number | "add" | null>>
+    formIndex: number | "add" | null,
+    onAddMachine: Function,
 }
