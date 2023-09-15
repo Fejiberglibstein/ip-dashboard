@@ -9,46 +9,72 @@ using CsvHelper;
 using IPClass;
 using System.Timers;
 using IpAddressTracker;
+using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IpAddressTracker {
 
     public class IPAddressTracker {
         public static string csvLocation = @"../site_csvs/";
 
+        private static string backupLocation = @"../backups";
+
         public static Dictionary<string, List<IP>> siteList = new Dictionary<string, List<IP>>();
+
+        private static List<string> siteNames = new List<string>();
 
         private static System.Timers.Timer aTimer;
 
-        private static int intervals = 0;
+        private static int hourIntervals = 0;
+
+        private static int dayIntervals = 0;
 
         public static void MainMethod() {
             string[] files = Directory.GetFiles(csvLocation, "*.csv", SearchOption.TopDirectoryOnly);
 
             foreach(string file in files) {
                 string path = Path.GetFileNameWithoutExtension(file);
+                siteNames.Add(path);
                 siteList[path] = new List<IP>();
                 InitialCsvRead(path);
                 UpdateSite(path);
                 WriteToCsv(path);
             }
 
-             aTimer = new System.Timers.Timer();
-             aTimer.Interval = 10000;
+            Directory.CreateDirectory(backupLocation);
 
-             aTimer.Elapsed += OnTimedEvent;
+            for(int i = 0; i < 3; i++) {
+                Directory.CreateDirectory($@"{backupLocation}/Backup Day {i}");
+            }
 
-             aTimer.AutoReset = true;
+            aTimer = new System.Timers.Timer();
+            aTimer.Interval = 120000; // 28800000;
 
-             aTimer.Enabled = true;
+            aTimer.Elapsed += OnTimedEvent!;
+
+            aTimer.AutoReset = true;
+
+            aTimer.Enabled = true;
         }
 
         private static void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e) {
-            UpdateSite("baguio");
-            intervals++;
-
-            if (intervals % 3 == 0) {
-                System.Diagnostics.Debug.WriteLine("is this working?");
+            foreach (string site in siteNames) {
+                UpdateSite(site);
             }
+            
+            if (hourIntervals % 3 == 0) {
+                foreach(string site in siteNames) {
+                    File.Copy(csvLocation + site + ".csv",$@"{backupLocation}/Backup Day {dayIntervals}/{site}.csv", true);
+                }
+                System.Diagnostics.Debug.WriteLine($@"backups are made at {backupLocation}/Backup Day {dayIntervals}");
+                dayIntervals++;
+            }
+
+            if (dayIntervals % 3 == 0) {
+                System.Diagnostics.Debug.WriteLine("rewritting over old backups");
+                dayIntervals = 0;
+            }
+            hourIntervals++;
         }
 
         /*  Called when a user clicks on the ping button on a specific site with a fetch to "/api/ping_site/{site}"
@@ -59,6 +85,7 @@ namespace IpAddressTracker {
             Parallel.ForEach(siteList[site], ipAddress => {
                 UpdateMachine(site, ipAddress.IpAddress);
             });
+            WriteToCsv(site);
             return siteList[site];
         }
 
@@ -100,22 +127,6 @@ namespace IpAddressTracker {
             return machine;
         }
 
-        // Writes to a site's csv file all at once, does not go row by row if one machine was pinged or updated
-        public static void WriteToCsv(string site) {
-            using (var writer = new StreamWriter(csvLocation + site + ".csv"))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-            {
-                csv.WriteRecords(siteList[site]);
-            }
-        }
-
-        // Hopefully, when the app is closing down this function runs so that each csv file is up to date when it ends
-        public static void OnShutdown() {
-            foreach(string site in siteList.Keys) {
-                WriteToCsv(site);
-            }
-        }
-
         // Checks a string IP to see if it is valid, taken from online since it's way cleaner than I would've done
         static bool CheckIP(string IP) {
             var octets = IP.Split('.');
@@ -140,12 +151,14 @@ namespace IpAddressTracker {
             else {
                 throw new Exception("Invalid IP");
             }
+            WriteToCsv(site);
             return siteList[site];
         }
 
         // Called when user clicks on Remove button in Options Menu with a fetch to "/api/remove_machine/{site}/{index}"
         public static List<IP> RemoveMachine(string site, int i) {
             siteList[site].RemoveAt(i);
+            WriteToCsv(site);
             return siteList[site];
         }
 
@@ -169,9 +182,19 @@ namespace IpAddressTracker {
                 siteList[site][i].MachineName = retval.MachineName;
                 UpdateMachine(site, siteList[site][i].IpAddress);
             }
+            WriteToCsv(site);
             return siteList[site];
         }
-    
+
+        // Writes to a site's csv file all at once, does not go row by row if one machine was pinged or updated
+        public static void WriteToCsv(string site) {
+            using (var writer = new StreamWriter(csvLocation + site + ".csv"))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteRecords(siteList[site]);
+            }
+        }
+
         // Called at startup of the app, reads the site's csv and creates a list of IP's 
         public static void InitialCsvRead(string site) {
             using (StreamReader reader = new StreamReader(csvLocation + site + ".csv"))

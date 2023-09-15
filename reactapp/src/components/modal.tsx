@@ -231,7 +231,6 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                             </tr>
                         </thead>
                         <tbody>
-                            {/* <Form updateForm={updateForm} setForm={setForm}/> */}
                             {[...IPs].sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress)).map((IP, i) => 
                                  (formIndex == i)
                                     ? <Form key={i} updateForm={updateForm} IP={IP} setForm={setForm} formIndex={formIndex} onAddMachine={onAddMachine} setFormIndex={setFormIndex}/>
@@ -335,5 +334,6 @@ const ContextMenu = ({ siteName, setSite, indexIP, setFormIndex, rowIndex, check
 - [x] Remove machine has a confirmation box
 - [?] ! are not centered in the table
 - [ ] table header is sticky
-- [ ] backend writing to the CSVs and backing up every X hours
+- [/] backend writing to the CSVs and backing up every X hours
+- [ ] stylize the form so that it doesnt ruin the table like it currently does
 */

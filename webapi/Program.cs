@@ -24,8 +24,6 @@ app.UseStaticFiles();
 app.UseCors(MyAllowSpecificOrigins);
 
 app.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStarted.Register(IPAddressTracker.MainMethod);
-app.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStopping.Register(IPAddressTracker.OnShutdown);
-app.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStopped.Register(IPAddressTracker.OnShutdown);
 
 app.MapGet("/api/get_sites", () => {
     return IPAddressTracker.siteList;
@@ -49,6 +47,7 @@ app.MapGet("/api/ping_site/{site}", (string site) => {
 // this is a Post request but I'm too stupid to figure out why I can't post it. Maybe cause it needs to be a JSON or something (actually need to post something)?? ?
 app.MapGet("/api/ping_machine/{site}/{ip}", (string site, string ip) => {
     IP machine = IPAddressTracker.UpdateMachine(site, ip);
+    IPAddressTracker.WriteToCsv(site);
     return machine;
 });
 

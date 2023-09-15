@@ -97,7 +97,14 @@ table {
     border-radius: 20px;
     padding-left: 10px;
 }
-  
+
+/* .table-container thead th {
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    background-color: #363a42;
+} */
+
 th, td {
     text-align: center;
     padding: 8px;
