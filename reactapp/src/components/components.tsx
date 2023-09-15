@@ -21,7 +21,7 @@ export const BufferingIcon = () => {
 
 export function PingButton<T extends IP | string>(props: PingButtonProps<T>) {
     // clicked is going to equal one of the states that is defined in setClicked (it is a getter and setter in the [])
-    const { update, apiPath } = props
+    const { update, apiPath, ...passProps} = props
 
     const [clicked, setClicked] = React.useState<boolean>(false)
     const pingSite = async (e) => {
@@ -37,7 +37,7 @@ export function PingButton<T extends IP | string>(props: PingButtonProps<T>) {
         }
     }
     return (
-        <button className={"ping-button" + (clicked ? " loading" : "")} onClick={(e) => pingSite(e)} {...props}>
+        <button className={"ping-button" + (clicked ? " loading" : "")} onClick={(e) => pingSite(e)} {...passProps as HTMLAttributes<HTMLButtonElement>}>
             {(!clicked) 
                 ? <PingIcon/>
                 : <BufferingIcon/>

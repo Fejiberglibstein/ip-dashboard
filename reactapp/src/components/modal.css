@@ -62,9 +62,8 @@
     font-size: 28px;
     font-weight: bold;
     position: sticky;
-    right: 0px;
-    top: 0px;
-    transform: translateX(80px);
+    right: 20px;
+    top: 10px;
 }
   
 .close:hover,
@@ -153,20 +152,6 @@ tr:nth-child(odd) {
     cursor: pointer;
     background-color: #235077;
 }
-
-.table-container::-webkit-scrollbar {
-    width: 6px;
-}
-
-
-
-.table-container::-webkit-scrollbar-thumb {
-    background-color: #aaaaaa;
-    border-radius: 6px;
-    /* border: 3px solid var(--scrollbarBG); */
-  }
-
-
 
   /* ==========[ CSS for the moving icons ]========== */
 

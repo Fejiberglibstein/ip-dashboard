@@ -17,6 +17,10 @@ namespace IpAddressTracker {
 
         public static Dictionary<string, List<IP>> siteList = new Dictionary<string, List<IP>>();
 
+        private static System.Timers.Timer aTimer;
+
+        private static int intervals = 0;
+
         public static void MainMethod() {
             string[] files = Directory.GetFiles(csvLocation, "*.csv", SearchOption.TopDirectoryOnly);
 
@@ -28,7 +32,23 @@ namespace IpAddressTracker {
                 WriteToCsv(path);
             }
 
-            AutoTimer.AutoTimer timer = new AutoTimer.AutoTimer();
+             aTimer = new System.Timers.Timer();
+             aTimer.Interval = 10000;
+
+             aTimer.Elapsed += OnTimedEvent;
+
+             aTimer.AutoReset = true;
+
+             aTimer.Enabled = true;
+        }
+
+        private static void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e) {
+            UpdateSite("baguio");
+            intervals++;
+
+            if (intervals % 3 == 0) {
+                System.Diagnostics.Debug.WriteLine("is this working?");
+            }
         }
 
         /*  Called when a user clicks on the ping button on a specific site with a fetch to "/api/ping_site/{site}"
@@ -171,41 +191,6 @@ namespace IpAddressTracker {
                     if (csv.GetField<string>("CheckThis") != "") { address.CheckThis = csv.GetField<bool>("CheckThis"); }
                     siteList[site].Add(address);
                 }
-            }
-        }
-    }
-}
-
-namespace AutoTimer {
-    public class AutoTimer {
-        private static System.Timers.Timer aTimer;
-
-        public static int intervals;
-
-        public static void Main() {
-            System.Diagnostics.Debug.WriteLine("This will be displayed in output window 2");
-            // Create a timer and set a two second interval.
-            aTimer = new System.Timers.Timer();
-            aTimer.Interval = 15000;
-
-            // Hook up the Elapsed event for the timer. 
-            aTimer.Elapsed += OnTimedEvent;
-
-            // Have the timer fire repeated events (true is the default)
-            aTimer.AutoReset = true;
-
-            // Start the timer
-            aTimer.Enabled = true;
-        }
-
-        private static void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("This will be displayed in output window");
-            IPAddressTracker.UpdateSite("baguio");
-            intervals++;
-
-            if (intervals % 3 == 0) {
-                IPAddressTracker.WriteToCsv("baguio");
             }
         }
     }

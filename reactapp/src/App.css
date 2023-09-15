@@ -35,6 +35,17 @@ body, #root {
   gap: 1.875rem;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #aaaaaa;
+  border-radius: 6px;
+  /* border: 3px solid var(--scrollbarBG); */
 }
 
 button { 

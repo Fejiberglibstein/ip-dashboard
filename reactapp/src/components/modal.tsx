@@ -1,16 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import "./modal.css";
-import { IP, PopupModalProps } from "../types";
+import { FormProps, IP, PopupModalProps } from "../types";
 import { PingButton, Timestamp, Tooltip } from "./components"
 import { getIPStatus } from "../status-colors";
 import { ChangeIcon, CriticalStickyIcon, OptionsIcon, RemoveIcon } from "../assets/icons";
+
+const hasPassword: boolean = false;
 
 export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, setSite}: PopupModalProps): React.JSX.Element => {
 	
 	// List of the critical machines
     const [menuIndex, setMenuIndex] = useState<number | null>(null)
-    const [formIndex, setFormIndex] = useState<number | null>(null)
+    const [formIndex, setFormIndex] = useState<number | "add" | null>(null)
     const [form, setForm] = React.useState<IP | null>(null);
     
     let criticalMachineLookup = IPs?.filter((IP) => IP.checkThis) 
@@ -121,6 +123,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 
     function onStickyClick(index: number) {
         criticalRowRefs.current[index].scrollIntoView({behavior: "smooth", block:"nearest"})
+        // modalContentRef.current.scro
     }
 
     function compareIPAddresses(a, b) {
@@ -153,11 +156,24 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
         }
     }
 
+    const changeMachine = async (event, i: number) => {
+        try {
+            const response = await fetch(`api/change_machine/${siteName}/${i}`, {
+                body: JSON.stringify(form),
+                method: "PUT",
+                headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+            })
+            const result = await response.json()
+            setSite(siteName, result)
+        }
+        catch {
+            alert("Change has failed")
+        }
+    }
+
     const updateForm = (event) => {
         setForm({...form, [event.target.name]: event.target.value} as IP)
     }
-   
-    
 
     return (
         <div className={`modal-background`} onClick={() => { setPopupSiteName(null); setMenuIndex(null); setFormIndex(null) }}>
@@ -168,13 +184,18 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 			>
 				<div id="icon-container">
 					{criticalMachineLookup?.map((_, i) => // Create elements for each critical machine
-						<div hidden={true} ref={(el) => (el) && criticalIconRefs.current.push(el)} className="sticky-offline">
+						<div key={i} hidden={true} ref={(el) => (el) && criticalIconRefs.current.push(el)} className="sticky-offline">
 							<CriticalStickyIcon/>
 						</div>
 					)}
 				</div>
                 <span className="close" onClick={() => setPopupSiteName(null)}>&times;</span>
-                <form method="GET" id="my_form" onSubmit={(e) => { e.stopPropagation(); if(formIndex == null) insertMachine; setFormIndex(null);}} autoComplete="off"/>
+                <form method="GET" id="my_form" onSubmit={(e) => {
+                    e.preventDefault();
+                    if(formIndex == null) insertMachine(e);
+                    else changeMachine(e, formIndex as number);
+                    setFormIndex(null)
+                }} autoComplete="off"/>
                 <div className="table-container" ref={modalContentRef} onScroll={handleScroll}>
                     <table>
                         <thead>
@@ -191,7 +212,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                             {/* <Form updateForm={updateForm}/> */}
                             {[...IPs].sort((a,b) => compareIPAddresses(a.ipAddress, b.ipAddress)).map((IP, i) => 
                                  (formIndex == i)
-                                    ? <Form updateForm={updateForm}/>
+                                    ? <Form key={i} updateForm={updateForm} IP={IP} setForm={setForm}/>
                                     : <tr    // Create Reference for all the machines that are critical
                                     ref={(el) => (criticalMachineLookup && el && getIPStatus(IP).status == "critical")
                                         ? criticalRowRefs.current.push(el)
@@ -216,7 +237,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                                         <button title="options" className="options-button" onClick={e => { e.stopPropagation(); setMenuIndex(i) }}><OptionsIcon/></button>
                                         {
                                             (menuIndex == i)
-                                            ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite} form={form} setFormIndex={setFormIndex} rowIndex={i} ></ContextMenu>
+                                            ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite} setFormIndex={setFormIndex} rowIndex={i} ></ContextMenu>
                                             : <></>
                                         }
                                     </td>
@@ -230,20 +251,22 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
     );
 }
 
-const Form = ({ updateForm }): React.JSX.Element => {
+const Form = ({ IP = {"ipAddress": "", "assetNumber": "", "machineName": ""}, updateForm, setForm}: FormProps): React.JSX.Element => {
+    setForm(IP)
     return (
-        <tr className="machine-form">
-            <td> <input aria-label="IP Address" type="text" name="ipAddress" form="my_form" onChange={e => updateForm(e)} required/> </td>
-            <td> <input aria-label="Asset Number" type="text" name="assetNumber" form="my_form" onChange={e => updateForm(e)} required/> </td>
-            <td> <input aria-label="Machine Name"  type="text" name="machineName" form="my_form" onChange={e => updateForm(e)} required/> </td>
+        <tr style={{"--status-color": "#709fc9"} as React.CSSProperties} className="machine-form">
+            <td> <input aria-label="IP Address" type="text" name="ipAddress" form="my_form" defaultValue={IP?.ipAddress} onChange={e => updateForm(e)} required/> </td>
+            <td> <input aria-label="Asset Number" type="text" name="assetNumber" form="my_form" defaultValue={IP?.assetNumber} onChange={e => updateForm(e)} required/> </td>
+            <td> <input aria-label="Machine Name"  type="text" name="machineName" form="my_form" defaultValue={IP?.machineName} onChange={e => updateForm(e)} required/> </td>
             <td colSpan={3}> <input type="submit" form="my_form" value={"Insert New Machine"}/> </td>
         </tr>
     )
 }
 
-const ContextMenu = ({ siteName, setSite, indexIP, form, setFormIndex, rowIndex }): React.JSX.Element => {
+const ContextMenu = ({ siteName, setSite, indexIP, setFormIndex, rowIndex }): React.JSX.Element => {
     
     const removeMachine = async (event, i: number) => {
+        if (!confirm("Are you sure you want to delete this machine?")) return;
         try {
             const response = await fetch(`api/remove_machine/${siteName}/${i}`, {
                 method: "DELETE",
@@ -256,30 +279,22 @@ const ContextMenu = ({ siteName, setSite, indexIP, form, setFormIndex, rowIndex 
             alert("Remove has failed")
         }
     }
-
-    const changeMachine = async (event, i: number) => {
-        try {
-            const response = await fetch(`api/change_machine/${siteName}/${i}`, {
-                body: JSON.stringify(form),
-                method: "POST",
-                headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
-            })
-            const result = await response.json()
-            setSite(siteName, result)
-        }
-        catch {
-            alert("Change has failed")
-        }
-    }
     
     return (
         <ul className="context-menu">
             <li> <button onClick={(e) => removeMachine(e, indexIP)}>
                 <RemoveIcon/> Remove
             </button> </li>
-            <li> <button onClick={(e) => {e.stopPropagation(); setFormIndex(rowIndex)}}>
+            <li> <button onClick={(e) => { e.stopPropagation(); setFormIndex(rowIndex) }}>
                 <ChangeIcon/> Change
             </button> </li>
         </ul>
     )
 }
+
+/* TODO:
+- Change and remove require a password one time preferrably
+- Insert new IP button on a site card
+- Complete company site card w/ stats of all sites and a ping any IP address textbox
+- 'X' in a row where there is a form
+*/

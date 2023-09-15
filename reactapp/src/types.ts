@@ -73,8 +73,13 @@ export interface TimestampProps extends HTMLAttributes<HTMLElement> {
     time: Date
 }
 
-
 export interface PingButtonProps<T extends IP | String> extends HTMLAttributes<HTMLElement> {
     update: (arg1: T) => void,
     apiPath: string
+}
+
+export type FormProps = {
+    IP?: IP
+    updateForm: (Event) => void
+    setForm: React.Dispatch<React.SetStateAction<IP | null>>
 }
