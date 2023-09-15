@@ -23,7 +23,7 @@ namespace IpAddressTracker {
 
         private static List<string> siteNames = new List<string>();
 
-        private static System.Timers.Timer aTimer;
+        private static System.Timers.Timer aTimer = null!;
 
         private static int hourIntervals = 0;
 
@@ -125,6 +125,20 @@ namespace IpAddressTracker {
                 }
             }
             return machine;
+        }
+
+        //
+        public static bool PingRandomIP(string ip) {
+            if (!CheckIP(ip)) throw new Exception("Invalid IP"); 
+            Ping ping = new Ping();
+            PingReply reply;
+            try {
+                reply = ping.Send(ip, 2000);
+            }
+            catch (PingException) {
+                throw new Exception("Invalid IP");
+            }
+            return reply.Status == IPStatus.Success;
         }
 
         // Checks a string IP to see if it is valid, taken from online since it's way cleaner than I would've done

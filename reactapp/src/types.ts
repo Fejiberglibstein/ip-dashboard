@@ -31,9 +31,9 @@ export interface IPdata {
 }
 
 // 
-export interface SiteStatusProps {
-    status: "online" | "offline" | "critical",
-    color: string,
+export interface SiteStatusProps extends HTMLAttributes<HTMLElement> {
+    status?: "online" | "offline" | "critical",
+    color?: string,
     machinesOnline?: number,
     machinesOffline?: number,
     machinesCritical?: number
@@ -85,4 +85,8 @@ export type FormProps = {
     setFormIndex: React.Dispatch<React.SetStateAction<number | "add" | null>>
     formIndex: number | "add" | null,
     onAddMachine: Function,
+}
+
+export type BannerProps = {
+    sites: { [id: string] : Array<IP> }
 }

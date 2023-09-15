@@ -37,6 +37,11 @@ app.MapGet("/api/get_machine/{site}/{ip}", (string site, string ip) => {
     return IPAddressTracker.siteList[site].Find(c => c.IpAddress == ip);
 });
 
+app.MapPost("/api/ping_random/{ip}", (string ip) => {
+    bool retVal = IPAddressTracker.PingRandomIP(ip);
+    return retVal;
+});
+
 // this is a Post request but I'm too stupid to figure out why I can't post it. Maybe cause it needs to be a JSON or something (actually need to post something)?? ?
 // You probably need to add a body to the request in frontend
 app.MapGet("/api/ping_site/{site}", (string site) => {

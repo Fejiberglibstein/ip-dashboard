@@ -33,11 +33,16 @@
     align-self: stretch;
     position: relative;
     cursor: pointer;
+}
 
+.site-status-container {
+    display: flex;
+    flex-direction: column;
+    --text-color: #717171
 }
 
 .site-status-container span {
-    color: #717171;
+    color: var(--text-color);
 
     /* Body */ 
     font-family: Space Grotesk;

@@ -9,17 +9,12 @@ import { getSiteStatus } from "../status-colors";
 
 // this is a component, so it needs to return jsx (component is like a node (godot))
 export const Site = ({siteName, IPs, setSite, popupSite}: SiteProps): React.JSX.Element => {   // the variable IPs needs to be an array of IPs (IPs is parameter)
-    
-    const criticalIPs = IPs.filter((IP) => IP.checkThis && !IP.isOnline);                   //List of all IPs that need to be checked
-    const offlineIPs = IPs.filter((IP) => !IP.isOnline && !IP.checkThis);                   //List of all Offline IPs
-    const onlineIPs = IPs.filter((IP) => IP.isOnline && !IP.checkThis);                     //List of all Online IPs
 
-    const IPdata = {criticalIPs: criticalIPs, offlineIPs: offlineIPs, onlineIPs: onlineIPs};
 
-    const siteStatus = getSiteStatus(IPdata);
+    const siteStatus: SiteStatusProps = getSiteStatus(IPs);
 
     // now for the list
-    const machineList = criticalIPs.concat(offlineIPs).slice(0,5)
+    const machineList = IPs.filter(c => !c.isOnline).sort((a, b) => (a.timeSinceLastPing && b.timeSinceLastPing) ? b.timeSinceLastPing - a.timeSinceLastPing : 0).slice(0,5)
     machineList.sort((a,b) => {
         if ( a.timeSinceLastPing !== undefined &&  b.timeSinceLastPing !== undefined) 
             return b.timeSinceLastPing - a.timeSinceLastPing 
@@ -32,7 +27,7 @@ export const Site = ({siteName, IPs, setSite, popupSite}: SiteProps): React.JSX.
         <div className="site-card" style={{borderLeft: "5.70px solid " + siteStatus.color}}>
             <span>{siteName.replace(/_/g, " ")}</span>
             <div className="site-card-content" onClick={() => popupSite(siteName)}>
-                <SiteStatus site={siteStatus}/>
+                <SiteStatus {...siteStatus} />
                 <MachineList machineList={machineList}/>
                 <PingButton
                     update={(response) => setSite(siteName, response)}
@@ -45,10 +40,11 @@ export const Site = ({siteName, IPs, setSite, popupSite}: SiteProps): React.JSX.
 }
 
 
-const SiteStatus = ({site: {machinesOnline, machinesOffline, machinesCritical}}: {site: SiteStatusProps}): React.JSX.Element => {
-    
+export const SiteStatus = (site: SiteStatusProps): React.JSX.Element => {
+
+    const {machinesOnline, machinesOffline, machinesCritical, ...props} = site
     return (
-        <div className="site-status-container">
+        <div {...props} className="site-status-container">
             { (machinesCritical !== (0 || undefined)) 
                 ? <div> <StatusCriticalIcon/> <span>{machinesCritical + ((machinesCritical == 1) ? " Machine critical" : " Machines critical")}</span> </div>
                 : <></>

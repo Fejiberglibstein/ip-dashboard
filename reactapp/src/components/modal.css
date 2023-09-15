@@ -100,12 +100,12 @@ table {
     table-layout: fixed;
 }
 
-/* .table-container thead th {
-    position: sticky;
+.table-container thead th {
+    /* position: sticky;
     top: 0px;
-    z-index: 1;
-    background-color: #363a42;
-} */
+    z-index: 1; */
+    background-color: #082742;
+}
 
 th, td {
     text-align: center;

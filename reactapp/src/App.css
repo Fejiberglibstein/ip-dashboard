@@ -25,8 +25,73 @@ body, #root {
   /* -webkit-text-size-adjust: 100%; */
 }
 
+.banner {
+  height: 68px;
+  width: 100%;
+  background-color: #505671;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
 
-.app { 
+.app-name {
+  position: relative;
+  float: left;
+  left: 10px;
+  width: fit-content;
+}
+
+.solo-ping {
+  position: relative;
+  float: right;
+  right: 10px;
+  width: fit-content;
+  height: min-content;
+}
+
+form {
+  font-family: Space Grotesk;
+}
+
+form input {
+  font-family: inherit;
+}
+
+form input[type=text] {
+  width: 100%;
+  background-color: unset;
+  border: rgba(216, 216, 216, 0.185) solid 2px;
+  border-radius: 3px;
+  padding: 5px;
+}
+
+form input[type="text"]:focus,input[type="text"]:hover {
+  border: white solid 2px;
+}
+
+
+form input[type=submit] {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #663FAD;
+  color: #A4A4A4;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-width: 0px;
+  opacity: 1;
+  transition: 200ms;
+  width: fit-content;
+}
+
+form input[type=submit]:hover {
+    cursor: pointer;
+    background-color: #7851c2;
+}
+
+.site-card-container { 
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;

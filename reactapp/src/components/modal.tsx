@@ -217,7 +217,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                     else if(formIndex == "add") insertMachine(e);
                     else changeMachine(e, formIndex as number);
                     setFormIndex(null)
-                }} autoComplete="off"/>
+                }} autoComplete="off" autoCorrect="off"/>
                 <div className="table-container" ref={modalContentRef} onScroll={handleScroll}>
                     <table>
                         <thead>
@@ -287,9 +287,9 @@ const Form = ({ IP, updateForm, setForm, formIndex, onAddMachine, setFormIndex}:
 
     return (
         <tr style={{"--status-color": "#7861d3"} as React.CSSProperties} className="machine-form">
-            <td> <input aria-label="IP Address" type="text" name="ipAddress" form="my_form" defaultValue={IP.ipAddress} onChange={e => updateForm(e)} required/> </td>
-            <td> <input aria-label="Asset Number" type="text" name="assetNumber" form="my_form" defaultValue={IP.assetNumber} onChange={e => updateForm(e)} required/> </td>
-            <td> <input aria-label="Machine Name"  type="text" name="machineName" form="my_form" defaultValue={IP.machineName} onChange={e => updateForm(e)} required/> </td>
+            <td> <input aria-label="IP Address" type="text" name="ipAddress" form="my_form" defaultValue={IP.ipAddress} placeholder="IP Address" onChange={e => updateForm(e)} required/> </td>
+            <td> <input aria-label="Asset Number" type="text" name="assetNumber" form="my_form" defaultValue={IP.assetNumber} placeholder="Asset Number" onChange={e => updateForm(e)} required/> </td>
+            <td> <input aria-label="Machine Name"  type="text" name="machineName" form="my_form" defaultValue={IP.machineName} placeholder="Machine Name" onChange={e => updateForm(e)} required/> </td>
             <td/>
             <td> <input type="submit" form="my_form" value={ (formIndex == "add" ? "Add New Machine" : "Modify Machine") }/> </td>
             <td> <span className="options-button" onClick={() => {setFormIndex(null); console.log(formIndex)}}><CloseIcon/></span> </td>
@@ -330,11 +330,11 @@ const ContextMenu = ({ siteName, setSite, indexIP, setFormIndex, rowIndex, check
 /* TODO:
 - [x] Change and remove require a password one time preferrably
 - [x] Insert new IP button on a site card
-- [ ] Complete company site card w/ stats of all sites and a ping any IP address textbox
+- [x] Complete company site card w/ stats of all sites and a ping any IP address textbox (changed to a banner, site card didn't make much sense)
 - [x] 'X' in a row where there is a form 
 - [x] Remove machine has a confirmation box
 - [?] ! are not centered in the table
 - [ ] table header is sticky
-- [/] backend writing to the CSVs and backing up every X hours
-- [ ] stylize the form so that it doesnt ruin the table like it currently does
+- [~] backend writing to the CSVs and backing up every X hours
+- [x] stylize the form so that it doesnt ruin the table like it currently does
 */
