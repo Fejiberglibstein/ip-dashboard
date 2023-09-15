@@ -7,6 +7,8 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 using CsvHelper;
 using IPClass;
+using System.Timers;
+using IpAddressTracker;
 
 namespace IpAddressTracker {
 
@@ -25,8 +27,14 @@ namespace IpAddressTracker {
                 UpdateSite(path);
                 WriteToCsv(path);
             }
+
+            AutoTimer.AutoTimer timer = new AutoTimer.AutoTimer();
         }
 
+        /*  Called when a user clicks on the ping button on a specific site with a fetch to "/api/ping_site/{site}"
+         *  Also called within IpTracker.cs at program startup so that the site is updated
+         *  Want to be able to run this at intervals like every X hours so that it is continuously updating but right now only way I know to do it is as a scheduled task
+         */
         public static List<IP> UpdateSite(string site) {
             Parallel.ForEach(siteList[site], ipAddress => {
                 UpdateMachine(site, ipAddress.IpAddress);
@@ -34,6 +42,9 @@ namespace IpAddressTracker {
             return siteList[site];
         }
 
+        /*  Called when a user clicks on the ping button on a specific machine with a fetch to "/api/ping_machine/{site}/{ip}"
+         *  Also called within IpTracker.cs when a new machine is inserted or when a machine is changed with a new IP address
+         */
         public static IP UpdateMachine(string site, string ip) {
             Ping ping = new Ping();
             DateTime currentTime = DateTime.Now;
@@ -46,7 +57,7 @@ namespace IpAddressTracker {
             // catch (PingException) {
             //     return new IP {IpAddress = "null", MachineName = "null"};
             // }
-            IP machine = siteList[site].Find(c => c.IpAddress == ip)!; // ?? throw new ArgumentException();
+            IP machine = siteList[site].Find(c => c.IpAddress == ip)!;
             machine.CurrentTime = currentTime;
             machine.IsOnline = reply.Status == IPStatus.Success;
             if (machine.IsOnline == true) {
@@ -69,6 +80,7 @@ namespace IpAddressTracker {
             return machine;
         }
 
+        // Writes to a site's csv file all at once, does not go row by row if one machine was pinged or updated
         public static void WriteToCsv(string site) {
             using (var writer = new StreamWriter(csvLocation + site + ".csv"))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
@@ -77,17 +89,16 @@ namespace IpAddressTracker {
             }
         }
 
+        // Hopefully, when the app is closing down this function runs so that each csv file is up to date when it ends
         public static void OnShutdown() {
             foreach(string site in siteList.Keys) {
                 WriteToCsv(site);
             }
         }
 
-        // This function is called when adding a new machine from the site card table
-        // It checks to make sure that the IP address is valid to make sure there was not an error when entering the form on the table
-        public static List<IP> AddMachine(string site, IP retval) {
-            // taken from online, way better than I could've done
-            var octets = retval.IpAddress.Split('.');
+        // Checks a string IP to see if it is valid, taken from online since it's way cleaner than I would've done
+        static bool CheckIP(string IP) {
+            var octets = IP.Split('.');
             bool isValid = octets.Length == 4
                && !octets.Any(
                    x =>
@@ -95,33 +106,60 @@ namespace IpAddressTracker {
                        int y;
                        return Int32.TryParse(x, out y) && y > 255 || y < 1;
                    });
+            return isValid;
+        }
+        // Called when user enters a new machine in the table form with a fetch to "/api/add_machine/{site}"
+        public static List<IP> AddMachine(string site, IP retval) {
+            // first, checks to see if the given IP address is valid, and if it is adds the machine to the siteList variable
+            bool isValid = CheckIP(retval.IpAddress);
             
             if (isValid && siteList[site].Find(c => retval.IpAddress == c.IpAddress) == null) {
                 siteList[site].Add(retval);
                 UpdateMachine(site, retval.IpAddress);
             }
+            else {
+                throw new Exception("Invalid IP");
+            }
             return siteList[site];
         }
 
+        // Called when user clicks on Remove button in Options Menu with a fetch to "/api/remove_machine/{site}/{index}"
         public static List<IP> RemoveMachine(string site, int i) {
             siteList[site].RemoveAt(i);
             return siteList[site];
         }
 
+        /*  Called when user clicks on Change button in Options Menu with a fetch to "/api/change_machine/{site}/{index}"
+         *  site = the site card it was clicked from (east_aurora, torrance, etc.)
+         *  i = index of the IP in siteList, retval = the IP from the frontend form
+         */ 
         public static List<IP> ChangeMachine(string site, int i, IP retval) {
-            siteList[site][i].IpAddress = retval.IpAddress;
-            siteList[site][i].AssetNumber = retval.AssetNumber;
-            siteList[site][i].MachineName = retval.MachineName;
+            // if the IP addresses are the same, then we don't have to update the ping data since asset or name was the only thing changed
+            if (siteList[site][i].IpAddress == retval.IpAddress) {  
+                siteList[site][i].AssetNumber = retval.AssetNumber;
+                siteList[site][i].MachineName = retval.MachineName;
+            }
+            // if the IP addresses are different, then we need to ping the new IP address to generate new data
+            else {
+                if (!CheckIP(retval.IpAddress)) {
+                    throw new Exception("Invalid IP Address");
+                }
+                siteList[site][i].IpAddress = retval.IpAddress;
+                siteList[site][i].AssetNumber = retval.AssetNumber;
+                siteList[site][i].MachineName = retval.MachineName;
+                UpdateMachine(site, siteList[site][i].IpAddress);
+            }
             return siteList[site];
         }
-
+    
+        // Called at startup of the app, reads the site's csv and creates a list of IP's 
         public static void InitialCsvRead(string site) {
             using (StreamReader reader = new StreamReader(csvLocation + site + ".csv"))
             using (CsvReader csv = new CsvReader(reader, CultureInfo.InvariantCulture)) {
                 csv.Read();
                 csv.ReadHeader();
                 while(csv.Read()) {
-                    IPClass.IP address = new IPClass.IP { 
+                    IP address = new IP { 
                         IpAddress = csv.GetField<string>("IpAddress")!,
                         MachineName = csv.GetField<string>("MachineName")!
                     };
@@ -133,6 +171,41 @@ namespace IpAddressTracker {
                     if (csv.GetField<string>("CheckThis") != "") { address.CheckThis = csv.GetField<bool>("CheckThis"); }
                     siteList[site].Add(address);
                 }
+            }
+        }
+    }
+}
+
+namespace AutoTimer {
+    public class AutoTimer {
+        private static System.Timers.Timer aTimer;
+
+        public static int intervals;
+
+        public static void Main() {
+            System.Diagnostics.Debug.WriteLine("This will be displayed in output window 2");
+            // Create a timer and set a two second interval.
+            aTimer = new System.Timers.Timer();
+            aTimer.Interval = 15000;
+
+            // Hook up the Elapsed event for the timer. 
+            aTimer.Elapsed += OnTimedEvent;
+
+            // Have the timer fire repeated events (true is the default)
+            aTimer.AutoReset = true;
+
+            // Start the timer
+            aTimer.Enabled = true;
+        }
+
+        private static void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("This will be displayed in output window");
+            IPAddressTracker.UpdateSite("baguio");
+            intervals++;
+
+            if (intervals % 3 == 0) {
+                IPAddressTracker.WriteToCsv("baguio");
             }
         }
     }
