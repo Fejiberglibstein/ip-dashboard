@@ -116,7 +116,6 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 				// Unhide element and position it
 				icon.hidden = false
 				icon.setAttribute('style', `top: ${iconData.top}px; left: ${80 + iconData.left - leftShift}px; cursor: ${iconData.cursor}`)	
-
 			}
 		}
 	}
