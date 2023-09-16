@@ -65,7 +65,9 @@ input {
   height: min-content;
   border-radius: 100px;
   overflow: clip;
-  border: #ffffff66 solid 2px;
+  border: #ffffff00 inset 2px;
+  background-color: #1616164f;
+
 
 }
 
@@ -75,14 +77,14 @@ input {
   border: none;
   border-radius: inherit;
   padding: 8px;
-  background-color: #16161675;
   padding-left: 10px;
   color: #bbb;
   font-weight: 800;
 }
 
 .solo-ping:has(input[type="text"]:focus-visible) {
-  border: white solid 2px;
+  border: #ffffff00 solid 2px;
+  background-color:#16161675;
   outline: none;
 }
 
@@ -108,8 +110,8 @@ input {
   position: absolute;
   height: 100%;
   border-radius: inherit;
-  padding-left: 8px;
-  gap: 6px;
+  padding-left: 7px;
+  gap: 7px;
   padding-right: 26px;
   border: none;
   right: 34px;

@@ -97,7 +97,7 @@ const Banner = ({ sites }: BannerProps): React.JSX.Element => {
             <SiteStatus 
                 style={{
                     flexDirection: "row-reverse",
-                    gap: "10px", "--text-color":"white",
+                    gap: "10px", "--text-color":"#ccc",
                 } as React.CSSProperties}
                 childStyle={{background: "#0006", padding: "2px", paddingRight: "9px", borderRadius: "100px"}}
                 {...companyWideStatus}
