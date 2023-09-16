@@ -36,7 +36,8 @@ export interface SiteStatusProps extends HTMLAttributes<HTMLElement> {
     color?: string,
     machinesOnline?: number,
     machinesOffline?: number,
-    machinesCritical?: number
+    machinesCritical?: number,
+    childStyle?: React.CSSProperties
 }
 
 export interface IPStatus {

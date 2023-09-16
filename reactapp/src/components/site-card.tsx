@@ -43,19 +43,19 @@ export const Site = ({siteName, IPs, setSite, popupSite}: SiteProps): React.JSX.
 
 export const SiteStatus = (site: SiteStatusProps): React.JSX.Element => {
 
-    const {machinesOnline, machinesOffline, machinesCritical, ...props} = site
+    const {machinesOnline, machinesOffline, machinesCritical, childStyle, ...props} = site
     return (
         <div {...props} className="site-status-container">
             { (machinesCritical !== (0 || undefined)) 
-                ? <div> <Icon icon="tabler:circle-x-filled" color="#e55050" width="24" height="24" /> <span>{machinesCritical + ((machinesCritical == 1) ? " Machine critical" : " Machines critical")}</span> </div>
+                ? <div style={childStyle}> <Icon icon="tabler:circle-x-filled" color="#e55050" width="24" height="24" /> <span>{machinesCritical + ((machinesCritical == 1) ? " Machine critical" : " Machines critical")}</span> </div>
                 : <></>
             }
             { (machinesOffline !== (0 || undefined)) 
-                ? <div> <Icon icon="tabler:alert-circle-filled" color="#ffc737" width="24" height="24"/>  <span> {machinesOffline + ((machinesOffline == 1) ? " Machine offline" : " Machines offline")}</span> </div>
+                ? <div style={childStyle}> <Icon icon="tabler:alert-circle-filled" color="#ffc737" width="24" height="24"/>  <span> {machinesOffline + ((machinesOffline == 1) ? " Machine offline" : " Machines offline")}</span> </div>
                 : <></>
             }
             { (machinesOnline !== (0 || undefined)) 
-                ? <div> <Icon icon="tabler:circle-check-filled" color="#0fa958" width="24" height="24" /> <span>{machinesOnline + ((machinesOnline == 1) ? " Machine online" : " Machines online")}</span> </div>
+                ? <div style={childStyle}> <Icon icon="tabler:circle-check-filled" color="#0fa958" width="24" height="24" /> <span>{machinesOnline + ((machinesOnline == 1) ? " Machine online" : " Machines online")}</span> </div>
                 : <></>
             }
         </div>

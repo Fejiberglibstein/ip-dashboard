@@ -94,12 +94,19 @@ const Banner = ({ sites }: BannerProps): React.JSX.Element => {
     return (
         <div className="banner">
             <div className="app-name">IP Dashboard Thing</div>
-            <SiteStatus style={{flexDirection: "row-reverse", gap: "10px", "--text-color":"white"} as React.CSSProperties} {...companyWideStatus}></SiteStatus>
-            <div className="worst-machine">
+            <SiteStatus 
+                style={{
+                    flexDirection: "row-reverse",
+                    gap: "10px", "--text-color":"white",
+                } as React.CSSProperties}
+                childStyle={{background: "#0006", padding: "2px", paddingRight: "9px", borderRadius: "100px"}}
+                {...companyWideStatus}
+            />
+            {/* <div className="worst-machine">
                 <div> {worstMachine[0].ipAddress} </div>
                 <div> {worstMachine[0].assetNumber} </div>
                 <div> {worstMachine[0].machineName} </div>
-            </div>
+            </div> */}
             <SoloPingForm/>
         </div>
     );

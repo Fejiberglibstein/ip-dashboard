@@ -29,7 +29,7 @@ input {
 }
 
 .banner {
-  height: 90px;
+  height: 64px;
   width: 100%;
   background-color: #3f4357;
   display: flex;
@@ -46,6 +46,7 @@ input {
 }
 
 .worst-machine {
+  visibility: hidden;
   background: #16161675;
   padding: 4px;
   border-radius: 5px;

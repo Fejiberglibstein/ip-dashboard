@@ -260,7 +260,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                                             (menuIndex == i)
                                             ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite} setFormIndex={setFormIndex} rowIndex={i} checkPassword={checkPassword} ></ContextMenu>
                                             : <></>
-                                        }
+                                        }   
                                     </td>
                                 </tr>
                             )}
