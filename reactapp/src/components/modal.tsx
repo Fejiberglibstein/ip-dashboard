@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Icon } from '@iconify/react';
 
 import "./modal.css";
 import { FormProps, IP, PopupModalProps } from "../types";
 import { PingButton, Timestamp, Tooltip } from "./components"
 import { getIPStatus } from "../status-colors";
-import { ChangeIcon, CriticalStickyIcon, OptionsIcon, RemoveIcon, AddIcon, CloseIcon } from "../assets/icons";
 
 var hasPassword: boolean = false;
 const officialPasswords: string[] = ["cimcous2023", "cimcouk2023", "cimcoph2023"]
@@ -205,12 +205,12 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 				<div id="icon-container">
 					{criticalMachineLookup?.map((_, i) => // Create elements for each critical machine
 						<div key={i} hidden={true} ref={(el) => (el) && criticalIconRefs.current.push(el)} className="sticky-offline">
-							<CriticalStickyIcon/>
+							<Icon icon="uil:exclamation" color="#e55050" width="40" height="40" />
 						</div>
 					)}
 				</div>
                 <span className="close" onClick={() => setPopupSiteName(null)}>&times;</span>
-                <button className="add-machine" onClick={() => setFormIndex("add") }><AddIcon/>Insert Machine</button>
+                <button className="add-machine" onClick={() => setFormIndex("add") }><Icon icon="tabler:playlist-add" width="16" height="16" />Add Machine</button>
                 <form method="GET" id="my_form" onSubmit={(e) => {
                     e.preventDefault();
                     if(formIndex == null) insertMachine(e);
@@ -255,7 +255,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                                         apiPath={`ping_machine/${siteName}/${IP.ipAddress}`}
                                     >Ping IP</PingButton></td>
                                     <td style={{position: "relative"}}>
-                                        <button title="Options" className="options-button" onClick={e => { e.stopPropagation(); setMenuIndex(i) }}><OptionsIcon/></button>
+                                        <button title="Options" className="options-button" onClick={e => { e.stopPropagation(); setMenuIndex(i) }}><Icon icon="uil:ellipsis-v" color="#a4a4a4" width="20" height="20" /></button>
                                         {
                                             (menuIndex == i)
                                             ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite} setFormIndex={setFormIndex} rowIndex={i} checkPassword={checkPassword} ></ContextMenu>
@@ -292,7 +292,7 @@ const Form = ({ IP, updateForm, setForm, formIndex, onAddMachine, setFormIndex}:
             <td> <input aria-label="Machine Name"  type="text" name="machineName" form="my_form" defaultValue={IP.machineName} placeholder="Machine Name" onChange={e => updateForm(e)} required/> </td>
             <td/>
             <td> <input type="submit" form="my_form" value={ (formIndex == "add" ? "Add New Machine" : "Modify Machine") }/> </td>
-            <td> <span className="options-button" onClick={() => {setFormIndex(null); console.log(formIndex)}}><CloseIcon/></span> </td>
+            <td> <span className="options-button" onClick={() => {setFormIndex(null); console.log(formIndex)}}>&times;</span> </td>
         </tr>
     )
 }
@@ -318,10 +318,10 @@ const ContextMenu = ({ siteName, setSite, indexIP, setFormIndex, rowIndex, check
     return (
         <ul className="context-menu">
             <li> <button onClick={(e) => removeMachine(e, indexIP)}>
-                <RemoveIcon/> Remove
+                <Icon icon="tabler:trash" color="#d33838" width="20" height="20" /> Remove
             </button> </li>
             <li> <button onClick={(e) => { e.stopPropagation(); setFormIndex(rowIndex) }}>
-                <ChangeIcon/> Change
+                <Icon icon="tabler:pencil" color="#d3a134" width="20" height="20" /> Change
             </button> </li>
         </ul>
     )
@@ -337,4 +337,6 @@ const ContextMenu = ({ siteName, setSite, indexIP, setFormIndex, rowIndex, check
 - [ ] table header is sticky
 - [~] backend writing to the CSVs and backing up every X hours
 - [x] stylize the form so that it doesnt ruin the table like it currently does
+- [ ] solo-ping button should give some sort of feedback on ping status
+- [ ] banner stylizing
 */

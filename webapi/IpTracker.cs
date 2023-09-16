@@ -129,7 +129,7 @@ namespace IpAddressTracker {
 
         //
         public static bool PingRandomIP(string ip) {
-            if (!CheckIP(ip)) throw new Exception("Invalid IP"); 
+            if (!CheckIP(ip)) return false; 
             Ping ping = new Ping();
             PingReply reply;
             try {

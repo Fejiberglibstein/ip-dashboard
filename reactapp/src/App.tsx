@@ -1,10 +1,12 @@
-import React from "react";
+import React, { ButtonHTMLAttributes, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { Site, SiteStatus } from "./components/site-card";
 import { BannerProps, IP } from "./types";
 import { PopupModal } from "./components/modal";
 import { getSiteStatus } from "./status-colors"
 import "./App.css";
+import { Icon } from "@iconify/react";
+import { BufferingIcon } from "./components/components";
 
 // called from main.jsx
 function App() {
@@ -83,38 +85,68 @@ const Banner = ({ sites }: BannerProps): React.JSX.Element => {
         companyWideStatus.machinesOnline += (temp.machinesOnline) ? temp.machinesOnline : 0;
     }
 
+    return (
+        <div className="banner">
+            <div className="app-name">IP Dashboard Thing</div>
+            <SiteStatus style={{flexDirection: "row-reverse", gap: "10px", "--text-color":"white"} as React.CSSProperties} {...companyWideStatus}></SiteStatus>
+            <div className="worstMachine">
+                Austin
+            </div>
+            <SoloPingForm/>
+        </div>
+    );
+}
+
+const SoloPingForm = ({  }): React.JSX.Element => {
+    const [buttonStatus, setButtonStatus] = useState<"Ping IP" | "Pinging" | "Online" | "Offline">("Ping IP")
+    const buttonStatusRef = useRef<HTMLButtonElement | null>(null)
+
+    const icons  = {"Ping IP": "tabler:wifi", "Online": "tabler:check", "Offline": "tabler:x"}
+    const colors = {"Ping IP": "#184268", "Pinging": "#30353A", "Online": "#0F5631", "Offline": "#7d3535"}
+
+
     const pingMachine = async (event) => {
         event.preventDefault()
+        console.log(event)
         try {
+            setButtonStatus("Pinging")
+            buttonStatusRef.current?.classList.add("show")
             const response = await fetch(`api/ping_random/${event.target[0].value}`, {
                 body: JSON.stringify(event.target[0].value),
                 method: "POST",
                 headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
             })
             const result = await response.json()
-            if (!JSON.parse(result)) alert("That IP is off")
-            else alert("That IP is online")
+            setButtonStatus((!JSON.parse(result)) ? "Offline" : "Online")
+            setTimeout(() => buttonStatusRef.current?.classList.remove("show"), 1000)
         }
         catch {
-            alert("Insert has failed")
+            alert("Cannot do that")
         }
     }
 
     return (
-        <div className="banner">
-            <div className="app-name">IP Dashboard Thing</div>
-            <SiteStatus style={{flexDirection: "row-reverse", gap: "10px", "--text-color":"white"} as React.CSSProperties} {...companyWideStatus}></SiteStatus>
-            <div className="solo-ping">
-                <form autoComplete="off" autoCorrect="off" onSubmit={(e) => {
-                    e.preventDefault();
+        <div className={`solo-ping ${buttonStatus}`}>
+            <form autoComplete="off" id="ping" autoCorrect="off" onSubmit={(e) => {
+                e.preventDefault();
                     pingMachine(e)
                 }}>
-                    <input type="text" placeholder="Type IP here"/>
-                    <input type="submit" value={"Ping IP"}/>
-                </form>
-            </div>
+            </form>
+                <input type="text" form="ping" placeholder="Type IP here" onChange={() => (buttonStatus != "Ping IP" || "Pinging") && setButtonStatus("Ping IP")}/>
+                <button
+                    type="submit"
+                    form="ping"
+                    style={{backgroundColor: colors[buttonStatus]}}
+                    ref={buttonStatusRef}
+                >
+                    {(buttonStatus == "Pinging")
+                    ? <BufferingIcon style={{top: "2px"}}/>
+                    : <Icon icon={icons[buttonStatus]} width="20" height="20"/>
+                    }
+                    <span>{buttonStatus}</span>
+                </button> 
         </div>
-    );
+    )
 }
 
 export default App;

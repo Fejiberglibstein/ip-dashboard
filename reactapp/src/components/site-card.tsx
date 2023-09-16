@@ -1,8 +1,9 @@
 import React from "react";
+import { Icon } from '@iconify/react';
 
 import "./site-card.css";
 import { SiteProps, SiteStatusProps, MachineListProps, IP } from "../types";
-import { CriticalIcon, StatusCriticalIcon, StatusOfflineIcon, StatusOnlineIcon } from "../assets/icons";
+
 import { Timestamp, PingButton } from "./components";
 import { getSiteStatus } from "../status-colors";
 
@@ -46,15 +47,15 @@ export const SiteStatus = (site: SiteStatusProps): React.JSX.Element => {
     return (
         <div {...props} className="site-status-container">
             { (machinesCritical !== (0 || undefined)) 
-                ? <div> <StatusCriticalIcon/> <span>{machinesCritical + ((machinesCritical == 1) ? " Machine critical" : " Machines critical")}</span> </div>
+                ? <div> <Icon icon="tabler:circle-x-filled" color="#e55050" width="24" height="24" /> <span>{machinesCritical + ((machinesCritical == 1) ? " Machine critical" : " Machines critical")}</span> </div>
                 : <></>
             }
             { (machinesOffline !== (0 || undefined)) 
-                ? <div> <StatusOfflineIcon/> <span> {machinesOffline + ((machinesOffline == 1) ? " Machine offline" : " Machines offline")}</span> </div>
+                ? <div> <Icon icon="tabler:alert-circle-filled" color="#ffc737" width="24" height="24"/>  <span> {machinesOffline + ((machinesOffline == 1) ? " Machine offline" : " Machines offline")}</span> </div>
                 : <></>
             }
             { (machinesOnline !== (0 || undefined)) 
-                ? <div> <StatusOnlineIcon/> <span>{machinesOnline + ((machinesOnline == 1) ? " Machine online" : " Machines online")}</span> </div>
+                ? <div> <Icon icon="tabler:circle-check-filled" color="#0fa958" width="24" height="24" /> <span>{machinesOnline + ((machinesOnline == 1) ? " Machine online" : " Machines online")}</span> </div>
                 : <></>
             }
         </div>
@@ -89,7 +90,7 @@ const MachineListItem = ({machine, id, totalMachines}: {machine: IP, id: number,
                               ((id == totalMachines-1) ? "8px 8px" : "2px 2px")   // If it's the last component round the bottom corners
             }}
         >
-            {machine.checkThis ? <CriticalIcon style={{position: "absolute", left: "-20px"}}/> : <></>}
+            {machine.checkThis ? <Icon icon="uil:exclamation" color="#e55050" width="24" height="24" style={{position: "absolute", left: "-20px"}}/> : <></>}
             <span> {machine.ipAddress} </span>
             <Timestamp time={machine.lastPingTime != undefined ? machine.lastPingTime : new Date(0)}/> 
         </li>

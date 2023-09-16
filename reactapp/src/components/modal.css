@@ -84,6 +84,7 @@
     right: 10px;
     padding: 3px;
     background-color: #663FAD;
+    font-size: 12px;
 }
 
 .add-machine:hover {
@@ -155,10 +156,6 @@ tr:nth-child(odd) {
   font-family: Space Grotesk;
 }
 
-.machine-form input {
-    font-family: inherit;
-}
-
 .machine-form input[type=text] {
     width: 100%;
     background-color: unset;
@@ -174,6 +171,7 @@ tr:nth-child(odd) {
 
 
 .machine-form input[type=submit] {
+    font-family: inherit;
     padding: 2px 8px;
     border-radius: 6px;
     background: #663FAD;
@@ -234,6 +232,7 @@ tr:nth-child(odd) {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 22px;
     width: 26px;
     height: 26px;
     border-radius: 50%;
@@ -242,6 +241,7 @@ tr:nth-child(odd) {
 }
 
 .options-button:hover {
+    cursor: pointer;
     background-color: #7a7d8170;
 }
 

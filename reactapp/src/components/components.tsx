@@ -1,8 +1,8 @@
 import React, { HTMLAttributes } from "react";
+import { Icon } from '@iconify/react';
 import moment from "moment";
 
 import { PingButtonProps, TimestampProps, IP } from "../types";
-import { PingIcon } from "../assets/icons";
 import "./components.css"
 
 export const Timestamp = (props: TimestampProps ) => {
@@ -13,9 +13,9 @@ export const Timestamp = (props: TimestampProps ) => {
     );
 }
 
-export const BufferingIcon = () => {
+export const BufferingIcon = (props: HTMLAttributes<HTMLDivElement>) => {
     return (
-        <div className="buffering-icon"></div>
+        <div {...props} className="buffering-icon"></div>
     );
 }
 
@@ -39,7 +39,7 @@ export function PingButton<T extends IP | string>(props: PingButtonProps<T>) {
     return (
         <button className={"ping-button" + (clicked ? " loading" : "")} onClick={(e) => pingSite(e)} {...passProps as HTMLAttributes<HTMLButtonElement>}>
             {(!clicked) 
-                ? <PingIcon/>
+                ? <Icon icon="tabler:wifi" color="#a4a4a4" width="16" height="16" />
                 : <BufferingIcon/>
             }
             {(!clicked) ? props.children : "Pinging"}
