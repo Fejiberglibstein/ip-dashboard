@@ -78,19 +78,27 @@ function App() {
 
 const Banner = ({ sites }: BannerProps): React.JSX.Element => {
     const companyWideStatus = {machinesOnline: 0, machinesOffline: 0, machinesCritical: 0}
+
+    let completeMachineList: Array<IP> = []
+
     for(const site of Object.keys(sites)) {
         const temp = getSiteStatus(sites[site])
+        completeMachineList = completeMachineList.concat(sites[site])
         companyWideStatus.machinesCritical += (temp.machinesCritical) ? temp.machinesCritical : 0;
         companyWideStatus.machinesOffline += (temp.machinesOffline) ? temp.machinesOffline : 0;
         companyWideStatus.machinesOnline += (temp.machinesOnline) ? temp.machinesOnline : 0;
     }
+
+    let worstMachine = completeMachineList.filter(c => !c.isOnline).sort((a, b) => (a.timeSinceLastPing && b.timeSinceLastPing) ? b.timeSinceLastPing - a.timeSinceLastPing : 0)
 
     return (
         <div className="banner">
             <div className="app-name">IP Dashboard Thing</div>
             <SiteStatus style={{flexDirection: "row-reverse", gap: "10px", "--text-color":"white"} as React.CSSProperties} {...companyWideStatus}></SiteStatus>
             <div className="worstMachine">
-                Austin
+                <div> {worstMachine[0].ipAddress} </div>
+                <div> {worstMachine[0].assetNumber} </div>
+                <div> {worstMachine[0].machineName} </div>
             </div>
             <SoloPingForm/>
         </div>
@@ -103,7 +111,6 @@ const SoloPingForm = ({  }): React.JSX.Element => {
 
     const icons  = {"Ping IP": "tabler:wifi", "Online": "tabler:check", "Offline": "tabler:x"}
     const colors = {"Ping IP": "#184268", "Pinging": "#30353A", "Online": "#0F5631", "Offline": "#7d3535"}
-
 
     const pingMachine = async (event) => {
         event.preventDefault()
@@ -118,10 +125,12 @@ const SoloPingForm = ({  }): React.JSX.Element => {
             })
             const result = await response.json()
             setButtonStatus((!JSON.parse(result)) ? "Offline" : "Online")
-            setTimeout(() => buttonStatusRef.current?.classList.remove("show"), 1000)
+            setTimeout(() => buttonStatusRef.current?.classList.remove("show"), 3000)
         }
         catch {
+            setButtonStatus("Ping IP")
             alert("Cannot do that")
+            buttonStatusRef.current?.classList.remove("show")
         }
     }
 

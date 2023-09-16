@@ -281,9 +281,9 @@ const Form = ({ IP, updateForm, setForm, formIndex, onAddMachine, setFormIndex}:
     // without it we would get brick error because there 
     useEffect(() => {
         setForm(IP) 
+        if(formIndex == "add") onAddMachine();
     }, [])
 
-    if(formIndex == "add") onAddMachine();
 
     return (
         <tr style={{"--status-color": "#7861d3"} as React.CSSProperties} className="machine-form">
