@@ -2,10 +2,10 @@
 @import url("https://fonts.googleapis.com/css?family=Space+Grotesk");
 
 
-body, #root {
+body, #root, .app {
   background: #25272E; 
   min-width: 100%;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
 }
 input {
@@ -29,7 +29,7 @@ input {
 }
 
 .banner {
-  height: 68px;
+  height: 90px;
   width: 100%;
   background-color: #3f4357;
   display: flex;
@@ -43,6 +43,16 @@ input {
   float: left;
   left: 10px;
   width: fit-content;
+}
+
+.worst-machine {
+  background: #16161675;
+  padding: 4px;
+  border-radius: 5px;
+  width: 10rem;
+  color: #aaa;
+  font-family: IBM Plex Mono;
+  border: #aaa7 solid 2px
 }
 
 .solo-ping {
@@ -59,14 +69,14 @@ input {
 }
 
 .solo-ping input[type=text] {
-  width: 12rem;
+  width: 13rem;
   background-color: unset;
   border: none;
   border-radius: inherit;
-  padding: 5px;
-  background-color: #3e4457;
+  padding: 8px;
+  background-color: #16161675;
   padding-left: 10px;
-  color: #ccc;
+  color: #bbb;
   font-weight: 800;
 }
 
@@ -87,26 +97,28 @@ input {
   display: flex;
   align-items: center;
   justify-content: left;
-  gap: 2px;
   width: auto;
   overflow: hidden;
   text-wrap: nowrap;
+
+  font-size: 14px;
 
   color: #bbb;
   position: absolute;
   height: 100%;
   border-radius: inherit;
-  padding: 2px;
+  padding-left: 8px;
+  gap: 6px;
   padding-right: 26px;
   border: none;
-  right: 25px;
+  right: 34px;
   transform: translateX(100%);
   
 }
 
 .solo-ping button:hover, .solo-ping button.show {
   transform: translateX(0);
-  right: -20px;
+  right: -16px;
 }
 
 .solo-ping button :first-child {
@@ -120,7 +132,7 @@ input {
   flex-wrap: wrap;
   flex-direction: row;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   gap: 1.875rem;
   justify-content: center;
   align-items: center;

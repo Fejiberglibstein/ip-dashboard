@@ -95,7 +95,7 @@ const Banner = ({ sites }: BannerProps): React.JSX.Element => {
         <div className="banner">
             <div className="app-name">IP Dashboard Thing</div>
             <SiteStatus style={{flexDirection: "row-reverse", gap: "10px", "--text-color":"white"} as React.CSSProperties} {...companyWideStatus}></SiteStatus>
-            <div className="worstMachine">
+            <div className="worst-machine">
                 <div> {worstMachine[0].ipAddress} </div>
                 <div> {worstMachine[0].assetNumber} </div>
                 <div> {worstMachine[0].machineName} </div>

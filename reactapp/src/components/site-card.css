@@ -38,7 +38,7 @@
 .site-status-container {
     display: flex;
     flex-direction: column;
-    --text-color: #717171
+    --text-color: #717171;
 }
 
 .site-status-container span {
