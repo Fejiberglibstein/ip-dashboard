@@ -1,16 +1,16 @@
 using System.Globalization;
-using System.Net;
 using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Reflection.Metadata;
-using System.Reflection.PortableExecutable;
-using System.Text;
 using CsvHelper;
 using IPClass;
-using System.Timers;
-using IpAddressTracker;
-using System.Reflection.Metadata.Ecma335;
-using Microsoft.AspNetCore.Mvc;
+// using System.Net;
+// using System.Net.Sockets;
+// using System.Reflection.Metadata;
+// using System.Reflection.PortableExecutable;
+// using System.Text;
+// using System.Timers;
+// using IpAddressTracker;
+// using System.Reflection.Metadata.Ecma335;
+// using Microsoft.AspNetCore.Mvc;
 
 namespace IpAddressTracker {
 
@@ -47,8 +47,10 @@ namespace IpAddressTracker {
                 Directory.CreateDirectory($@"{backupLocation}/Backup Day {i}");
             }
 
-            aTimer = new System.Timers.Timer();
-            aTimer.Interval = 120000; // 28800000;
+            aTimer = new System.Timers.Timer
+            {
+                Interval = 120000 // 28800000;
+            };
 
             aTimer.Elapsed += OnTimedEvent!;
 
@@ -97,13 +99,6 @@ namespace IpAddressTracker {
             DateTime currentTime = DateTime.Now;
             PingReply reply;
             reply = ping.Send(ip, 2000);
-            // Don't think that I need the try catch anymore since I am checking if the IP is valid in AddMachine
-            // try {
-            //     reply = ping.Send(ip, 2000);
-            // }
-            // catch (PingException) {
-            //     return new IP {IpAddress = "null", MachineName = "null"};
-            // }
             IP machine = siteList[site].Find(c => c.IpAddress == ip)!;
             machine.CurrentTime = currentTime;
             machine.IsOnline = reply.Status == IPStatus.Success;
@@ -136,7 +131,7 @@ namespace IpAddressTracker {
                 reply = ping.Send(ip, 2000);
             }
             catch (PingException) {
-                throw new Exception("Invalid IP");
+                return false;
             }
             return reply.Status == IPStatus.Success;
         }
@@ -153,6 +148,7 @@ namespace IpAddressTracker {
                    });
             return isValid;
         }
+
         // Called when user enters a new machine in the table form with a fetch to "/api/add_machine/{site}"
         public static List<IP> AddMachine(string site, IP retval) {
             // first, checks to see if the given IP address is valid, and if it is adds the machine to the siteList variable
@@ -161,11 +157,8 @@ namespace IpAddressTracker {
             if (isValid && siteList[site].Find(c => retval.IpAddress == c.IpAddress) == null) {
                 siteList[site].Add(retval);
                 UpdateMachine(site, retval.IpAddress);
+                WriteToCsv(site);
             }
-            else {
-                throw new Exception("Invalid IP");
-            }
-            WriteToCsv(site);
             return siteList[site];
         }
 
@@ -189,7 +182,7 @@ namespace IpAddressTracker {
             // if the IP addresses are different, then we need to ping the new IP address to generate new data
             else {
                 if (!CheckIP(retval.IpAddress)) {
-                    throw new Exception("Invalid IP Address");
+                    return siteList[site];
                 }
                 siteList[site][i].IpAddress = retval.IpAddress;
                 siteList[site][i].AssetNumber = retval.AssetNumber;

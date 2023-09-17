@@ -33,7 +33,7 @@
   background-color: #4f535aaa;
   margin: auto;
   height: 80%;
-  width: 50%;
+  /* width: 80%; */
   min-width: fit-content;
   border-radius: 12px;
   overflow: hidden;
@@ -80,11 +80,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    bottom: 20px;
+    bottom: 10px;
     right: 10px;
     padding: 3px;
     background-color: #663FAD;
     font-size: 12px;
+    user-select: none;
 }
 
 .add-machine:hover {
@@ -94,8 +95,6 @@
 table {
     font-family: IBM Plex Mono, Space Grotesk;
     border-collapse: collapse;
-    width: 745px;
-    max-width: 745px;
     border-radius: 20px;
     /* padding-left: 10px; */
     table-layout: fixed;
@@ -105,16 +104,18 @@ table {
     /* position: sticky;
     top: 0px;
     z-index: 1; */
-    background-color: #082742;
+    /* background-color: #082742; */
+    user-select: none;
 }
 
 th, td {
     text-align: center;
     padding: 8px;
     height: 30px;
+    width: 180px;
     max-width: 180px;
-    width: 100%;
     text-overflow: ellipsis;
+    text-wrap: nowrap;
 }
 
 th:last-child, td:last-child {
@@ -189,6 +190,7 @@ tr:nth-child(odd) {
 .machine-form input[type=submit]:hover {
     cursor: pointer;
     background-color: #7851c2;
+    user-select: none;
 }
 
   /* ==========[ CSS for the moving icons ]========== */
@@ -237,6 +239,8 @@ tr:nth-child(odd) {
     height: 26px;
     border-radius: 50%;
     background-color: #5f626670;
+    user-select: none;
+
     /* position: relative; */
 }
 
@@ -251,22 +255,15 @@ tr:nth-child(odd) {
     left: -100px;
     z-index: 1;
     padding: 0px;
-
     background-color: #4e4f55c0;
     backdrop-filter: blur(5px);
-    
+    border-radius: 10px;
+    overflow: clip;
+    box-shadow: 11px 11px 22px 0px rgba(0, 0, 0, 0.1);
 }
 
 tr:last-child .context-menu {
     top: -100%;
-}
-
-
-.context-menu {
-    border-radius: 10px;
-    overflow: clip;
-    box-shadow: 11px 11px 22px 0px rgba(0, 0, 0, 0.1);
-    
 }
 
 .context-menu li {

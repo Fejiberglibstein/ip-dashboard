@@ -102,22 +102,25 @@ const Banner = ({ sites }: BannerProps): React.JSX.Element => {
                 childStyle={{background: "#0006", padding: "2px", paddingRight: "9px", borderRadius: "100px"}}
                 {...companyWideStatus}
             />
-            {/* <div className="worst-machine">
-                <div> {worstMachine[0].ipAddress} </div>
-                <div> {worstMachine[0].assetNumber} </div>
-                <div> {worstMachine[0].machineName} </div>
-            </div> */}
+            <div style={{position:"relative", bottom:"4px"}}>
+                <span className="worst-machine-header">Worst Machine</span>
+                <div className="worst-machine">
+                    <div> {worstMachine[0].ipAddress} </div>
+                    <div> {worstMachine[0].assetNumber} </div>
+                    <div> {worstMachine[0].machineName} </div>
+                </div>
+            </div>
             <SoloPingForm/>
         </div>
     );
 }
 
 const SoloPingForm = ({  }): React.JSX.Element => {
-    const [buttonStatus, setButtonStatus] = useState<"Ping IP" | "Pinging" | "Online" | "Offline">("Ping IP")
+    const [buttonStatus, setButtonStatus] = useState<"Ping" | "Pinging" | "Online" | "Offline">("Ping")
     const buttonStatusRef = useRef<HTMLButtonElement | null>(null)
 
-    const icons  = {"Ping IP": "tabler:wifi", "Online": "tabler:check", "Offline": "tabler:x"}
-    const colors = {"Ping IP": "#184268", "Pinging": "#30353A", "Online": "#0F5631", "Offline": "#7d3535"}
+    const icons  = {"Ping": "tabler:wifi", "Online": "tabler:check", "Offline": "tabler:x"}
+    const colors = {"Ping": "#184268", "Pinging": "#30353A", "Online": "#0F5631", "Offline": "#7d3535"}
 
     const pingMachine = async (event) => {
         event.preventDefault()
@@ -135,7 +138,7 @@ const SoloPingForm = ({  }): React.JSX.Element => {
             setTimeout(() => buttonStatusRef.current?.classList.remove("show"), 3000)
         }
         catch {
-            setButtonStatus("Ping IP")
+            setButtonStatus("Ping")
             alert("Cannot do that")
             buttonStatusRef.current?.classList.remove("show")
         }
@@ -148,7 +151,7 @@ const SoloPingForm = ({  }): React.JSX.Element => {
                     pingMachine(e)
                 }}>
             </form>
-                <input type="text" form="ping" placeholder="Type IP here" onChange={() => (buttonStatus != "Ping IP" || "Pinging") && setButtonStatus("Ping IP")}/>
+                <input type="text" form="ping" placeholder="Ping IP" onChange={() => (buttonStatus != "Ping" || "Pinging") && setButtonStatus("Ping")}/>
                 <button
                     type="submit"
                     form="ping"

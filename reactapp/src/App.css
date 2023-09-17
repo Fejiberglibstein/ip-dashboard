@@ -45,21 +45,37 @@ input {
   width: fit-content;
 }
 
+.worst-machine-header {
+  color: #989898;
+  font-family: IBM Plex Mono;
+  font-size: 10px;
+  font-style: normal;
+}
+
 .worst-machine {
-  visibility: hidden;
   background: #16161675;
-  padding: 4px;
   border-radius: 5px;
-  width: 10rem;
   color: #aaa;
   font-family: IBM Plex Mono;
-  border: #aaa7 solid 2px
+  border: #aaa7 solid 2px;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4px;
+  overflow: clip;
+}
+
+.worst-machine * {
+  max-width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .solo-ping {
   position: relative;
   display: flex;
-
   right: 10px;
   width: fit-content;
   height: min-content;
@@ -67,8 +83,7 @@ input {
   overflow: clip;
   border: #ffffff00 inset 2px;
   background-color: #1616164f;
-
-
+  user-select: none;
 }
 
 .solo-ping input[type=text] {
@@ -103,9 +118,7 @@ input {
   width: auto;
   overflow: hidden;
   text-wrap: nowrap;
-
   font-size: 14px;
-
   color: #bbb;
   position: absolute;
   height: 100%;

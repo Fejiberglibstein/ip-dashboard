@@ -36,13 +36,13 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 			const iconHeight = 35;    // Height of the icon
 			const scrollMargin = 0;  // Margin from the top/bottom of the screen
 
-			// Top and bottom of the viewport/modal. The 65 subtracted on scrollBottom is 
+			// Top and bottom of the viewport/modal. The 42 subtracted on scrollBottom is 
 			// an arbitrary number I got from guess and check to match the margin on the top
-			const scrollTop = modalContentRef.current.scrollTop + scrollMargin;
-			const scrollBottom = modalContentRef.current.scrollTop + modalContentRef.current.clientHeight - scrollMargin - 40;
+			const scrollTop = modalContentRef.current.scrollTop + scrollMargin - 2;
+			const scrollBottom = modalContentRef.current.scrollTop + modalContentRef.current.clientHeight - scrollMargin - 38;
 
             const containerTop = scrollMargin + 18
-            const containerBottom = modalContentRef.current.clientHeight - scrollMargin - 22
+            const containerBottom = modalContentRef.current.clientHeight - scrollMargin - 18;
 			
 			// Cache the amount of icons that are offscreen
 			let iconsAbove = 0;
@@ -116,7 +116,7 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 				}
 				// Unhide element and position it
 				icon.hidden = false
-				icon.setAttribute('style', `top: ${iconData.top}px; left: ${80 + iconData.left - leftShift}px; cursor: ${iconData.cursor}`)	
+				icon.setAttribute('style', `top: ${iconData.top + 4}px; left: ${80 + iconData.left - leftShift}px; cursor: ${iconData.cursor}`)	
 			}
 		}
 	}
@@ -210,12 +210,15 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
 					)}
 				</div>
                 <span className="close" onClick={() => setPopupSiteName(null)}>&times;</span>
-                <button className="add-machine" onClick={() => setFormIndex("add") }><Icon icon="tabler:playlist-add" width="16" height="16" />Add Machine</button>
+                {(formIndex != "add")
+                    ? <button className="add-machine" onClick={() => setFormIndex("add") }><Icon icon="tabler:playlist-add" width="16" height="16" />Add Machine</button>
+                    : <></>
+                }
                 <form method="GET" id="my_form" onSubmit={(e) => {
                     e.preventDefault();
                     if(formIndex == null) insertMachine(e);
                     else if(formIndex == "add") insertMachine(e);
-                    else changeMachine(e, formIndex as number);
+                    else changeMachine(e, IPs.indexOf(IPs[formIndex]));
                     setFormIndex(null)
                 }} autoComplete="off" autoCorrect="off"/>
                 <div className="table-container" ref={modalContentRef} onScroll={handleScroll}>
@@ -255,10 +258,10 @@ export const PopupModal = ({ enabled, siteName, IPs, setPopupSiteName, setIP, se
                                         apiPath={`ping_machine/${siteName}/${IP.ipAddress}`}
                                     >Ping IP</PingButton></td>
                                     <td style={{position: "relative"}}>
-                                        <button title="Options" className="options-button" onClick={e => { e.stopPropagation(); setMenuIndex(i) }}><Icon icon="uil:ellipsis-v" color="#a4a4a4" width="20" height="20" /></button>
+                                        <button title="Options" className="options-button" onClick={e => { e.stopPropagation(); setMenuIndex(i); console.log(i + " with an IP of " + IPs[i].ipAddress)}}><Icon icon="uil:ellipsis-v" color="#a4a4a4" width="20" height="20" /></button>
                                         {
                                             (menuIndex == i)
-                                            ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite} setFormIndex={setFormIndex} rowIndex={i} checkPassword={checkPassword} ></ContextMenu>
+                                            ? <ContextMenu siteName={siteName} indexIP={IPs.indexOf(IP)} setSite={setSite} setFormIndex={setFormIndex} rowIndex={i} checkPassword={checkPassword}></ContextMenu>
                                             : <></>
                                         }   
                                     </td>
@@ -292,7 +295,8 @@ const Form = ({ IP, updateForm, setForm, formIndex, onAddMachine, setFormIndex}:
             <td> <input aria-label="Machine Name"  type="text" name="machineName" form="my_form" defaultValue={IP.machineName} placeholder="Machine Name" onChange={e => updateForm(e)} required/> </td>
             <td/>
             <td> <input type="submit" form="my_form" value={ (formIndex == "add" ? "Add New Machine" : "Modify Machine") }/> </td>
-            <td> <span className="options-button" onClick={() => {setFormIndex(null); console.log(formIndex)}}>&times;</span> </td>
+            {/* The td under this is for closing out of a form */}
+            <td> <span className="options-button" onClick={() => {setFormIndex(null)}}>&times;</span> </td>
         </tr>
     )
 }
@@ -334,9 +338,12 @@ const ContextMenu = ({ siteName, setSite, indexIP, setFormIndex, rowIndex, check
 - [x] 'X' in a row where there is a form 
 - [x] Remove machine has a confirmation box
 - [?] ! are not centered in the table
-- [ ] table header is sticky
+- [N] table header is sticky
 - [~] backend writing to the CSVs and backing up every X hours
 - [x] stylize the form so that it doesnt ruin the table like it currently does
-- [ ] solo-ping button should give some sort of feedback on ping status
+- [x] solo-ping button should give some sort of feedback on ping status
 - [ ] banner stylizing
+- [x] add button should disappear when you hit it and come back after
+- [x] bug where changing a machine but keeping the same IP address adds a new one, sending the wrong index I guess (sending formIndex which is sorted index had to find the index of the formIndex duh)
+- [ ] WriteToCsv can break since you call it every time there is a a call to updatemachine or whatever, when hitting two ping buttons at the same time where one has to wait it breaks because there are two threads opening the csv
 */
