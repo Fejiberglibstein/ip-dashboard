@@ -11,10 +11,12 @@
     "predev": "node aspnetcore-https.js"
   },
   "dependencies": {
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@iconify/react": "^4.1.1",
     "@types/node": "^20.5.7",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",

@@ -1,42 +1,213 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+@import url("https://fonts.googleapis.com/css?family=IBM+Plex+Mono");
+@import url("https://fonts.googleapis.com/css?family=Space+Grotesk");
+
+
+body, #root, .app {
+  background: #25272E; 
+  min-width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+input {
+  font-family: IBM Plex Mono;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+:root {
+  font-family: Space Grotesk, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  /* font-synthesis: none; */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* -webkit-text-size-adjust: 100%; */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.banner {
+  height: 64px;
+  width: 100%;
+  background-color: #3f4357;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.app-name {
+  position: relative;
+  float: left;
+  left: 10px;
+  width: fit-content;
 }
 
-.card {
-  padding: 2em;
+.worst-machine-header {
+  color: #989898;
+  font-family: IBM Plex Mono;
+  font-size: 10px;
+  font-style: normal;
 }
 
-.read-the-docs {
-  color: #888;
+.worst-machine {
+  background: #16161675;
+  border-radius: 5px;
+  color: #aaa;
+  font-family: IBM Plex Mono;
+  border: #aaa7 solid 2px;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4px;
+  overflow: clip;
 }
+
+.worst-machine * {
+  max-width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.solo-ping {
+  position: relative;
+  display: flex;
+  right: 10px;
+  width: fit-content;
+  height: min-content;
+  border-radius: 100px;
+  overflow: clip;
+  border: #ffffff00 inset 2px;
+  background-color: #1616164f;
+  user-select: none;
+}
+
+.solo-ping input[type=text] {
+  width: 13rem;
+  background-color: unset;
+  border: none;
+  border-radius: inherit;
+  padding: 8px;
+  padding-left: 10px;
+  color: #bbb;
+  font-weight: 800;
+}
+
+.solo-ping:has(input[type="text"]:focus-visible) {
+  border: #ffffff00 solid 2px;
+  background-color:#16161675;
+  outline: none;
+}
+
+.solo-ping button:focus-visible:hover:focus, input[type="text"]:focus-visible {
+  border: none;
+  outline: none;
+}
+
+.solo-ping button {
+  transition: 
+    200ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    400ms background-color;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  width: auto;
+  overflow: hidden;
+  text-wrap: nowrap;
+  font-size: 14px;
+  color: #bbb;
+  position: absolute;
+  height: 100%;
+  border-radius: inherit;
+  padding-left: 7px;
+  gap: 7px;
+  padding-right: 26px;
+  border: none;
+  right: 34px;
+  transform: translateX(100%);
+  
+}
+
+.solo-ping button:hover, .solo-ping button.show {
+  transform: translateX(0);
+  right: -16px;
+}
+
+.solo-ping button :first-child {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+}
+
+.site-card-container { 
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  gap: 1.875rem;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #aaaaaa;
+  border-radius: 6px;
+  /* border: 3px solid var(--scrollbarBG); */
+}
+
+button { 
+  border-radius: 6px;
+  color: #A4A4A4;
+  font-family: Space Grotesk;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-width: 0px;
+  opacity: 1;
+  transition: 200ms;
+  padding: 0px;
+}
+
+button:focus {
+  outline: 3px;
+}
+
+button:hover {
+  outline: 0px;
+  cursor: pointer;
+}
+
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+

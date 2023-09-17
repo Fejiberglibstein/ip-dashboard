@@ -1,0 +1,127 @@
+.site-card {
+    display: flex;
+    width: 430px;
+    height: 238px;
+    padding: 12px;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    flex-shrink: 0;
+        
+    border-radius: 5.70px;
+    border-left: 5.70px solid #FFC737;
+    background: #1C1C21;
+    box-shadow: 11px 11px 22px 0px rgba(0, 0, 0, 0.25);
+}
+
+/* site name of the card */
+.site-card span {
+    color: #AEAEAE;
+
+/* Heading */
+    font-family: 'IBM Plex Mono';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 1000;
+    line-height: normal;
+    text-transform: capitalize;
+    
+}
+
+.site-card-content {
+    flex: 1 0 0;
+    align-self: stretch;
+    position: relative;
+    cursor: pointer;
+}
+
+.site-status-container {
+    display: flex;
+    flex-direction: column;
+    --text-color: #717171;
+}
+
+.site-status-container span {
+    color: var(--text-color);
+
+    /* Body */ 
+    font-family: Space Grotesk;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    /* vertical-align: top; */
+}
+
+.site-status-container div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px
+}
+
+/* ------------ MACHINE LIST ELEMENTS NOW ------------ */
+
+.machine-list {
+    position: absolute;
+    display: flex;
+    right: 0;
+    top: 0;
+    flex-direction: column;
+    align-items: center;
+}
+
+.machine-list-title {
+    display: flex;
+    padding: 0px 10px;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+}
+
+.machine-list-title span {
+    color: #989898;
+
+    /* Label */
+    font-family: IBM Plex Mono;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 10px;
+}
+
+.machine-list-container {
+    margin: 0;
+    padding-inline-start: 0;
+}
+
+.machine-list-item {
+    display: flex;
+    width: 190px;
+    padding: 2px 5px;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    border-radius: 2px 2px 2px 2px;
+    background: #363A42;
+}
+
+.machine-list-item:nth-child(odd) {
+    background: #363A42;
+}
+
+.machine-list-item:nth-child(even) {
+    background: #2e3139;
+}
+
+
+.machine-list-item span {
+    color: #787878;
+    font-family: Space Grotesk;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+ 

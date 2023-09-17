@@ -1,0 +1,128 @@
+*:has(> .tooltiptext) {
+    position: relative;
+    display: inline-block;
+    
+  }
+  
+  .tooltiptext {
+    visibility: hidden;
+    width: max-content;
+    max-width: inherit;
+    overflow-wrap: break-word;
+    text-wrap: wrap;
+    height: max-content;
+    background-color: rgb(0, 0, 0);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%);
+
+    opacity: 0;
+    font-size: 12px;
+    transition: 
+      bottom 250ms, 
+      opacity 300ms;
+    overflow: visible;
+
+  }
+  
+  .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+  }
+  
+  *:has(> .tooltiptext):hover .tooltiptext {
+    opacity: 1;
+    visibility: visible;
+    bottom: 150%;
+  }
+
+  .timestamp {
+    border-radius: 2.867px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0px 2.867px;
+    gap: 7.168px;
+    color: #A6A6A6;
+    width: fit-content;
+    border: none;
+
+    /* Machine Text */
+    font-family: Space Grotesk;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+@keyframes spinner {
+  0% {
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
+}
+
+.buffering-icon {
+  position: relative;
+  height: 16px;
+  width: 16px;
+  margin-right: 1px;
+}
+
+.buffering-icon::before {
+  animation: 1.5s linear infinite spinner;
+  animation-play-state: inherit;
+  border: solid 2px #505050;
+  border-bottom-color: #A4A4A4;
+  border-radius: 50%;
+  content: "";
+  height: 10px;
+  width: 10px;
+  top: 8px;
+  position: absolute;
+  will-change: transform;
+}
+
+.ping-button {
+  display: inline-flex;
+  padding: 2px 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  gap: 4px;
+  background: #184268;
+  color: #A4A4A4;
+  font-family: Space Grotesk;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-width: 0px;
+  opacity: 1;
+  transition: 200ms;
+  width: 88px;
+  position: relative;
+  user-select: none;
+}
+
+
+.ping-button:hover {
+  background-color: #235077;
+}
+
+.ping-button.loading {
+  background: #30353A;
+  cursor: default;
+}

@@ -31,3 +31,38 @@ C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\obj\Debug\net7.0\re
 C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\obj\Debug\net7.0\webapi.pdb
 C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\obj\Debug\net7.0\webapi.genruntimeconfig.cache
 C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\obj\Debug\net7.0\ref\webapi.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\appsettings.Development.json
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\appsettings.json
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\webapi.exe
+c:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\webapi.deps.json
+c:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\webapi.runtimeconfig.json
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\webapi.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\webapi.pdb
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\Microsoft.OpenApi.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\webapi.csproj.AssemblyReference.cache
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\webapi.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\webapi.AssemblyInfoInputs.cache
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\webapi.AssemblyInfo.cs
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\webapi.csproj.CoreCompileInputs.cache
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\webapi.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\webapi.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\staticwebassets\msbuild.webapi.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\staticwebassets\msbuild.build.webapi.props
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.webapi.props
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.webapi.props
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\staticwebassets.pack.json
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\staticwebassets.build.json
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\staticwebassets.development.json
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\scopedcss\bundle\webapi.styles.css
+c:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\webapi.csproj.CopyComplete
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\webapi.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\refint\webapi.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\webapi.pdb
+c:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\webapi.genruntimeconfig.cache
+c:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\obj\Debug\net7.0\ref\webapi.dll
+C:\Users\drewt\OneDrive\Documents\Visual Studio\ip-dashboard-git\webapi\bin\Debug\net7.0\CsvHelper.dll
+C:\Users\amthe\OneDrive\Documents\GitHub\ip-dashboard\webapi\bin\Debug\net7.0\CsvHelper.dll

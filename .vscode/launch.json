@@ -5,6 +5,14 @@
     "version": "0.2.0",
     "configurations": [    
         {
+            "command": "dotnet build",
+            "name": "build server",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/webapi"
+        },
+
+        {
             "command": "npm run dev",
             "name": "client",
             "request": "launch",
@@ -16,7 +24,7 @@
             "name": "server",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            // "preLaunchTask": "build server",
             "program": "${workspaceFolder}/webapi/bin/Debug/net7.0/webapi.dll",
             "args": [],
             "cwd": "${workspaceFolder}/webapi",
@@ -37,7 +45,7 @@
     "compounds": [
         {
           "name": "Server/Client",
-          "configurations": ["client", "server"],
+          "configurations": ["build server", "client", "server"],
           "stopAll": true
         }
     ]
